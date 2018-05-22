@@ -21,8 +21,8 @@ package br.usp.poli.lta.cereda.wsn2spa;
 
 import br.usp.poli.lta.cereda.nfa2dfa.utils.SimpleTransition;
 import br.usp.poli.lta.cereda.nfa2dfa.utils.Triple;
-import br.usp.poli.lta.cereda.wirth2ape.exporter.Spec;
-import br.usp.poli.lta.cereda.wirth2ape.exporter.Transition;
+import br.usp.poli.lta.cereda.mwirth2ape.exporter.Spec;
+import br.usp.poli.lta.cereda.mwirth2ape.exporter.Transition;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;

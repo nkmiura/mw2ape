@@ -23,10 +23,10 @@ import br.usp.poli.lta.cereda.nfa2dfa.utils.Conversion;
 import br.usp.poli.lta.cereda.nfa2dfa.utils.Reader;
 import br.usp.poli.lta.cereda.nfa2dfa.utils.SimpleTransition;
 import br.usp.poli.lta.cereda.nfa2dfa.utils.Triple;
-import br.usp.poli.lta.cereda.wirth2ape.exporter.Spec;
-import br.usp.poli.lta.cereda.wirth2ape.exporter.Writer;
-import br.usp.poli.lta.cereda.wirth2ape.wirth.Generator;
-import br.usp.poli.lta.cereda.wirth2ape.wirth.WirthLexer;
+import br.usp.poli.lta.cereda.mwirth2ape.exporter.Spec;
+import br.usp.poli.lta.cereda.mwirth2ape.exporter.Writer;
+import br.usp.poli.lta.cereda.mwirth2ape.mwirth.Generator;
+import br.usp.poli.lta.cereda.mwirth2ape.mwirth.WirthLexer;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -121,8 +121,8 @@ public class Main {
                 writer.generateYAMLMap(line.getOptionValue("y"));
         
         if (Utils.neither(line, "c", "m")) {
-            br.usp.poli.lta.cereda.wirth2ape.dot.Dot dot =
-                    new br.usp.poli.lta.cereda.wirth2ape.dot.Dot(
+            br.usp.poli.lta.cereda.mwirth2ape.dot.Dot dot =
+                    new br.usp.poli.lta.cereda.mwirth2ape.dot.Dot(
                             g.getTransitions()
                     );
             dot.generate(line.getOptionValue("o"));
@@ -185,6 +185,8 @@ public class Main {
                 FileUtils.write(new File(key), map.get(key), "UTF-8");
             }
         }
+
+
         
         System.out.println("Done.");
     }
