@@ -26,7 +26,7 @@ import br.usp.poli.lta.cereda.nfa2dfa.utils.Triple;
 import br.usp.poli.lta.cereda.mwirth2ape.exporter.Spec;
 import br.usp.poli.lta.cereda.mwirth2ape.exporter.Writer;
 import br.usp.poli.lta.cereda.mwirth2ape.mwirth.Generator;
-import br.usp.poli.lta.cereda.mwirth2ape.mwirth.WirthLexer;
+import br.usp.poli.lta.cereda.mwirth2ape.mwirth.MWirthLexer;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -112,8 +112,8 @@ public class Main {
         }
         
         String text = FileUtils.readFileToString(file, "UTF-8").trim();
-        WirthLexer wl = new WirthLexer(text);
-        Generator g = new Generator(wl);
+        MWirthLexer wl = new MWirthLexer(text);
+        Generator g = new Generator(wl, 1);
         g.generateAutomaton();
         
         Writer writer = new Writer(g.getTransitions());
