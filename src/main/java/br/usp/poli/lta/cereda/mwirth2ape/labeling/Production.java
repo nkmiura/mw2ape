@@ -12,13 +12,15 @@ public class Production {
     private int index;
     private String identifier;
     public LinkedList<ProductionToken> expression;
-    public LinkedList<LabelToken> labels;
+    public LinkedList<ProductionToken> labels;
+    public LinkedList<ProductionToken> all;
 
     public Production(int index) {
         this.index = index;
-        this.identifier = new String();
+        this.identifier = "";
         this.expression = new LinkedList<>();
         this.labels = new LinkedList<>();
+        this.all = new LinkedList<>();
     }
 
     public void setIdentifier(String value) {
@@ -33,8 +35,16 @@ public class Production {
         return identifier;
     }
 
-    public void addProductionToken(ProductionToken productionToken) {
+    public void addExpressionToken(ProductionToken productionToken) {
         this.expression.add(productionToken);
+    }
+
+    public void addLabelsToken(ProductionToken labelToken) {
+        this.labels.add(labelToken);
+    }
+
+    public void addAllToken(ProductionToken allToken) {
+        this.all.add(allToken);
     }
 
     @Override
@@ -42,7 +52,10 @@ public class Production {
         StringBuilder sb = new StringBuilder();
         sb.append("\nproduction ").append(index).append(":");
         sb.append(" identifier: " + identifier);
-        sb.append(" expression: " + expression.toString());
+        sb.append("\n expression: " + expression.toString());
+        sb.append("\n labels: " + labels.toString());
+        sb.append("\n all: " + all.toString());
+
         return sb.toString();
     }
 }
