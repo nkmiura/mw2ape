@@ -2,8 +2,13 @@ package br.usp.poli.lta.cereda.mwirth2ape.labeling;
 
 import java.util.LinkedList;
 import br.usp.poli.lta.cereda.mwirth2ape.model.Token;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Production {
+    private static final Logger logger = LoggerFactory.
+            getLogger(Production.class);
+
     private int index;
     private String identifier;
     public LinkedList<ProductionToken> expression;
@@ -17,7 +22,7 @@ public class Production {
     }
 
     public void setIdentifier(String value) {
-        this.identifier = value;
+        this.identifier = value + '_' + this.index;
     }
 
     public void setIdentifier(Token token) {
@@ -28,7 +33,11 @@ public class Production {
         return identifier;
     }
 
-//    @Override
+    public void addProductionToken(ProductionToken productionToken) {
+        this.expression.add(productionToken);
+    }
+
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("\nproduction ").append(index).append(":");
