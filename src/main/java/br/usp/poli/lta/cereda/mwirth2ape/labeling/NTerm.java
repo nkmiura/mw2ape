@@ -30,7 +30,7 @@ public class NTerm {
     public Production addProduction(String identifier)
     {
         Production newProduction = new Production(this.counter);
-        newProduction.setIdentifier(identifier);
+        newProduction.setIdentifier(identifier + '_' + this.counter);
         this.productions.add(newProduction);
         this.counter++;
         return newProduction;

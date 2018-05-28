@@ -11,6 +11,7 @@ public class Production {
 
     private int index;
     private String identifier;
+    private String recursion;
     public LinkedList<ProductionToken> expression;
     public LinkedList<ProductionToken> labels;
     public LinkedList<ProductionToken> all;
@@ -18,13 +19,14 @@ public class Production {
     public Production(int index) {
         this.index = index;
         this.identifier = "";
+        this.recursion = "";
         this.expression = new LinkedList<>();
         this.labels = new LinkedList<>();
         this.all = new LinkedList<>();
     }
 
     public void setIdentifier(String value) {
-        this.identifier = value + '_' + this.index;
+        this.identifier = value;
     }
 
     public void setIdentifier(Token token) {
@@ -35,8 +37,18 @@ public class Production {
         return identifier;
     }
 
+    public String getRecursion() { return recursion; }
+
+    public void setRecursion(String recursion) { this.recursion = recursion; }
+
     public void addExpressionToken(ProductionToken productionToken) {
         this.expression.add(productionToken);
+    }
+
+    public ProductionToken getLastProductionTerm() {
+        logger.debug("   getLastProductionTerm: " + this.expression.get(this.expression.size() - 2).getType() + ", " + this.expression.get(this.expression.size() - 2).getValue());
+        return this.expression.get(this.expression.size() - 2);
+        //return this.expression.getLast();
     }
 
     public void addLabelsToken(ProductionToken labelToken) {
@@ -50,11 +62,12 @@ public class Production {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("\nproduction ").append(index).append(":");
-        sb.append(" identifier: " + identifier);
-        sb.append("\n expression: " + expression.toString());
-        sb.append("\n labels: " + labels.toString());
-        sb.append("\n all: " + all.toString());
+        sb.append("\nproduction ").append(this.index);
+        sb.append(": identifier: " + this.identifier);
+        sb.append("\n recursion: " + this.recursion);
+        sb.append("\n expression: " + this.expression.toString());
+        sb.append("\n labels: " + this.labels.toString());
+        sb.append("\n all: " + this.all.toString());
 
         return sb.toString();
     }

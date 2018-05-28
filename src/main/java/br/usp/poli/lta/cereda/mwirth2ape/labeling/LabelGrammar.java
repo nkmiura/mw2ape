@@ -44,10 +44,10 @@ public class LabelGrammar {
         boolean result = true;
         for (NTerm tempNterm : nterms) {
             for (Production tempProduction : tempNterm.productions) {
+                boolean firstProductionToken = true;
                 for (ProductionToken tempProductionToken : tempProduction.expression) {
                     //logger.debug(" token type: " + tempProductionToken.getValue());
                     if (tempProductionToken.getType().equals("nterm")) {
-
                         NTerm foundNterm = searchNterm(tempProductionToken.getValue());
                         if (foundNterm == null) {
                             result = false;
@@ -55,7 +55,24 @@ public class LabelGrammar {
                         }
                         else {
                             tempProductionToken.setNterm(foundNterm);
+                            if (firstProductionToken) {
+                                // Primeiro token da produção
+                                if (tempNterm.getValue().equals(tempProductionToken.getValue())) {
+                                    // Recursao a esquerda
+                                    tempProduction.setRecursion("left");
+                                }
+                            }
                         }
+                    }
+                    firstProductionToken = false;
+                }
+                if (tempProduction.getRecursion().equals("left")) {
+                    tempProduction.setIdentifier(tempProduction.getIdentifier() + "\u2207");
+                }
+                else if (tempProduction.getLastProductionTerm().getType().equals("nterm")) {
+                    if(tempProduction.getLastProductionTerm().getValue().equals(tempNterm.getValue())) {
+                        tempProduction.setRecursion("right");
+                        tempProduction.setIdentifier("\u2207" + tempProduction.getIdentifier());
                     }
                 }
             }
