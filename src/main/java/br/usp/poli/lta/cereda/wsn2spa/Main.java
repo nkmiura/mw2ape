@@ -19,6 +19,8 @@
 **/
 package br.usp.poli.lta.cereda.wsn2spa;
 
+import br.usp.poli.lta.cereda.mwirth2ape.labeling.LabelGrammar;
+import br.usp.poli.lta.cereda.mwirth2ape.mwirth.LMWirthLexer;
 import br.usp.poli.lta.cereda.nfa2dfa.utils.Conversion;
 import br.usp.poli.lta.cereda.nfa2dfa.utils.Reader;
 import br.usp.poli.lta.cereda.nfa2dfa.utils.SimpleTransition;
@@ -110,83 +112,98 @@ public class Main {
                     + " not exist. Make sure the location is correct and"
                     + " try again.");
         }
-        
-        String text = FileUtils.readFileToString(file, "UTF-8").trim();
-        MWirthLexer wl = new MWirthLexer(text);
-        Generator g = new Generator(wl, 1);
-        g.generateAutomaton();
-        
-        Writer writer = new Writer(g.getTransitions());
-        Map<String, String> map =
-                writer.generateYAMLMap(line.getOptionValue("y"));
-        
-        if (Utils.neither(line, "c", "m")) {
-            br.usp.poli.lta.cereda.mwirth2ape.dot.Dot dot =
-                    new br.usp.poli.lta.cereda.mwirth2ape.dot.Dot(
-                            g.getTransitions()
-                    );
-            dot.generate(line.getOptionValue("o"));
-            for (String key : map.keySet()) {
-                FileUtils.write(new File(key), map.get(key), "UTF-8");
-            }
-        } else {
-            System.out.println("Additional operations:");
-            if (line.hasOption("c")) {
-                System.out.println("- Submachines translated to DFA's.");
-            }
-            if (line.hasOption("m")) {
-                System.out.println("- State minimization applied.");
-            }
-            
-            for (String key : map.keySet()) {
-                
-                Triple<Integer, Set<Integer>, List<SimpleTransition>> spec =
-                        Reader.read(map.get(key));
-                br.usp.poli.lta.cereda.nfa2dfa.dot.Dot dot =
-                        new br.usp.poli.lta.cereda.nfa2dfa.dot.Dot();
-                dot.append(Reader.getName(), "original", spec);
-                
-                Conversion c;
-                
+
+        try {
+            String text = FileUtils.readFileToString(file, "UTF-8").trim();
+            MWirthLexer mwl = new MWirthLexer(text);
+            Generator g = new Generator(mwl, 1);
+            g.generateAutomaton();
+
+            // Newton
+            LabelGrammar labelGrammar = g.getLabelGrammar();
+            LMWirthLexer lmwl = new LMWirthLexer();
+            lmwl.LGrammarToProductionTokens(labelGrammar);
+            System.out.println(lmwl.toString());
+            Generator lg = new Generator(lmwl, 2);
+            lg.generateAutomaton();
+            // Newton
+
+            Writer writer = new Writer(g.getTransitions());
+            Map<String, String> map =
+                    writer.generateYAMLMap(line.getOptionValue("y"));
+
+
+            if (Utils.neither(line, "c", "m")) {
+                br.usp.poli.lta.cereda.mwirth2ape.dot.Dot dot =
+                        new br.usp.poli.lta.cereda.mwirth2ape.dot.Dot(
+                                g.getTransitions()
+                        );
+                dot.generate(line.getOptionValue("o"));
+                for (String key : map.keySet()) {
+                    FileUtils.write(new File(key), map.get(key), "UTF-8");
+                }
+            } else {
+                System.out.println("Additional operations:");
                 if (line.hasOption("c")) {
-                    c = new Conversion(spec.getThird(), spec.getFirst(),
-                            spec.getSecond());
-                    spec = c.convert();
-                    dot.append(Reader.getName().concat("'"),
-                            "converted", spec);
+                    System.out.println("- Submachines translated to DFA's.");
                 }
-                
                 if (line.hasOption("m")) {
-                    if (!line.hasOption("c")) {
-                        throw new Exception("State minimization cannot be"
-                                + "applied if the DFA conversion was not"
-                                + "specified. Make sure to include the"
-                                + "'-c' flag as well and try again.");
-                    }
-                    c = new Conversion(spec.getThird(), spec.getFirst(),
-                            spec.getSecond());
-                    spec = c.minimize();
-                    dot.append(Reader.getName().concat("''"), "minimized",
-                            spec);
+                    System.out.println("- State minimization applied.");
                 }
-                
-                Yaml yaml = new Yaml();
-                Spec result = Utils.toFormat(spec);
-                result.setName(Reader.getName());
-                map.put(key, yaml.dump(result));
-                
-                String dotname = String.format(line.getOptionValue("o"),
-                        Reader.getName());
-                dot.dump(dotname);
-                
+
+                for (String key : map.keySet()) {
+
+                    Triple<Integer, Set<Integer>, List<SimpleTransition>> spec =
+                            Reader.read(map.get(key));
+                    br.usp.poli.lta.cereda.nfa2dfa.dot.Dot dot =
+                            new br.usp.poli.lta.cereda.nfa2dfa.dot.Dot();
+                    dot.append(Reader.getName(), "original", spec);
+
+                    Conversion c;
+
+                    if (line.hasOption("c")) {
+                        c = new Conversion(spec.getThird(), spec.getFirst(),
+                                spec.getSecond());
+                        spec = c.convert();
+                        dot.append(Reader.getName().concat("'"),
+                                "converted", spec);
+                    }
+
+                    if (line.hasOption("m")) {
+                        if (!line.hasOption("c")) {
+                            throw new Exception("State minimization cannot be"
+                                    + "applied if the DFA conversion was not"
+                                    + "specified. Make sure to include the"
+                                    + "'-c' flag as well and try again.");
+                        }
+                        c = new Conversion(spec.getThird(), spec.getFirst(),
+                                spec.getSecond());
+                        spec = c.minimize();
+                        dot.append(Reader.getName().concat("''"), "minimized",
+                                spec);
+                    }
+
+                    Yaml yaml = new Yaml();
+                    Spec result = Utils.toFormat(spec);
+                    result.setName(Reader.getName());
+                    map.put(key, yaml.dump(result));
+
+                    String dotname = String.format(line.getOptionValue("o"),
+                            Reader.getName());
+                    dot.dump(dotname);
+
+                }
+
+                for (String key : map.keySet()) {
+                    FileUtils.write(new File(key), map.get(key), "UTF-8");
+                }
             }
-            
-            for (String key : map.keySet()) {
-                FileUtils.write(new File(key), map.get(key), "UTF-8");
-            }
+
         }
-
-
+        catch (Exception exception) {
+            System.out.println("An exception was thrown.");
+            System.out.println(exception.toString());
+        }
         
         System.out.println("Done.");
     }

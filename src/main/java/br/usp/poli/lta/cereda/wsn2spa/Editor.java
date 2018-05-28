@@ -67,7 +67,7 @@ public class Editor extends JFrame {
     private File file;
     
     public Editor() {
-        super("WSN2SPA");
+        super("MWSN2SPA");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setResizable(false);
         setLayout(new MigLayout());
