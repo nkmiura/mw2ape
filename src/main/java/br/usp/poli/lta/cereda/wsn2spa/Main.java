@@ -117,19 +117,21 @@ public class Main {
         try {
             String text = FileUtils.readFileToString(file, "UTF-8").trim();
             MWirthLexer mwl = new MWirthLexer(text);
-            Generator g = new Generator(mwl, 1);
-            g.generateAutomaton();
+            Generator mwg = new Generator(mwl, 1);
+            mwg.generateAutomaton();
 
-            // Newton
-            LabelGrammar labelGrammar = g.getLabelGrammar();
+            // Newton Begin
+            LabelGrammar labelGrammar = mwg.getLabelGrammar();
             LMWirthLexer lmwl = new LMWirthLexer();
             lmwl.LGrammarToProductionTokens(labelGrammar);
             System.out.println(lmwl.toString());
-            Generator lg = new Generator(lmwl, 2);
-            lg.generateAutomaton();
-            // Newton
+            Generator lmwg = new Generator(lmwl, 2);
+            lmwg.generateAutomaton();
 
-            Writer writer = new Writer(g.getTransitions());
+            mwg = lmwg;
+            // Newton End
+
+            Writer writer = new Writer(mwg.getTransitions());
             Map<String, String> map =
                     writer.generateYAMLMap(line.getOptionValue("y"));
 
@@ -137,7 +139,7 @@ public class Main {
             if (Utils.neither(line, "c", "m")) {
                 br.usp.poli.lta.cereda.mwirth2ape.dot.Dot dot =
                         new br.usp.poli.lta.cereda.mwirth2ape.dot.Dot(
-                                g.getTransitions()
+                                mwg.getTransitions()
                         );
                 dot.generate(line.getOptionValue("o"));
                 for (String key : map.keySet()) {

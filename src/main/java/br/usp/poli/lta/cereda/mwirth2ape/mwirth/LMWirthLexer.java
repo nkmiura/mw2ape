@@ -57,6 +57,7 @@ public class LMWirthLexer extends MWirthLexer {
                     ProductionToken newProductionToken2 = new ProductionToken("=", "=");
                     this.productionTokens.add(newProductionToken2);
                     for (ProductionToken tempProductionToken: tempProduction.expression) {
+                        //tempProductionToken.setProductionToken();
                         this.productionTokens.add(tempProductionToken);
                     }
                 }
