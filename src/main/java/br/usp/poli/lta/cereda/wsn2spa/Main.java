@@ -19,6 +19,7 @@
 **/
 package br.usp.poli.lta.cereda.wsn2spa;
 
+import br.usp.poli.lta.cereda.execute.SPAExecute;
 import br.usp.poli.lta.cereda.mwirth2ape.labeling.LabelGrammar;
 import br.usp.poli.lta.cereda.mwirth2ape.mwirth.LMWirthLexer;
 import br.usp.poli.lta.cereda.nfa2dfa.utils.Conversion;
@@ -106,7 +107,19 @@ public class Main {
                     + " corresponding to each submachine in the automaton"
                     + " model.");
         }
-        
+
+        File inputFile = null;
+        if (!line.getOptionValue("i").isEmpty()) {
+            String inputFileName = line.getOptionValue("i");
+            inputFile = new File(inputFileName);
+            if (!inputFile.exists()) {
+                throw new Exception("The provided input sentence file " +
+                inputFileName +
+                " does not exist. Make sure the location is correct and " +
+                "try again.");
+            }
+        }
+
         File file = new File(line.getArgs()[0]);
         if (!file.exists()) {
             throw new Exception("The provided grammar file '" + "' does"
@@ -127,6 +140,12 @@ public class Main {
             System.out.println(lmwl.toString());
             Generator lmwg = new Generator(lmwl, 2);
             lmwg.generateAutomaton();
+
+            // Parse input sentence
+            String inputText = FileUtils.readFileToString(inputFile, "UTF-8").trim();
+            MWirthLexer il = new MWirthLexer(inputText);
+            SPAExecute spaExecute = new SPAExecute(il, lmwg);
+            spaExecute.parseInput();
 
             mwg = lmwg;
             // Newton End

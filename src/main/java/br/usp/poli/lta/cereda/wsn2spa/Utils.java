@@ -58,6 +58,7 @@ public class Utils {
         options.addOption("c", "convert", false, "DFA conversion");
         options.addOption("m", "minimize", false, "state minimization");
         options.addOption("g", "gui", false, "open graphical interface");
+        options.addOption("i", "input file", true, "input file to be parsed");
         return options;
     }
 
