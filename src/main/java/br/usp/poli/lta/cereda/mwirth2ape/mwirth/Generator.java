@@ -115,10 +115,18 @@ public class Generator {
             public void execute(Token token) {
                 switch(type) {
                     case 0:
+                        helper.clear();
+                        current = 0;
+                        counter = 1;
+                        machine = token.getValue();
+                        if (main == null) {
+                            main = machine;
+                        }
+                        break;
                     case 2:
                         helper.clear();
-                        //current = 0;
-                        //counter = 1;
+                        current = 0;
+                        counter = 1;
                         machine = token.getValue();
                         if (main == null) {
                             main = machine;
@@ -141,11 +149,15 @@ public class Generator {
         Action novaTransicaoNterm = new Action("novaTransicaoNterm") {
             @Override
             public void execute(Token token) {
+                Sketch transition;
                 switch(type) {
                     case 0:
+                        transition = new Sketch(machine, current, token, counter);
+                        transitions.add(transition);
+                        current = counter;
+                        counter++;
+                        break;
                     case 2:
-                        Sketch transition;
-                        //transition = new Sketch(machine, current, token.getValue(), counter);
                         transition = new Sketch(machine, current, token, counter);
                         transitions.add(transition);
                         current = counter;
@@ -170,10 +182,15 @@ public class Generator {
         Action novaTransicaoTerm = new Action("novaTransicaoTerm") {
             @Override
             public void execute(Token token) {
+                Sketch transition;
                 switch(type) {
                     case 0:
+                        transition = new Sketch(machine, current, token, counter);
+                        transitions.add(transition);
+                        current = counter;
+                        counter++;
+                        break;
                     case 2:
-                        Sketch transition;
                         transition = new Sketch(machine, current, token, counter);
                         transitions.add(transition);
                         current = counter;
@@ -198,10 +215,15 @@ public class Generator {
         Action novaTransicaoEpsilon = new Action("novaTransicaoEpsilon") {
             @Override
             public void execute(Token token) {
+                Sketch transition;
                 switch(type) {
                     case 0:
+                        transition = new Sketch(machine, current, token, counter);
+                        transitions.add(transition);
+                        current = counter;
+                        counter++;
+                        break;
                     case 2:
-                        Sketch transition;
                         transition = new Sketch(machine, current, token, counter);
                         transitions.add(transition);
                         current = counter;
@@ -336,10 +358,11 @@ public class Generator {
                 switch(type) {
                     case 0:
                         Sketch transition = new Sketch(machine, current,
-                                token, helper.top().getSecond());
+                                helper.top().getSecond());
                         transitions.add(transition);
                         current = helper.top().getSecond();
                         helper.pop();
+                        break;
                     case 1:
                         registerExpressionToken(token);
                         registerLabelToken("]");
