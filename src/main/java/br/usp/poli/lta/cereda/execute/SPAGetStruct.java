@@ -3,6 +3,7 @@ package br.usp.poli.lta.cereda.execute;
 import br.usp.poli.lta.cereda.mwirth2ape.ape.conversion.Sketch;
 import br.usp.poli.lta.cereda.mwirth2ape.exporter.Transition;
 import br.usp.poli.lta.cereda.mwirth2ape.exporter.Spec;
+import br.usp.poli.lta.cereda.mwirth2ape.labeling.LabelElement;
 
 import java.util.*;
 
@@ -58,16 +59,19 @@ public class SPAGetStruct {
                     t.setSymbol(sketch.getToken().getValue());
                 }
             }
-            /*
+
             if (sketch.getToken() != null) {
                 if (sketch.getToken().getProductionToken() != null) {
-                    t.setProductionToken(sketch.getToken().getProductionToken());
                     if (sketch.getToken().getProductionToken().getLabels() != null) {
-                        t.setLabel(sketch.getToken().getProductionToken().getLabels());
+                        LinkedList<String> newLabels = new LinkedList<>();
+                        for (LabelElement tempLabel : sketch.getToken().getProductionToken().getLabels()) {
+                            newLabels.push(tempLabel.getValue());
+                        }
+                        t.setLabels(newLabels);
                     }
                 }
             }
-            */
+
             return t;
         }).forEach((t) -> {
             ts.add(t);

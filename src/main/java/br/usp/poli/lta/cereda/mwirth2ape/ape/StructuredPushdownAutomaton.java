@@ -52,8 +52,6 @@ public class StructuredPushdownAutomaton {
     private Stack<List> tree;
     private final Map<String, Action> operations;
 
-
-
     public StructuredPushdownAutomaton() {
 
         boolean tempflag = logger.isDebugEnabled();

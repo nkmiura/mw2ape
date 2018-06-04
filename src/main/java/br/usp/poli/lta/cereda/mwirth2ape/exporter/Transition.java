@@ -32,7 +32,7 @@ public class Transition {
     private int from;
     private int to;
     private String symbol;
-    private LinkedList<LabelElement> label;
+    private LinkedList<String> labels;
 
     public int getFrom() {
         return from;
@@ -58,16 +58,8 @@ public class Transition {
         this.symbol = symbol;
     }
 
-    public void setLabel(LinkedList<LabelElement> label) {
-        this.label = label;
-    }
-    /*
-    public void setProductionToken(ProductionToken productionToken) {
-        this.productionToken = productionToken;
+    public void setLabels(LinkedList<String> labels) {
+        this.labels = labels;
     }
 
-    public ProductionToken getProductionToken() {
-        return productionToken;
-    }
-    */
 }
