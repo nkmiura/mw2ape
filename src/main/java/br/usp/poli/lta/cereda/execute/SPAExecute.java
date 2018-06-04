@@ -1,8 +1,10 @@
 package br.usp.poli.lta.cereda.execute;
 
+import br.usp.poli.lta.cereda.mwirth2ape.ape.Action;
 import br.usp.poli.lta.cereda.mwirth2ape.ape.StructuredPushdownAutomaton;
 import br.usp.poli.lta.cereda.mwirth2ape.ape.Transition;
 import br.usp.poli.lta.cereda.mwirth2ape.ape.conversion.Sketch;
+import br.usp.poli.lta.cereda.mwirth2ape.model.Token;
 import br.usp.poli.lta.cereda.mwirth2ape.mwirth.Generator;
 import br.usp.poli.lta.cereda.mwirth2ape.mwirth.MWirthLexer;
 import br.usp.poli.lta.cereda.mwirth2ape.structure.Stack;
@@ -23,6 +25,7 @@ public class SPAExecute {
     private HashSet<Transition> spaTransitions;
     private String main;
     private String machine;
+    private int transitionsQty;
 
     public SPAExecute (MWirthLexer mWirthLexer, Generator lmwg) {
         this.lexer = mWirthLexer;
@@ -30,63 +33,82 @@ public class SPAExecute {
         this.helper = new Stack<>();
         this.transitions = lmwg.getTransitions();
         this.spaTransitions = new HashSet<>();
+        this.transitionsQty = 0;
     }
 
+
+
     public void parseInput() throws Exception {
-        // Construir automato
+        // Build SPA
         logger.debug("Started building SPA parser.");
         StructuredPushdownAutomaton spa = new StructuredPushdownAutomaton();
         spa.setSubmachine(this.lmwg.getMain());  // set main machine
 
-        // get machines and states
-        Set<String> machines = new HashSet<>();
-        Set<String> states;
+        SPAGetStruct spaStruct = new SPAGetStruct(this.transitions);
 
-        for (Sketch transition : transitions) {
-            if (!machines.contains(transition.getName())) {
-                machines.add(transition.getName());
-            }
-        }
+        Map<String, List<Sketch>> map = spaStruct.getMachinesFromTransitions();
 
-        for (String machine : machines) {
-//            states = new HashSet<>();
-            for (Sketch transition : transitions) {
-                if (transition.getName().equals(machine)) {
-                    Transition newTransition;
+        for (String machine : map.keySet()) {
+            List<Sketch> tempSketches = map.get(machine);
+            // set submachine name with start, end
+            spa.addSubmachine(machine, transitionsQty,  getSet(transitionsQty + tempSketches.size()));
+            // get states
+            for (Sketch tempSketch: tempSketches) {
+                Transition newTransition;
+                if (tempSketch.getToken().getType().equals("nterm")) {
                     newTransition = new Transition(
-                        transition.getSource(), "" ,transition.getTarget());
-                        spa.addTransition(newTransition);
+                            tempSketch.getSource() + transitionsQty,
+                            tempSketch.getToken().getValue(),
+                            tempSketch.getTarget() + transitionsQty
+                    );
+                    newTransition.setToken(tempSketch.getToken());
                 }
+                else {
+                    newTransition = new Transition(
+                            tempSketch.getSource() + transitionsQty,
+                            tempSketch.getToken(),
+                            tempSketch.getTarget() + transitionsQty
+                    );
+                }
+                newTransition.addPreAction(semanticAction);
+
+                spa.addTransition(newTransition);
             }
+            transitionsQty = transitionsQty + tempSketches.size() + 1;
+        }
+        logger.debug("Finished building SPA parser.");
+        // end Build SPA
+
+        // Executar automato
+        logger.debug("Started parsing.");
+        spa.setup();
+        boolean result = spa.parse(lexer);
+        logger.debug("Finished parsing.");
+
+        // Configurar saida (arquivo)
+
+    }
+
+
+    Action semanticAction = new Action("semanticAction") {
+        @Override
+        public void execute(Token token) {
+
+
+
         }
 
-        logger.debug("Finished building SPA parser.");
+        @Override
+        public List execute(int state, List tree) {
+            return null;
+        }
+    };
 
-        logger.debug("Started parsing.");
 
-        logger.debug("Finished parsing.");
+    private <T> Set<T> getSet(T... elements) {
+        Set<T> result = new HashSet<>();
+        result.addAll(Arrays.asList(elements));
+        return result;
     }
-
-
-    // Configurar saida (arquivo)
-
-    // Executar automato
-/*
-    public Sketch generateSPAMap( )
-            throws Exception {
-        Map<String, List<Sketch>> map = new HashMap<>();
-        this.transitions.stream().map((sketch) -> {
-            if (!map.containsKey(sketch.getName())) {
-                map.put(sketch.getName(), new ArrayList<>());
-            }
-            return sketch;
-        }).forEach((sketch) -> {
-            map.get(sketch.getName()).add(sketch);
-        });
-        Sketch sketch = new Sketch();   // fake
-        return sketch;  // fake
-
-    }
-*/
 
 }

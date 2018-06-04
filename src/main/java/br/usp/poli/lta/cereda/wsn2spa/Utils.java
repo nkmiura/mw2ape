@@ -19,10 +19,11 @@
 **/
 package br.usp.poli.lta.cereda.wsn2spa;
 
+import br.usp.poli.lta.cereda.mwirth2ape.exporter.Transition;
 import br.usp.poli.lta.cereda.nfa2dfa.utils.SimpleTransition;
 import br.usp.poli.lta.cereda.nfa2dfa.utils.Triple;
 import br.usp.poli.lta.cereda.mwirth2ape.exporter.Spec;
-import br.usp.poli.lta.cereda.mwirth2ape.exporter.Transition;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -58,7 +59,8 @@ public class Utils {
         options.addOption("c", "convert", false, "DFA conversion");
         options.addOption("m", "minimize", false, "state minimization");
         options.addOption("g", "gui", false, "open graphical interface");
-        options.addOption("i", "input file", true, "input file to be parsed");
+        options.addOption("i", "input_file", true, "input file to be parsed");
+        options.addOption("t", "type", true, "parsing type");
         return options;
     }
 

@@ -20,8 +20,12 @@
 package br.usp.poli.lta.cereda.mwirth2ape.ape.conversion;
 
 import br.usp.poli.lta.cereda.mwirth2ape.ape.Action;
+import br.usp.poli.lta.cereda.mwirth2ape.labeling.LabelElement;
 import br.usp.poli.lta.cereda.mwirth2ape.model.Token;
+
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
@@ -39,6 +43,7 @@ public class Sketch {
     private int target;
     private List<Action> preActions;
     private List<Action> postActions;
+    private LinkedList<LabelElement> labelElements;
 
     public String getName() {
         return name;
@@ -109,6 +114,10 @@ public class Sketch {
         }
         this.preActions = new ArrayList<>();
         this.postActions = new ArrayList<>();
+        //this.labelElements = new LinkedList<>();
+        if (token.getProductionToken() != null) {
+            this.labelElements = token.getProductionToken().getLabels();
+        }
     }
 
     public Sketch(String name, int source, Token token, int target,
@@ -157,6 +166,7 @@ public class Sketch {
         this.token = null;
         this.preActions = new ArrayList<>();
         this.postActions = new ArrayList<>();
+        this.labelElements = null;
     }
 
     public Sketch(String name, int source, int target,
@@ -210,6 +220,10 @@ public class Sketch {
         if (!postActions.isEmpty()) {
             sb.append(", ações posteriores: (").append(
                     StringUtils.join(postActions, ", ")).append(")");
+        }
+        if (this.labelElements != null) {
+            sb.append(", rótulos: (").append(
+                    StringUtils.join(labelElements.getFirst())).append(")");
         }
         sb.append(")");
         return sb.toString();

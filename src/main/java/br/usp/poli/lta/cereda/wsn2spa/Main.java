@@ -88,6 +88,8 @@ public class Main {
     private static void enableCLI(CommandLine line)
             throws IOException, Exception {
         //System.out.println("line.getArgs().length: " + line.getArgs().length);
+        int type = 0;
+
         if (!Utils.required(line, "o", "y") || line.getArgs().length != 1) {
             throw new Exception("Note that 'o' and 'y' flags are required"
                     + " to run this tool, as they generate DOT and YAML"
@@ -127,33 +129,61 @@ public class Main {
                     + " try again.");
         }
 
+        if (!line.getOptionValue("t").isEmpty()) {
+            try
+            {
+                type = Integer.parseInt(line.getOptionValue("t"));
+                if (type < 0 || type > 2) {
+                    System.out.println("Invalid parsing type specification. type = 0 will be enforced.");
+                }
+            }
+            catch (Exception exception) {
+                System.out.println("An exception was thrown in parsing type specification.");
+                System.out.println(exception.toString());
+            }
+        }
+
+        String text = FileUtils.readFileToString(file, "UTF-8").trim();  // Original grammar in plain text format
+        MWirthLexer mwl = new MWirthLexer(text); // Lexer for grammar in plain text format
+        Generator mwg = null; // SPA generator for plain text grammar and parsing for grammar labeling
+        LabelGrammar labelGrammar;  // Grammar with labels
+        LMWirthLexer lmwl; // Lexer for grammar format with labels
+        Generator lmwg = null; // SPA generator for grammar format with labels
+
         try {
-            String text = FileUtils.readFileToString(file, "UTF-8").trim();
-            MWirthLexer mwl = new MWirthLexer(text);
-            Generator mwg = new Generator(mwl, 1);
-            mwg.generateAutomaton();
-
-            // Newton Begin
-            LabelGrammar labelGrammar = mwg.getLabelGrammar();
-            LMWirthLexer lmwl = new LMWirthLexer();
-            lmwl.LGrammarToProductionTokens(labelGrammar);
-            System.out.println(lmwl.toString());
-            Generator lmwg = new Generator(lmwl, 2);
-            lmwg.generateAutomaton();
-
-            // Parse input sentence
-            String inputText = FileUtils.readFileToString(inputFile, "UTF-8").trim();
-            MWirthLexer il = new MWirthLexer(inputText);
-            SPAExecute spaExecute = new SPAExecute(il, lmwg);
-            spaExecute.parseInput();
-
-            mwg = lmwg;
-            // Newton End
+            switch (type) {
+                case 0:
+                    mwg = new Generator(mwl, 0);
+                    mwg.generateAutomaton();
+                    break;
+                case 1:
+                    mwg = new Generator(mwl, 1);
+                    mwg.generateAutomaton();
+                    break;
+                case 2:
+                    mwg = new Generator(mwl, 1);
+                    mwg.generateAutomaton();
+                    labelGrammar = mwg.getLabelGrammar();
+                    lmwl = new LMWirthLexer();
+                    lmwl.LGrammarToProductionTokens(labelGrammar);
+                    System.out.println(lmwl.toString());
+                    lmwg = new Generator(lmwl, 2);
+                    lmwg.generateAutomaton();
+                    mwg = lmwg;
+                    break;
+            }
 
             Writer writer = new Writer(mwg.getTransitions());
             Map<String, String> map =
                     writer.generateYAMLMap(line.getOptionValue("y"));
 
+            // Parse input sentence
+            if (inputFile != null) {
+                String inputText = FileUtils.readFileToString(inputFile, "UTF-8").trim();
+                MWirthLexer il = new MWirthLexer(inputText);
+                SPAExecute spaExecute = new SPAExecute(il, lmwg);
+                spaExecute.parseInput();
+            }
 
             if (Utils.neither(line, "c", "m")) {
                 br.usp.poli.lta.cereda.mwirth2ape.dot.Dot dot =

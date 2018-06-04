@@ -19,6 +19,9 @@
 **/
 package br.usp.poli.lta.cereda.mwirth2ape.exporter;
 
+import br.usp.poli.lta.cereda.mwirth2ape.labeling.LabelElement;
+import java.util.LinkedList;
+
 /**
  * @author Paulo Roberto Massa Cereda
  * @version 1.0
@@ -29,6 +32,7 @@ public class Transition {
     private int from;
     private int to;
     private String symbol;
+    private LinkedList<LabelElement> label;
 
     public int getFrom() {
         return from;
@@ -52,6 +56,18 @@ public class Transition {
 
     public void setSymbol(String symbol) {
         this.symbol = symbol;
-    } 
-    
+    }
+
+    public void setLabel(LinkedList<LabelElement> label) {
+        this.label = label;
+    }
+    /*
+    public void setProductionToken(ProductionToken productionToken) {
+        this.productionToken = productionToken;
+    }
+
+    public ProductionToken getProductionToken() {
+        return productionToken;
+    }
+    */
 }

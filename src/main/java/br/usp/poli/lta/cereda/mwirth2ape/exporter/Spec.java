@@ -30,8 +30,9 @@ public class Spec {
 
     private String name;
     private int initial;
-    private List<Transition> transitions;
     private List<Integer> accepting;
+    private List<Transition> Transitions;
+
 
     public String getName() {
         return name;
@@ -50,11 +51,11 @@ public class Spec {
     }
 
     public List<Transition> getTransitions() {
-        return transitions;
+        return Transitions;
     }
 
     public void setTransitions(List<Transition> transitions) {
-        this.transitions = transitions;
+        this.Transitions = transitions;
     }
 
     public List<Integer> getAccepting() {

@@ -27,7 +27,12 @@ public class ProductionToken extends Token {
     }
 
     public LinkedList<LabelElement> getLabels() {
-        return labels;
+        //if (labels != null) {
+            return labels;
+        //}
+        //else {
+        //    return null;
+        //}
     }
 
     public void setLabels(LinkedList<LabelElement> labels) {
