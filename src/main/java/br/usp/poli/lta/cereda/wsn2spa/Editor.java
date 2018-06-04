@@ -81,9 +81,9 @@ public class Editor extends JFrame {
         checkMinimize = new JCheckBox("Apply state minimization");
         checkMinimize.setEnabled(false);
         btnOpen = new JButton(new ImageIcon(getClass().
-                getResource("/br/usp/poli/lta/cereda/wsn2spa/images/open.png")));
-        btnRun = new JButton("Convert WSN to SPA", new ImageIcon(getClass().
-                getResource("/br/usp/poli/lta/cereda/wsn2spa/images/play.png")));
+                getResource("/br/usp/poli/lta/cereda/mwsn2spa/images/open.png")));
+        btnRun = new JButton("Convert MWSN to SPA", new ImageIcon(getClass().
+                getResource("/br/usp/poli/lta/cereda/mwsn2spa/images/play.png")));
         
         chooser = new JFileChooser();
         chooser.setMultiSelectionEnabled(false);

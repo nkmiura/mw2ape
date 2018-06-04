@@ -18,7 +18,7 @@ public class SPAExecute {
     private static final Logger logger = LoggerFactory.
             getLogger(SPAExecute.class);
     // APE Generator
-    private MWirthLexer lexer;
+    private SimpleLexer lexer;
     private Generator lmwg;
     private Stack<Pair<Integer, Integer>> helper;
     private List<Sketch> transitions;
@@ -27,8 +27,8 @@ public class SPAExecute {
     private String machine;
     private int transitionsQty;
 
-    public SPAExecute (MWirthLexer mWirthLexer, Generator lmwg) {
-        this.lexer = mWirthLexer;
+    public SPAExecute (SimpleLexer simpleLexer, Generator lmwg) {
+        this.lexer = simpleLexer;
         this.lmwg = lmwg;
         this.helper = new Stack<>();
         this.transitions = lmwg.getTransitions();
@@ -45,11 +45,10 @@ public class SPAExecute {
         spa.setSubmachine(this.lmwg.getMain());  // set main machine
 
         SPAGetStruct spaStruct = new SPAGetStruct(this.transitions);
-
-        Map<String, List<Sketch>> map = spaStruct.getMachinesFromTransitions();
+        Map<String, List<Sketch>> map = spaStruct.getMachinesFromTransitions(); // map list of Sketch (transitions) to a machine
 
         for (String machine : map.keySet()) {
-            List<Sketch> tempSketches = map.get(machine);
+            List<Sketch> tempSketches = map.get(machine); // Get transitions for a machine
             // set submachine name with start, end
             spa.addSubmachine(machine, transitionsQty,  getSet(transitionsQty + tempSketches.size()));
             // get states

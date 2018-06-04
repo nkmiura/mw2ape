@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sun.security.ssl.Debug;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 
 public class LabelGrammar {
@@ -90,6 +91,22 @@ public class LabelGrammar {
         }
 
         return result;
+    }
+
+    public HashSet<String> getTermsList()
+    {
+        HashSet<String> termsList = new HashSet<>();
+
+        for (NTerm tempNterm : nterms) {
+            for (Production tempProduction : tempNterm.productions) {
+                for (ProductionToken tempProductionToken : tempProduction.expression) {
+                    if (tempProductionToken.getType().equals("term")) {
+                        termsList.add(tempProductionToken.getValue());
+                    }
+                }
+            }
+        }
+        return termsList;
     }
 
     @Override

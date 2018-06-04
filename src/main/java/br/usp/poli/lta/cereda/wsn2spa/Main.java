@@ -20,6 +20,7 @@
 package br.usp.poli.lta.cereda.wsn2spa;
 
 import br.usp.poli.lta.cereda.execute.SPAExecute;
+import br.usp.poli.lta.cereda.execute.SimpleLexer;
 import br.usp.poli.lta.cereda.mwirth2ape.labeling.LabelGrammar;
 import br.usp.poli.lta.cereda.mwirth2ape.mwirth.LMWirthLexer;
 import br.usp.poli.lta.cereda.nfa2dfa.utils.Conversion;
@@ -170,20 +171,20 @@ public class Main {
                     lmwg = new Generator(lmwl, 2);
                     lmwg.generateAutomaton();
                     mwg = lmwg;
+                    // Parse input sentence
+                    if (inputFile != null) {
+                        String inputText = FileUtils.readFileToString(inputFile, "UTF-8").trim();
+                        SimpleLexer il = new SimpleLexer(inputText, labelGrammar.getTermsList());
+                        SPAExecute spaExecute = new SPAExecute(il, lmwg);
+                        spaExecute.parseInput();
+                    }
+
                     break;
             }
 
             Writer writer = new Writer(mwg.getTransitions());
             Map<String, String> map =
                     writer.generateYAMLMap(line.getOptionValue("y"));
-
-            // Parse input sentence
-            if (inputFile != null) {
-                String inputText = FileUtils.readFileToString(inputFile, "UTF-8").trim();
-                MWirthLexer il = new MWirthLexer(inputText);
-                SPAExecute spaExecute = new SPAExecute(il, lmwg);
-                spaExecute.parseInput();
-            }
 
             if (Utils.neither(line, "c", "m")) {
                 br.usp.poli.lta.cereda.mwirth2ape.dot.Dot dot =
