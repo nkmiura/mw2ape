@@ -62,7 +62,6 @@ public class MWirthLexer extends Lexer {
             switch (state) {
 
                 case 1:
-
                     if (!contains(symbol, ' ', '\t', '\n', '\r')) {
 
                         if (symbol == '"') {
@@ -92,7 +91,6 @@ public class MWirthLexer extends Lexer {
                     break;
 
                 case 2:
-
                     if (Character.isDigit(symbol)) {
                         value = value.concat(String.valueOf(symbol));
                         cursor++;
@@ -103,7 +101,6 @@ public class MWirthLexer extends Lexer {
                     break;
 
                 case 3:
-
                     if (Character.isDigit(symbol) ||
                             Character.isLetter(symbol)) {
                         value = value.concat(String.valueOf(symbol));
@@ -115,7 +112,6 @@ public class MWirthLexer extends Lexer {
                     break;
 
                 case 4:
-
                     if (symbol == '"') {
                         state = 1;
                     } else {
@@ -130,14 +126,12 @@ public class MWirthLexer extends Lexer {
                     break;
 
                 case 5:
-
                     value = value.concat(String.valueOf(symbol));
                     state = 6;
                     cursor++;
                     break;
 
                 case 6:
-
                     if (symbol == '\\') {
                         state = 5;
                     } else {
@@ -151,7 +145,6 @@ public class MWirthLexer extends Lexer {
                     break;
 
             }
-
             done = done || cursor == input.length();
 
         }

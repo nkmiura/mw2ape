@@ -37,6 +37,10 @@ public class SimpleLexer extends Lexer {
             done = done || cursor == input.length();
         }
 
+        if (value.isEmpty()) {
+            return new Token();
+        }
+
         return new Token(type, value);
     }
 

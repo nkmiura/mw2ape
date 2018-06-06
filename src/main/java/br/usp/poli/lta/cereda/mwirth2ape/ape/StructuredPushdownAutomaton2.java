@@ -24,25 +24,21 @@ import br.usp.poli.lta.cereda.mwirth2ape.model.Token;
 import br.usp.poli.lta.cereda.mwirth2ape.structure.Stack;
 import br.usp.poli.lta.cereda.mwirth2ape.tuple.Pair;
 import br.usp.poli.lta.cereda.mwirth2ape.tuple.Quadruple;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.*;
 
 /**
  * @author Paulo Roberto Massa Cereda
  * @version 1.0
  * @since 1.0
  */
-public class StructuredPushdownAutomaton {
+public class StructuredPushdownAutomaton2 {
 
     private static final Logger logger = LoggerFactory.
-            getLogger(StructuredPushdownAutomaton.class);
+            getLogger(StructuredPushdownAutomaton2.class);
 
     private final Map<String, Pair<Integer, Set<Integer>>> submachines;
     private final Set<Transition> transitions;
@@ -51,7 +47,7 @@ public class StructuredPushdownAutomaton {
     private Stack<List> tree;
     private final Map<String, Action> operations;
 
-    public StructuredPushdownAutomaton() {
+    public StructuredPushdownAutomaton2() {
 
         boolean tempflag = logger.isDebugEnabled();
         if (tempflag)
@@ -511,7 +507,7 @@ public class StructuredPushdownAutomaton {
                 if (transition.isSubmachineCall()) {
                     result.add(transition);
                 } else {
-                    if (transition.getToken().equals(symbol)) {
+                    if (transition.getToken().equals(symbol) || transition.getToken().getType().equals("ε")) {
                         result.add(transition);
                     }
                 }

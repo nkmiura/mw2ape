@@ -1,12 +1,11 @@
 package br.usp.poli.lta.cereda.execute;
 
 import br.usp.poli.lta.cereda.mwirth2ape.ape.Action;
-import br.usp.poli.lta.cereda.mwirth2ape.ape.StructuredPushdownAutomaton;
+import br.usp.poli.lta.cereda.mwirth2ape.ape.StructuredPushdownAutomaton2;
 import br.usp.poli.lta.cereda.mwirth2ape.ape.Transition;
 import br.usp.poli.lta.cereda.mwirth2ape.ape.conversion.Sketch;
 import br.usp.poli.lta.cereda.mwirth2ape.model.Token;
 import br.usp.poli.lta.cereda.mwirth2ape.mwirth.Generator;
-import br.usp.poli.lta.cereda.mwirth2ape.mwirth.MWirthLexer;
 import br.usp.poli.lta.cereda.mwirth2ape.structure.Stack;
 import br.usp.poli.lta.cereda.mwirth2ape.tuple.Pair;
 import org.slf4j.Logger;
@@ -23,8 +22,6 @@ public class SPAExecute {
     private Stack<Pair<Integer, Integer>> helper;
     private List<Sketch> transitions;
     private HashSet<Transition> spaTransitions;
-    private String main;
-    private String machine;
     private int transitionsQty;
 
     public SPAExecute (SimpleLexer simpleLexer, Generator lmwg) {
@@ -41,7 +38,7 @@ public class SPAExecute {
     public void parseInput() throws Exception {
         // Build SPA
         logger.debug("Started building SPA parser.");
-        StructuredPushdownAutomaton spa = new StructuredPushdownAutomaton();
+        StructuredPushdownAutomaton2 spa = new StructuredPushdownAutomaton2();
         spa.setSubmachine(this.lmwg.getMain());  // set main machine
 
         SPAGetStruct spaStruct = new SPAGetStruct(this.transitions);
@@ -58,6 +55,15 @@ public class SPAExecute {
                     newTransition = new Transition(
                             tempSketch.getSource() + transitionsQty,
                             tempSketch.getToken().getValue(),
+                            tempSketch.getTarget() + transitionsQty
+                    );
+                    newTransition.setSubmachineToken(tempSketch.getToken());
+                }
+                else if (tempSketch.getToken().getType().equals("ε")) {
+                    Token tempToken = null;
+                    newTransition = new Transition(
+                            tempSketch.getSource() + transitionsQty,
+                            tempToken,
                             tempSketch.getTarget() + transitionsQty
                     );
                     newTransition.setSubmachineToken(tempSketch.getToken());
