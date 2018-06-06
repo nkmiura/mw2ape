@@ -30,7 +30,7 @@ public class SimpleLexer extends Lexer {
             symbol = input.charAt(cursor);
             if (this.dictionary.contains(String.valueOf(symbol))) {
                 value = String.valueOf(symbol);
-                type = String.valueOf(symbol);
+                type = "term";
                 done = true;
             }
             cursor++;

@@ -259,7 +259,7 @@ public class Generator {
                     case 2:
                         helper.push(new Pair<>(current, counter));
                         counter++;
-
+/*
                         Sketch transition;
                         Token newToken = new Token("ε","ε");
                         ProductionToken newProductionToken = new ProductionToken("ε","ε");
@@ -268,7 +268,7 @@ public class Generator {
                         transition = new Sketch(machine, current, newToken, counter);
                         transitions.add(transition);
                         current = counter;
-                        counter++;
+                        counter++; */
                         break;
                     default:
                         break;

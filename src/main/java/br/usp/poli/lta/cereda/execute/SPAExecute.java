@@ -60,7 +60,7 @@ public class SPAExecute {
                             tempSketch.getToken().getValue(),
                             tempSketch.getTarget() + transitionsQty
                     );
-                    newTransition.setToken(tempSketch.getToken());
+                    newTransition.setSubmachineToken(tempSketch.getToken());
                 }
                 else {
                     newTransition = new Transition(

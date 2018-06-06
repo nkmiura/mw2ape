@@ -81,6 +81,10 @@ public class Transition {
         this.token = token;
     }
 
+    public void setSubmachineToken(Token token) {
+        this.token = token;
+    }
+
     public int getTarget() {
         return target;
     }
