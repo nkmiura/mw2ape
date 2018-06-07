@@ -115,6 +115,7 @@ public class StructuredPushdownAutomaton2 {
             logger.debug("# Estado corrente da pilha: {}", stack);
             logger.debug("# Transições válidas encontradas: {}", query);
             if (query.isEmpty()) {
+
                 if (stack.isEmpty()) {
                     logger.debug("Não há transições válidas e a pilha está "
                             + "vazia. A cadeia não é válida.");
@@ -125,12 +126,9 @@ public class StructuredPushdownAutomaton2 {
                         int reference = state;
                         state = stack.pop();
                         lexer.push(symbol);
-                        logger.debug("Não há transições válidas e o estado "
-                                + "corrente é de aceitação. A pilha contém "
-                                + "elementos, retornando para o estado "
-                                + "indicado no topo da pilha ({}) e "
-                                + "devolvendo o token corrente ({}) ao "
-                                + "analisador léxico.", state, symbol);
+                        logger.debug("Não há transições válidas e o estado corrente é de aceitação. A pilha contém "
+                                + "elementos, retornando para o estado indicado no topo da pilha ({}) e "
+                                + "devolvendo o token corrente ({}) ao analisador léxico.", state, symbol);
                         List branch = tree.pop();
                         if (branch.size() == 1) {
                             branch.add("ε");
@@ -179,16 +177,25 @@ public class StructuredPushdownAutomaton2 {
                         tree.top().add(query.get(0).getSubmachine());
                     } else {
                         state = query.get(0).getTarget();
-                        logger.debug("A transição é um consumo de símbolo, "
-                                + "o novo estado de destino é {}.", state);
-                        tree.top().add(symbol);
+                        if (!query.get(0).getToken().getType().equals("ε")) {
+                            logger.debug("A transição é um consumo de símbolo, "
+                                    + "o novo estado de destino é {}.", state);
+                            tree.top().add(symbol);
+                        }
+                        else {
+                            lexer.push(symbol);
+                            logger.debug("A transição é uma chamada em vazio. "
+                                            + "Devolvendo o token "
+                                            + "corrente {} ao analisador léxico.",
+                                    symbol);
+                        }
                     }
                     for (Action action : query.get(0).getPostActions()) {
                         logger.debug("Executando ação posterior: {}", action);
                         action.execute(symbol);
                     }
                 } else {
-
+// newton
                     logger.debug("Existem {} transições válidas. Iniciando "
                             + "operação de lookahead para descoberta da "
                             + "melhor transição.", query.size());
@@ -446,11 +453,8 @@ public class StructuredPushdownAutomaton2 {
                         logger.debug("Executando ação posterior: {}", action);
                         action.execute(symbol);
                     }
-
                 }
-
             }
-
         }
 
         logger.debug("Não há mais token a consumir.");
@@ -473,14 +477,27 @@ public class StructuredPushdownAutomaton2 {
                 }
                 tree.top().add(branch);
             } else {
-                logger.debug("O estado corrente {} não é de aceitação na "
-                        + "submáquina corrente. A cadeia não foi aceita.",
-                        state);
-                return false;
+                Integer newState = checkAndDoEmptyTransition(state);
+                if (newState != -1) {
+                    state = newState;
+                }
+                else {
+                    return false;
+                }
             }
         }
 
         if (stack.isEmpty()) {
+            boolean done = false;
+            while (!done) {
+                Integer newState = checkAndDoEmptyTransition(state);
+                if (newState != -1) {
+                    state = newState;
+                }
+                else {
+                    done = true;
+                }
+            }
             boolean result = submachines.get(submachine).getSecond().
                     contains(state);
             if (operations.containsKey(submachine)) {
@@ -520,6 +537,36 @@ public class StructuredPushdownAutomaton2 {
     private boolean deterministic(List<Transition> query) {
         return query.size() == 1;
     }
+
+    private Integer checkAndDoEmptyTransition (Integer state) {
+        Integer newState = -1;
+        Token symbol = new Token();
+        List<Transition> query = query(state, symbol);
+        if (!query.isEmpty()) {
+            if (deterministic(query)) {
+                logger.debug("Existe apenas uma transição válida, "
+                        + "portanto o passo é determinístico.");
+                if (query.get(0).getToken().getType().equals("ε")) {
+                    logger.debug("A transição é uma chamada em vazio.");
+                    newState = query.get(0).getTarget();
+                    for (Action action : query.get(0).getPreActions()) {
+                        logger.debug("Executando ação anterior: {}", action);
+                        action.execute(symbol);
+                    }
+                    for (Action action : query.get(0).getPostActions()) {
+                        logger.debug("Executando ação posterior: {}", action);
+                        action.execute(symbol);
+                    }
+                } else {
+                    logger.debug("O estado corrente {} não é de aceitação na "
+                            + "submáquina corrente e não existe transição em vazio. "
+                            + "A cadeia não foi aceita.", state);
+                }
+            }
+        }
+        return newState;
+    }
+
 
     private <T> Stack<T> copy(Stack<T> original) {
         Stack<T> copy = new Stack<>();

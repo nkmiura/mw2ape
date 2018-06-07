@@ -22,7 +22,7 @@ public class SPAExecute {
     private Stack<Pair<Integer, Integer>> helper;
     private List<Sketch> transitions;
     private HashSet<Transition> spaTransitions;
-    private int transitionsQty;
+    private int stateCounter;
 
     public SPAExecute (SimpleLexer simpleLexer, Generator lmwg) {
         this.lexer = simpleLexer;
@@ -30,7 +30,7 @@ public class SPAExecute {
         this.helper = new Stack<>();
         this.transitions = lmwg.getTransitions();
         this.spaTransitions = new HashSet<>();
-        this.transitionsQty = 0;
+        this.stateCounter = 0;
     }
 
 
@@ -42,44 +42,45 @@ public class SPAExecute {
         spa.setSubmachine(this.lmwg.getMain());  // set main machine
 
         SPAGetStruct spaStruct = new SPAGetStruct(this.transitions);
-        Map<String, List<Sketch>> map = spaStruct.getMachinesFromTransitions(); // map list of Sketch (transitions) to a machine
+        Map<String, List<Sketch>> machineSketchesMap = spaStruct.getMachinesFromTransitions(); // map list of Sketch (transitions) to a machine
+        Map<String, Integer> machineStateQtyMap = spaStruct.getStateQtyFromMachineMap(machineSketchesMap);
 
-        for (String machine : map.keySet()) {
-            List<Sketch> tempSketches = map.get(machine); // Get transitions for a machine
+        for (String machine : machineSketchesMap.keySet()) {
+            List<Sketch> tempSketches = machineSketchesMap.get(machine); // Get transitions for a machine
             // set submachine name with start, end
-            spa.addSubmachine(machine, transitionsQty,  getSet(transitionsQty + tempSketches.size()));
+            spa.addSubmachine(machine, stateCounter,  getSet(stateCounter + 1));
             // get states
             for (Sketch tempSketch: tempSketches) {
                 Transition newTransition;
                 if (tempSketch.getToken().getType().equals("nterm")) {
                     newTransition = new Transition(
-                            tempSketch.getSource() + transitionsQty,
+                            tempSketch.getSource() + stateCounter,
                             tempSketch.getToken().getValue(),
-                            tempSketch.getTarget() + transitionsQty
+                            tempSketch.getTarget() + stateCounter
                     );
                     newTransition.setSubmachineToken(tempSketch.getToken());
                 }
                 else if (tempSketch.getToken().getType().equals("ε")) {
                     Token tempToken = null;
                     newTransition = new Transition(
-                            tempSketch.getSource() + transitionsQty,
+                            tempSketch.getSource() + stateCounter,
                             tempToken,
-                            tempSketch.getTarget() + transitionsQty
+                            tempSketch.getTarget() + stateCounter
                     );
                     newTransition.setSubmachineToken(tempSketch.getToken());
                 }
                 else {
                     newTransition = new Transition(
-                            tempSketch.getSource() + transitionsQty,
+                            tempSketch.getSource() + stateCounter,
                             tempSketch.getToken(),
-                            tempSketch.getTarget() + transitionsQty
+                            tempSketch.getTarget() + stateCounter
                     );
                 }
                 newTransition.addPreAction(semanticAction);
 
                 spa.addTransition(newTransition);
             }
-            transitionsQty = transitionsQty + tempSketches.size() + 1;
+            stateCounter = stateCounter + machineStateQtyMap.get(machine);
         }
         logger.debug("Finished building SPA parser.");
         // end Build SPA

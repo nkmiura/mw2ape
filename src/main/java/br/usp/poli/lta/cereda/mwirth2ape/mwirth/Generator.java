@@ -82,7 +82,7 @@ public class Generator {
         this.helper = new Stack<>();
         this.transitions = new ArrayList<>();
         this.current = 0;
-        this.counter = 1;
+        this.counter = 0;
 
         // Newton
         //this.labelGrammar = new LabelGrammar();
@@ -118,6 +118,8 @@ public class Generator {
                         helper.clear();
                         current = 0;
                         counter = 1;
+                        //current = counter;
+                        //counter ++;
                         machine = token.getValue();
                         if (main == null) {
                             main = machine;
@@ -127,6 +129,8 @@ public class Generator {
                         helper.clear();
                         current = 0;
                         counter = 1;
+                        //current = counter;
+                        //counter ++;
                         machine = token.getValue();
                         if (main == null) {
                             main = machine;

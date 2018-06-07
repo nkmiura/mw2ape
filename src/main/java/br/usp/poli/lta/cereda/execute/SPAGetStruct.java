@@ -29,6 +29,27 @@ public class SPAGetStruct {
         return map;
     }
 
+
+    public Map<String, Integer> getStateQtyFromMachineMap(Map <String, List<Sketch>> machineMap)
+    {
+        Map<String, Integer> map = new HashMap<>();
+        for (String tempMachine: machineMap.keySet()) {
+            HashSet<Integer> states = new HashSet<>();
+            Integer stateQty = 0;
+            //List<Sketch> tempSketches = machineMap.get(tempMachine); // Get transitions for a machine
+            for (Sketch tempSketch: machineMap.get(tempMachine)) {
+                if (!states.contains(tempSketch.getSource())) {
+                    states.add(tempSketch.getSource());
+                }
+                if (!states.contains(tempSketch.getTarget())) {
+                    states.add(tempSketch.getTarget());
+                }
+            }
+            map.put(tempMachine,states.size());
+        }
+        return map;
+    }
+
     public Map<String, Spec> generateMachineMap()
             throws Exception {
         Map<String, List<Sketch>> map = getMachinesFromTransitions();
