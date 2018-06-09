@@ -23,7 +23,6 @@ import br.usp.poli.lta.cereda.mwirth2ape.ape.Action;
 import br.usp.poli.lta.cereda.mwirth2ape.labeling.LabelElement;
 import br.usp.poli.lta.cereda.mwirth2ape.model.Token;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;

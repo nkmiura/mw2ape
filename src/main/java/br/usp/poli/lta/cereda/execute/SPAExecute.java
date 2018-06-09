@@ -4,6 +4,7 @@ import br.usp.poli.lta.cereda.mwirth2ape.ape.Action;
 import br.usp.poli.lta.cereda.mwirth2ape.ape.StructuredPushdownAutomaton2;
 import br.usp.poli.lta.cereda.mwirth2ape.ape.Transition;
 import br.usp.poli.lta.cereda.mwirth2ape.ape.conversion.Sketch;
+import br.usp.poli.lta.cereda.mwirth2ape.labeling.LabelElement;
 import br.usp.poli.lta.cereda.mwirth2ape.model.Token;
 import br.usp.poli.lta.cereda.mwirth2ape.mwirth.Generator;
 import br.usp.poli.lta.cereda.mwirth2ape.structure.Stack;
@@ -23,12 +24,14 @@ public class SPAExecute {
     private List<Sketch> transitions;
     private HashSet<Transition> spaTransitions;
     private int stateCounter;
+    private HashMap<String, HashMap<Integer, LinkedList<LabelElement>>> mapMachineStates;
 
     public SPAExecute (SimpleLexer simpleLexer, Generator lmwg) {
         this.lexer = simpleLexer;
         this.lmwg = lmwg;
         this.helper = new Stack<>();
         this.transitions = lmwg.getTransitions();
+        this.mapMachineStates = lmwg.getMapMachineStates();
         this.spaTransitions = new HashSet<>();
         this.stateCounter = 0;
     }

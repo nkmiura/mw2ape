@@ -19,14 +19,8 @@
  **/
 package br.usp.poli.lta.cereda.mwirth2ape.mwirth;
 
-import br.usp.poli.lta.cereda.mwirth2ape.labeling.LabelGrammar;
-import br.usp.poli.lta.cereda.mwirth2ape.labeling.NTerm;
-import br.usp.poli.lta.cereda.mwirth2ape.labeling.Production;
-import br.usp.poli.lta.cereda.mwirth2ape.labeling.ProductionToken;
-import br.usp.poli.lta.cereda.mwirth2ape.lexer.Lexer;
+import br.usp.poli.lta.cereda.mwirth2ape.labeling.*;
 import br.usp.poli.lta.cereda.mwirth2ape.model.Token;
-import br.usp.poli.lta.cereda.wsn2spa.Utils;
-import sun.awt.image.ImageWatched;
 
 import java.util.*;
 
@@ -43,21 +37,28 @@ public class LMWirthLexer extends MWirthLexer {
         this.productionTokens = new LinkedList<>();
     }
 
-    public void LGrammarToProductionTokens (LabelGrammar labelGrammar) {
+    public void LGrammarToProductionTokens (LabelGrammar labelGrammar) {  // Gera cadeia de entrada composta por estrutura de dados
 
         this.productionTokens = new LinkedList<>();
 
         try {
             for (NTerm tempNterm: labelGrammar.nterms) {
+                // Loop para cada nterm
                 for (Production tempProduction: tempNterm.productions) {
+                    // token nterm inicial
                     ProductionToken newProductionToken1 = new ProductionToken("nterm", tempNterm.getValue());
                     newProductionToken1.setNterm(tempNterm);
                     this.productionTokens.add(newProductionToken1);
-
+                    // token "=" e label "[" associado
                     ProductionToken newProductionToken2 = new ProductionToken("=", "=");
+                    LabelElement newLabelElement = new LabelElement();
+                    newLabelElement.setValue("[");
+                    LinkedList<LabelElement> newLabels = new LinkedList<>();
+                    newLabels.add(newLabelElement);
+                    newProductionToken2.setNextLabels(newLabels);
                     this.productionTokens.add(newProductionToken2);
+                    // tokens da descricao da producao
                     for (ProductionToken tempProductionToken: tempProduction.expression) {
-                        //tempProductionToken.setProductionToken();
                         this.productionTokens.add(tempProductionToken);
                     }
                 }

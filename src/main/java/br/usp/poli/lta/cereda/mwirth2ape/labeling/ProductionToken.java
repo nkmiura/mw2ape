@@ -7,6 +7,8 @@ public class ProductionToken extends Token {
 
     private NTerm nterm;
     private LinkedList<LabelElement> labels;
+    private LinkedList<LabelElement> nextLabels;
+    private LinkedList<LabelElement> previousLabels;
 
     public ProductionToken(Token token) {
         setType(token.getType());
@@ -59,6 +61,22 @@ public class ProductionToken extends Token {
         this.labels.push(newLabelElement);
     }
 
+    public void setNextLabels(LinkedList<LabelElement> nextLabels) {
+        this.nextLabels = nextLabels;
+    }
+
+    public LinkedList<LabelElement> getNextLabels() {
+        return nextLabels;
+    }
+
+    public void setPreviousLabels(LinkedList<LabelElement> previousLabels) {
+        this.previousLabels = previousLabels;
+    }
+
+    public LinkedList<LabelElement> getPreviousLabels() {
+        return previousLabels;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -73,12 +91,15 @@ public class ProductionToken extends Token {
         }
         else {
             sb.append("{" + getType() + ", " + getValue() + ", ");
-            if (this.nterm == null) {
-                sb.append("}");
-            }
-            else {
-                sb.append(this.nterm.getValue() + "}");
-            }
+            if (this.nterm != null) {
+                sb.append(this.nterm.getValue() + ", ");
+            } else { sb.append(", "); }
+            if (this.getPreviousLabels() != null) {
+                sb.append("prev labels: " + this.getPreviousLabels().toString() + ", ");
+            } else { sb.append("prev labels: ,"); }
+            if (this.getNextLabels() != null) {
+                sb.append("next labels: " + this.getNextLabels().toString() + "}");
+            } else { sb.append("next labels: }"); }
         }
         return sb.toString();
     }

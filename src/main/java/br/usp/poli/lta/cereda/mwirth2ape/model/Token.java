@@ -19,9 +19,12 @@
 **/
 package br.usp.poli.lta.cereda.mwirth2ape.model;
 
+import br.usp.poli.lta.cereda.mwirth2ape.labeling.LabelElement;
 import br.usp.poli.lta.cereda.mwirth2ape.labeling.ProductionToken;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+
+import java.util.LinkedList;
 
 /**
  * @author Paulo Roberto Massa Cereda
@@ -33,7 +36,7 @@ public class Token {
     private String type;
     private String value;
     //Newton
-    private ProductionToken productionToken;
+    private ProductionToken ProductionToken;
 
     public Token(String type, String value) {
         this.type = type;
@@ -62,11 +65,11 @@ public class Token {
     }
 
     public ProductionToken getProductionToken() {
-        return productionToken;
+        return ProductionToken;
     }
 
     public void setProductionToken(ProductionToken productionToken) {
-        this.productionToken = productionToken;
+        this.ProductionToken = productionToken;
         this.type = productionToken.getType();
         this.value = productionToken.getValue();
     }
