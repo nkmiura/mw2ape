@@ -166,7 +166,8 @@ public class Generator {
                     case 2:
                         transition = new Sketch(machine, current, token, counter);
                         transitions.add(transition);
-                        currentMapMachineStates.put(current,token.getProductionToken().getNextLabels());
+                        putStateLabels(counter,token.getProductionToken().getNextLabels());
+                        //currentMapMachineStates.put(counter,token.getProductionToken().getNextLabels());
                         current = counter;
                         counter++;
                         break;
@@ -200,7 +201,8 @@ public class Generator {
                     case 2:
                         transition = new Sketch(machine, current, token, counter);
                         transitions.add(transition);
-                        currentMapMachineStates.put(current,token.getProductionToken().getNextLabels());
+                        putStateLabels(counter,token.getProductionToken().getNextLabels());
+                        //currentMapMachineStates.put(counter,token.getProductionToken().getNextLabels());
                         current = counter;
                         counter++;
                         break;
@@ -230,7 +232,8 @@ public class Generator {
                     case 2:
                         transition = new Sketch(machine, current, token, counter);
                         transitions.add(transition);
-                        currentMapMachineStates.put(current,token.getProductionToken().getNextLabels());
+                        putStateLabels(counter,token.getProductionToken().getNextLabels());
+                        //currentMapMachineStates.put(counter,token.getProductionToken().getNextLabels());
                         current = counter;
                         counter++;
                         break;
@@ -263,7 +266,8 @@ public class Generator {
                         break;
                     case 2:
                         helper.push(new Pair<>(current, counter));
-                        currentMapMachineStates.put(current,token.getProductionToken().getNextLabels());
+                        putStateLabels(current,token.getProductionToken().getNextLabels());
+                        //currentMapMachineStates.put(current,token.getProductionToken().getNextLabels());
                         counter++;
                         break;
                     default:
@@ -291,7 +295,8 @@ public class Generator {
                         break;
                     case 2:
                         helper.push(new Pair<>(current, counter));
-                        currentMapMachineStates.put(current,token.getProductionToken().getNextLabels());
+                        putStateLabels(current,token.getProductionToken().getNextLabels());
+                        //currentMapMachineStates.put(current,token.getProductionToken().getNextLabels());
                         counter++;
                         break;
                     default:
@@ -326,7 +331,8 @@ public class Generator {
                         Sketch transition2 = new Sketch(machine, current, token,
                                 helper.top().getSecond());
                         transitions.add(transition2);
-                        currentMapMachineStates.put(helper.top().getSecond(),token.getProductionToken().getNextLabels());
+                        putStateLabels(helper.top().getSecond(),token.getProductionToken().getNextLabels());
+                        //currentMapMachineStates.put(helper.top().getSecond(),token.getProductionToken().getNextLabels());
                         current = helper.top().getSecond();
                         helper.pop();
                         break;
@@ -368,7 +374,8 @@ public class Generator {
                         Sketch transition2 = new Sketch(machine, current,
                                 token, helper.top().getSecond());
                         transitions.add(transition2);
-                        currentMapMachineStates.put(helper.top().getSecond(),token.getProductionToken().getNextLabels());
+                        putStateLabels(helper.top().getSecond(),token.getProductionToken().getNextLabels());
+                        //currentMapMachineStates.put(helper.top().getSecond(),token.getProductionToken().getNextLabels());
                         current = helper.top().getSecond();
                         helper.pop();
                         break;
@@ -584,6 +591,20 @@ public class Generator {
     public LabelGrammar getLabelGrammar()
     {
         return this.labelGrammar;
+    }
+
+    private void putStateLabels (Integer state, LinkedList<LabelElement> labels)
+    {
+        //currentMapMachineStates.put(helper.top().getSecond(),token.getProductionToken().getNextLabels());
+        if (this.currentMapMachineStates.get(state) == null) {
+            this.currentMapMachineStates.put(state, labels);
+            logger.debug("Estado {}. Rotulo {} adicionado.", state, labels);
+        }
+        else {
+            logger.debug("Estado {}. Rotulo {} não adicionado. Rotulo pre-existente: {}.",
+                    state, labels, this.currentMapMachineStates.get(state).toString());
+        }
+
     }
     
     private <T> Set<T> getSet(T... elements) {
