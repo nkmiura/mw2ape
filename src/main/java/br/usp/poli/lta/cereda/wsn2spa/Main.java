@@ -175,7 +175,7 @@ public class Main {
                     if (inputFile != null) {
                         String inputText = FileUtils.readFileToString(inputFile, "UTF-8").trim();
                         SimpleLexer il = new SimpleLexer(inputText, labelGrammar.getTermsList());
-                        SPAExecute spaExecute = new SPAExecute(il, lmwg);
+                        SPAExecute spaExecute = new SPAExecute(il, lmwg, labelGrammar.getTermsList());
                         spaExecute.parseInput();
                     }
 

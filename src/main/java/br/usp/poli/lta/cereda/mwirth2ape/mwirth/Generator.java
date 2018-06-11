@@ -281,7 +281,7 @@ public class Generator {
             }
         };
 
-        Action novoEscopo = new Action("novoEscopo") {   
+        Action novoEscopo = new Action("novoEscopo") {
             @Override
             public void execute(Token token) {
                 switch(type) {
@@ -391,7 +391,7 @@ public class Generator {
         };
 
 
-        Action adicionaOpcao = new Action("adicionaOpcao") {   
+        Action adicionaOpcao = new Action("adicionaOpcao") {
             @Override
             public void execute(Token token) {
                 switch(type) {
@@ -490,9 +490,7 @@ public class Generator {
         Transition t3 = new Transition(3, "EXPR", 4);
         spa.addTransition(t3);
         
-        Transition t4 = new Transition(4, new Token(".", "."),
-
-5);
+        Transition t4 = new Transition(4, new Token(".", "."), 5);
         t4.addPreAction(fechaProducao);
         spa.addTransition(t4);
         

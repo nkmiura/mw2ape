@@ -19,7 +19,8 @@
  **/
 package br.usp.poli.lta.cereda.mwirth2ape.ape;
 
-import br.usp.poli.lta.cereda.mwirth2ape.model.Token;
+import br.usp.poli.lta.cereda.mwirth2ape.labeling.LabelElement;
+import java.util.LinkedList;
 import java.util.List;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -29,16 +30,16 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
  * @version 1.0
  * @since 1.0
  */
-public abstract class Action {
+public abstract class ActionState {
 
     private final String name;
 
-    public Action(String name) {
+    public ActionState(String name) {
         this.name = name;
     }
 
-    public abstract void execute(Token token);
-    public abstract List execute(int state, List tree);
+    public abstract void execute(LinkedList<LabelElement> labels);
+    //public abstract List execute(int state, List tree);
 
     @Override
     public String toString() {
@@ -62,10 +63,8 @@ public abstract class Action {
         if (getClass() != object.getClass()) {
             return false;
         }
-        final Action reference = (Action) object;
+        final ActionState reference = (ActionState) object;
         return new EqualsBuilder().append(name, reference.getName()).isEquals();
     }
-
-
 
 }

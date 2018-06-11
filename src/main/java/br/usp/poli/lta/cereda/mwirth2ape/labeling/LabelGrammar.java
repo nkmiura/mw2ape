@@ -68,12 +68,14 @@ public class LabelGrammar {
                     firstProductionToken = false;
                 }
                 if (tempProduction.getRecursion().equals("left")) {
-                    tempProduction.setIdentifier(tempProduction.getIdentifier() + "\u2207");
+                    //tempProduction.setIdentifier(tempProduction.getIdentifier() + "\u2207");
+                    tempProduction.setIdentifier(tempProduction.getIdentifier());
                 }
                 else if (tempProduction.getLastProductionTerm().getType().equals("nterm")) {
                     if(tempProduction.getLastProductionTerm().getValue().equals(tempNterm.getValue())) {
                         tempProduction.setRecursion("right");
-                        tempProduction.setIdentifier("\u2207" + tempProduction.getIdentifier());
+                        //tempProduction.setIdentifier("\u2207" + tempProduction.getIdentifier());
+                        tempProduction.setIdentifier(tempProduction.getIdentifier());
                     }
                 }
                 // associate label token to expression token using list iterator

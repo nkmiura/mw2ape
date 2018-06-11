@@ -19,6 +19,7 @@
 **/
 package br.usp.poli.lta.cereda.mwirth2ape.ape;
 
+import br.usp.poli.lta.cereda.mwirth2ape.ape.conversion.State;
 import br.usp.poli.lta.cereda.mwirth2ape.lexer.Lexer;
 import br.usp.poli.lta.cereda.mwirth2ape.model.Token;
 import br.usp.poli.lta.cereda.mwirth2ape.structure.Stack;
@@ -42,6 +43,7 @@ public class StructuredPushdownAutomaton2 {
 
     private final Map<String, Pair<Integer, Set<Integer>>> submachines;
     private final Set<Transition> transitions;
+    private Map<Integer, State> states;
     private String submachine;
     private final Stack<Integer> stack;
     private Stack<List> tree;
@@ -57,6 +59,7 @@ public class StructuredPushdownAutomaton2 {
         logger.debug("Novo autômato de pilha estruturado inicializado.");
         submachines = new HashMap<>();
         transitions = new HashSet<>();
+        states = new HashMap<>();
         stack = new Stack<>();
         tree = new Stack<>();
         operations = new HashMap<>();
@@ -66,7 +69,7 @@ public class StructuredPushdownAutomaton2 {
         logger.debug("Submáquina inicial: {}", submachine);
         this.submachine = submachine;
     }
-    
+
     public void setOperation(String submachine, Action action) {
         operations.put(submachine, action);
     }
@@ -74,6 +77,21 @@ public class StructuredPushdownAutomaton2 {
     public void addTransition(Transition transition) {
         logger.debug("Transição adicionada: {}", transition);
         transitions.add(transition);
+    }
+
+
+    public void addState(Integer id, State state) {
+        if (this.states.get(id) == null) {
+            this.states.put(id, state);
+            logger.debug("Estado adicionado: {}, {}", id, state);
+        }
+        else {
+            logger.debug("Estado já existente: {}, []", id, this.states.get(id));
+        }
+    }
+
+    public State getState(Integer id) {
+        return this.states.get(id);
     }
 
     public void addSubmachine(String name, int initial, Set<Integer> accepting) {
@@ -102,11 +120,13 @@ public class StructuredPushdownAutomaton2 {
         Token symbol;
         Stack<String> machines = new Stack<>();
         machines.push(submachine);
-        
+
         tree = new Stack<>();
         tree.push(new ArrayList());
         tree.top().add(submachine);
-        
+
+        checkAndDoActionState(state);
+
         while (lexer.hasNext()) {
             symbol = lexer.getNext();
             logger.debug("# Token corrente: {}", symbol);
@@ -144,6 +164,7 @@ public class StructuredPushdownAutomaton2 {
                                     + "retorno da submáquina: {}", branch);
                         }
                         tree.top().add(branch);
+                        checkAndDoActionState(state); // acao semantica do estado
                     } else {
                         logger.debug("Não há transições válidas e o estado "
                                 + "corrente não é de aceitação. Não é "
@@ -190,10 +211,11 @@ public class StructuredPushdownAutomaton2 {
                                     symbol);
                         }
                     }
-                    for (Action action : query.get(0).getPostActions()) {
+                    for (Action action : query.get(0).getPostActions()) {   // Newton Dúvida: esta ação não seria aplicavel somente para transição com terminal?
                         logger.debug("Executando ação posterior: {}", action);
                         action.execute(symbol);
                     }
+                    checkAndDoActionState(state); // acao semantica no estado
                 } else {
 // newton
                     logger.debug("Existem {} transições válidas. Iniciando "
@@ -203,7 +225,7 @@ public class StructuredPushdownAutomaton2 {
                             Integer>> attempts = new ArrayList<>();
                     Stack<Token> payback = new Stack<>();
 
-                    
+
                     logger.debug("Definindo as possíveis escolhas.");
                     for (int i = 0; i < query.size(); i++) {
                         Quadruple<Integer, Stack<Integer>,
@@ -225,7 +247,7 @@ public class StructuredPushdownAutomaton2 {
                     logger.debug("Lista de possíveis escolhas: {}", attempts);
 
                     int lookahead = 0;
-                    
+
                     logger.debug("Tentando decidir a melhor escolha com "
                             + "lookahead = 0 (análise do token corrente).");
                     Pair<List<Quadruple<Integer, Stack<Integer>,
@@ -233,11 +255,11 @@ public class StructuredPushdownAutomaton2 {
                                                                     Stack<Integer>, Stack<String>, Integer>>> pair =
                             split(attempts, query);
                     attempts.clear();
-                    
+
                     if (!pair.getFirst().isEmpty()) {
                         attempts.addAll(pair.getFirst());
                     }
-                    
+
                     if (!pair.getSecond().isEmpty()) {
                         List<Quadruple<Integer, Stack<Integer>, Stack<String>,
                                 Integer>> result = pair.getSecond();
@@ -246,13 +268,13 @@ public class StructuredPushdownAutomaton2 {
                             attempts.addAll(result);
                         }
                     }
-                    
+
                     logger.debug("Resultado com lookahead = 0: {}", attempts);
-                    
+
                     if (attempts.size() < 1) {
-                        
+
                         logger.debug("Iniciando a operação de lookahead.");
-                    
+
                         do {
                             if (lexer.hasNext()) {
                                 payback.push(lexer.getNext());
@@ -307,7 +329,7 @@ public class StructuredPushdownAutomaton2 {
                                         attempts.clear();
 
                                         for (Quadruple<Integer, Stack<Integer>,
-                                                Stack<String>, Integer> 
+                                                Stack<String>, Integer>
                                                 current : analysis) {
                                             logger.debug("Verificando escolha"
                                                     + " {}.", current);
@@ -320,10 +342,10 @@ public class StructuredPushdownAutomaton2 {
                                                 Quadruple<Integer,
                                                         Stack<Integer>,
                                                         Stack<String>,
-                                                        Integer> quadruple = 
+                                                        Integer> quadruple =
                                                         new Quadruple<>();
 
-                                                Stack<Integer> states = 
+                                                Stack<Integer> states =
                                                         copy(current.getSecond());
                                                 Stack<String> names =
                                                         copy(current.getThird());
@@ -359,7 +381,7 @@ public class StructuredPushdownAutomaton2 {
                                                 + "estados não-vazias.");
                                         boolean found = false;
                                         for (Quadruple<Integer, Stack<Integer>,
-                                                Stack<String>, Integer> 
+                                                Stack<String>, Integer>
                                                 attempt : attempts) {
                                             if (!attempt.getSecond().
                                                     isEmpty()) {
@@ -389,13 +411,13 @@ public class StructuredPushdownAutomaton2 {
                                     lookahead);
 
                         } while (attempts.size() > 1);
-                    
+
                     }
 
                     logger.debug("O não-determinismo foi resolvido com "
                             + "lookahead = {}, devolvendo símbolos ao "
                             + "analisador léxico.", lookahead);
-                    
+
                     logger.debug("Devolvendo tokens ao analisador "
                             + "sintático. Pilha de lookahead: {}", payback);
                     while (!payback.isEmpty()) {
@@ -453,6 +475,7 @@ public class StructuredPushdownAutomaton2 {
                         logger.debug("Executando ação posterior: {}", action);
                         action.execute(symbol);
                     }
+                    checkAndDoActionState(state); // acao semantica no estado
                 }
             }
         }
@@ -476,10 +499,12 @@ public class StructuredPushdownAutomaton2 {
                     branch = operations.get(current).execute(reference, branch);
                 }
                 tree.top().add(branch);
+                checkAndDoActionState(state); // acao semantica do estado
             } else {
                 Integer newState = checkAndDoEmptyTransition(state);
                 if (newState != -1) {
                     state = newState;
+                    checkAndDoActionState(state); // acao semantica do estado
                 }
                 else {
                     return false;
@@ -493,6 +518,7 @@ public class StructuredPushdownAutomaton2 {
                 Integer newState = checkAndDoEmptyTransition(state);
                 if (newState != -1) {
                     state = newState;
+                    checkAndDoActionState(state); // acao semantica do estado
                 }
                 else {
                     done = true;
@@ -567,6 +593,17 @@ public class StructuredPushdownAutomaton2 {
         return newState;
     }
 
+    private void checkAndDoActionState(Integer state) {
+        if (this.states.get(state).getActionList() != null) {
+            for (ActionState actionState : this.states.get(state).getActionList()) {
+                if (this.states.get(state).getLabelElements() != null) {
+                    logger.debug("Executando ação semântica {} do estado {} com labels: {}",
+                            actionState, state, this.states.get(state).getLabelElements());
+                    actionState.execute(this.states.get(state).getLabelElements());
+                }
+            }
+        }
+    }
 
     private <T> Stack<T> copy(Stack<T> original) {
         Stack<T> copy = new Stack<>();
@@ -714,6 +751,8 @@ public class StructuredPushdownAutomaton2 {
     public Set<Transition> getTransitions() {
         return transitions;
     }
+
+
 
     public Map<String, Pair<Integer, Set<Integer>>> getSubmachines() {
         return submachines;
