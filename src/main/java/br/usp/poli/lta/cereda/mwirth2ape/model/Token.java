@@ -19,6 +19,7 @@
 **/
 package br.usp.poli.lta.cereda.mwirth2ape.model;
 
+import br.usp.poli.lta.cereda.execute.NLP.NLPToken;
 import br.usp.poli.lta.cereda.mwirth2ape.labeling.LabelElement;
 import br.usp.poli.lta.cereda.mwirth2ape.labeling.ProductionToken;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -37,6 +38,7 @@ public class Token {
     private String value;
     //Newton
     private ProductionToken ProductionToken;
+    private NLPToken nlpToken;
 
 
     public Token(String type, String value) {
@@ -73,6 +75,14 @@ public class Token {
         this.ProductionToken = productionToken;
         this.type = productionToken.getType();
         this.value = productionToken.getValue();
+    }
+
+    public NLPToken getNlpToken() {
+        return nlpToken;
+    }
+
+    public void setNlpToken(NLPToken nlpToken) {
+        this.nlpToken = nlpToken;
     }
 
     public boolean isValid() {

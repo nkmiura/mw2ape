@@ -82,7 +82,7 @@ public class LabelGrammar {
                         if ((i+1) < tempProduction.all.size()) {  // verifica se ultrapassa limite
                             if (tempProduction.all.get(i+1).getType().equals("label")) { // verifica se o próximo token é label
                                 tempProduction.all.get(i).setNextLabels(tempProduction.all.get(i+1).getLabels());
-                                tempProduction.all.get(i).setPreviousLabels(tempProduction.all.get(i-1).getLabels());
+                                //tempProduction.all.get(i).setPreviousLabels(tempProduction.all.get(i-1).getLabels());
                                 i++; // pula o próximo token, pois é label
                             }
                         }

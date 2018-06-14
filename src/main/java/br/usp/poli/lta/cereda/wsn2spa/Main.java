@@ -19,7 +19,8 @@
 **/
 package br.usp.poli.lta.cereda.wsn2spa;
 
-import br.usp.poli.lta.cereda.execute.NLPDictionary;
+import br.usp.poli.lta.cereda.execute.NLP.NLPDictionary;
+import br.usp.poli.lta.cereda.execute.NLP.NLPLexer;
 import br.usp.poli.lta.cereda.execute.SPAExecute;
 import br.usp.poli.lta.cereda.execute.SimpleLexer;
 import br.usp.poli.lta.cereda.mwirth2ape.labeling.LabelGrammar;
@@ -124,6 +125,7 @@ public class Main {
             }
         }
 
+        /*
         File inputNLPFile = null;
         if (!line.getOptionValue("n").isEmpty()) {
             String inputNLPFileName = line.getOptionValue("n");
@@ -134,8 +136,20 @@ public class Main {
                         " does not exist. Make sure the location is correct and " +
                         "try again.");
             }
-            NLPDictionary nlpDictionary = new NLPDictionary(inputNLPFileName);
-            nlpDictionary.LoadDictionary();
+        }
+        */
+
+        File inputNLPDictionaryFile = null;
+        String inputNLPDictionaryFileName = "";
+        if (!line.getOptionValue("d").isEmpty()) {
+            inputNLPDictionaryFileName = line.getOptionValue("d");
+            inputNLPDictionaryFile = new File(inputNLPDictionaryFileName);
+            if (!inputNLPDictionaryFile.exists()) {
+                throw new Exception("The provided input NLP dictionary file " +
+                        inputNLPDictionaryFileName +
+                        " does not exist. Make sure the location is correct and " +
+                        "try again.");
+            }
         }
 
 
@@ -190,9 +204,14 @@ public class Main {
                     // Parse input sentence
                     if (inputFile != null) {
                         String inputText = FileUtils.readFileToString(inputFile, "UTF-8").trim();
-                        SimpleLexer il = new SimpleLexer(inputText, labelGrammar.getTermsList());
-                        SPAExecute spaExecute = new SPAExecute(il, lmwg, labelGrammar.getTermsList());
-                        spaExecute.parseInput();
+                        if (line.getOptionValue("d").isEmpty()) { // Check if input is NLP
+                            SimpleLexer simpleLexer = new SimpleLexer(inputText, labelGrammar.getTermsList());
+                            SPAExecute spaExecute = new SPAExecute(simpleLexer, lmwg, labelGrammar.getTermsList());
+                            spaExecute.parseInput();
+                        }
+                        else {
+                            NLPLexer nlpLexer = new NLPLexer(inputText, inputNLPDictionaryFileName);
+                        }
                     }
                     break;
                 case 3:

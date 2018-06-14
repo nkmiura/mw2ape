@@ -1,6 +1,4 @@
-package br.usp.poli.lta.cereda.execute;
-
-import org.apache.commons.io.FileUtils;
+package br.usp.poli.lta.cereda.execute.NLP;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,10 +15,10 @@ public class NLPDictionary {
 
     public NLPDictionary(String yamlDictionaryFileName) {
         this.yamlDictionaryFileName = yamlDictionaryFileName;
-
+        LoadYamlDictionary();
     }
 
-    public Boolean LoadDictionary ()
+    public Boolean LoadYamlDictionary()
     {
         Boolean result = false;
         File inputFile = null;
@@ -46,5 +44,17 @@ public class NLPDictionary {
         }
 
         return result;
+    }
+
+    public ArrayList<NLPDictionaryEntry> getEntry(String word) {
+        ArrayList<NLPDictionaryEntry> result = null;
+        if (word != "") {
+            result = this.dictionaryHashMap.get(word);
+        }
+        return result;
+    }
+
+    public HashMap<String, ArrayList<NLPDictionaryEntry>> getDictionaryHashMap() {
+        return dictionaryHashMap;
     }
 }

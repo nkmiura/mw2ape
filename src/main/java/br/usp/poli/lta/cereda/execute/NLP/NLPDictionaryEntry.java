@@ -1,4 +1,4 @@
-package br.usp.poli.lta.cereda.execute;
+package br.usp.poli.lta.cereda.execute.NLP;
 
 public class NLPDictionaryEntry {
 

@@ -8,7 +8,6 @@ public class ProductionToken extends Token {
     private NTerm nterm;
     private LinkedList<LabelElement> labels;
     private LinkedList<LabelElement> nextLabels;
-    private LinkedList<LabelElement> previousLabels;
 
     public ProductionToken(Token token) {
         setType(token.getType());
@@ -29,12 +28,7 @@ public class ProductionToken extends Token {
     }
 
     public LinkedList<LabelElement> getLabels() {
-        //if (labels != null) {
             return labels;
-        //}
-        //else {
-        //    return null;
-        //}
     }
 
     public void setLabels(LinkedList<LabelElement> labels) {
@@ -69,14 +63,6 @@ public class ProductionToken extends Token {
         return nextLabels;
     }
 
-    public void setPreviousLabels(LinkedList<LabelElement> previousLabels) {
-        this.previousLabels = previousLabels;
-    }
-
-    public LinkedList<LabelElement> getPreviousLabels() {
-        return previousLabels;
-    }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -94,9 +80,6 @@ public class ProductionToken extends Token {
             if (this.nterm != null) {
                 sb.append(this.nterm.getValue() + ", ");
             } else { sb.append(", "); }
-            if (this.getPreviousLabels() != null) {
-                sb.append("prev labels: " + this.getPreviousLabels().toString() + ", ");
-            } else { sb.append("prev labels: ,"); }
             if (this.getNextLabels() != null) {
                 sb.append("next labels: " + this.getNextLabels().toString() + "}");
             } else { sb.append("next labels: }"); }
