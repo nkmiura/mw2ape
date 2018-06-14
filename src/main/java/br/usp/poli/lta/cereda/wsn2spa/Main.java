@@ -19,6 +19,7 @@
 **/
 package br.usp.poli.lta.cereda.wsn2spa;
 
+import br.usp.poli.lta.cereda.execute.NLPDictionary;
 import br.usp.poli.lta.cereda.execute.SPAExecute;
 import br.usp.poli.lta.cereda.execute.SimpleLexer;
 import br.usp.poli.lta.cereda.mwirth2ape.labeling.LabelGrammar;
@@ -123,6 +124,21 @@ public class Main {
             }
         }
 
+        File inputNLPFile = null;
+        if (!line.getOptionValue("n").isEmpty()) {
+            String inputNLPFileName = line.getOptionValue("n");
+            inputNLPFile = new File(inputNLPFileName);
+            if (!inputNLPFile.exists()) {
+                throw new Exception("The provided input NLP sentence file " +
+                        inputNLPFileName +
+                        " does not exist. Make sure the location is correct and " +
+                        "try again.");
+            }
+            NLPDictionary nlpDictionary = new NLPDictionary(inputNLPFileName);
+            nlpDictionary.LoadDictionary();
+        }
+
+
         File file = new File(line.getArgs()[0]);
         if (!file.exists()) {
             throw new Exception("The provided grammar file '" + "' does"
@@ -178,6 +194,9 @@ public class Main {
                         SPAExecute spaExecute = new SPAExecute(il, lmwg, labelGrammar.getTermsList());
                         spaExecute.parseInput();
                     }
+                    break;
+                case 3:
+
 
                     break;
             }

@@ -38,6 +38,7 @@ public class Token {
     //Newton
     private ProductionToken ProductionToken;
 
+
     public Token(String type, String value) {
         this.type = type;
         this.value = value;

@@ -55,7 +55,7 @@ public class SPAExecute {
         Map<String, List<Sketch>> machineSketchesMap = spaStruct.getMachinesFromTransitions(); // map list of Sketch (transitions) to a machine
         Map<String, Integer> machineStateQtyMap = spaStruct.getStateQtyFromMachineMap(machineSketchesMap);
 
-
+        // Acao semantica associado a transicao
         Action semanticActionTransition = new Action("semanticActionTransition") {
             @Override
             public void execute(Token token) {
@@ -67,11 +67,12 @@ public class SPAExecute {
             }
         };
 
+        // Acao semantica associado ao estado (maquina de Moore) para gerar saída e manipular pilha de acordo com rotulos
         ActionState semanticActionState = new ActionState("semanticActionState") {
             @Override
             public void execute(LinkedList<LabelElement> labels) {
                 for (LabelElement singleLabelElement : labels) {
-                    if (singleLabelElement != null) {
+                    if (singleLabelElement != null) { // verifica se não retornou elemento de rotulo nulo
                         String labelSymbol = singleLabelElement.getValue();
                         Production labelProduction = singleLabelElement.getProduction();
                         if (labelProduction == null) {
@@ -112,16 +113,13 @@ public class SPAExecute {
                                 outputList.addLast(sb.toString());
                             }
                         }
-
                     }
                 }
-
-                //@Override
-                //public List execute(int state, List tree){ return null; }
             }
         };
 
 
+        // Construcao do automato
         for (String machine : machineSketchesMap.keySet()) {
             List<Sketch> tempSketches = machineSketchesMap.get(machine); // Get transitions for a machine
             // set submachine name with start, end
@@ -158,12 +156,9 @@ public class SPAExecute {
                     );
                 }
                 newTransition.addPreAction(semanticActionTransition);
-
                 spa.addTransition(newTransition);
             }
-
             stateCounter = stateCounter + machineStateQtyMap.get(machine);
-
         }
         logger.debug("Finished building SPA parser.");
         // end Build SPA
@@ -177,7 +172,6 @@ public class SPAExecute {
         // Configurar saida (arquivo)
         logger.debug("Cadeia de saída: ");
         logger.debug(this.outputList.toString());
-
     }
 
 
@@ -195,7 +189,6 @@ public class SPAExecute {
             spa.addState(id, newState);
         }
     }
-
 
 
     private <T> Set<T> getSet(T... elements) {

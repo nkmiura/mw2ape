@@ -62,7 +62,6 @@ public class Generator {
     private HashMap<String, HashMap<Integer, LinkedList<LabelElement>>> mapMachineStates;
     private HashMap<Integer, LinkedList<LabelElement>> currentMapMachineStates;
 
-
     public Generator(MWirthLexer mWirthLexer, int type) {
 
         this.type = type;
@@ -86,7 +85,6 @@ public class Generator {
         this.counter = 0;
         this.mapMachineStates = new HashMap<>();
     }
-
 
     // Newton
     public void registerExpressionToken(Token token) {
@@ -580,9 +578,84 @@ public class Generator {
                 logger.debug("# Newton: " + labelGrammar.toString());
                 break;
             case 2:
+                reduceDeterministicEmptyTransitions();
                 break;
             default:
                 break;
+        }
+    }
+
+    private void reduceDeterministicEmptyTransitions ()
+    {
+
+        logger.debug("Executando eliminação de transições determinísticas em vazio.");
+        //Boolean done = false;
+
+        List<Sketch> emptyTransitionList = new ArrayList<>();
+
+        while (true) {
+
+            for (Sketch tempTransition : transitions) { // Monta lista de transições em vazio
+                if (tempTransition.getToken().getType().equals("ε")) {
+                    emptyTransitionList.add(tempTransition);
+                }
+            }
+            if (emptyTransitionList.isEmpty()) { break; }
+
+            Boolean emptyTransitionEliminated = false;
+            for (Sketch tempEmptyTransition : emptyTransitionList) {  // Processa cada transição em vazio
+                Integer source = tempEmptyTransition.getSource();
+                Integer target = tempEmptyTransition.getTarget();
+                if (target != 1) {  // do nothing if target is the accepting state of the submachine
+                    String submachine = tempEmptyTransition.getName();
+
+                    List<Sketch> sourceOutTransitions = new ArrayList<>();
+                    for (Sketch tempSourceOutTransition: transitions) { // verifica se há mais transiçoes saindo do estado inicial
+                        if ((tempSourceOutTransition.getName().equals(submachine)) &&
+                                (tempSourceOutTransition.getSource() == source) &&
+                                (! tempSourceOutTransition.equals(tempEmptyTransition))) {
+                            sourceOutTransitions.add(tempSourceOutTransition);
+                        }
+                    }
+                    if (sourceOutTransitions.isEmpty()) {  // se não há outras transições saindo do source
+                        List<Sketch> targetInTransitions = new ArrayList<>();
+                        for (Sketch tempTargetInTransition: transitions) {
+                            if ((tempTargetInTransition.getName().equals(submachine)) &&
+                                    (tempTargetInTransition.getTarget() == target) &&
+                                    (! tempTargetInTransition.equals(tempEmptyTransition))) {
+                                targetInTransitions.add(tempTargetInTransition);
+                            }
+                        }
+                        if (targetInTransitions.isEmpty()) {
+                            // A transicao é unica entre source e target
+                            // Junta labels no estado source
+                            logger.debug("Eliminando transição em vazio {}.",tempEmptyTransition);
+                            if (mapMachineStates.get(submachine).get(source) != null) {
+                                if (this.mapMachineStates.get(submachine).get(target) != null) {
+                                    this.mapMachineStates.get(submachine).get(source).addAll(
+                                            this.mapMachineStates.get(submachine).get(target));
+                                }
+                            }
+                            else {
+                                if (this.mapMachineStates.get(submachine).get(target) != null) {
+                                    this.mapMachineStates.get(submachine).put(source, this.mapMachineStates.get(submachine).get(target));
+                                }
+                            }
+                            // Deleta transição e estado target
+                            this.mapMachineStates.get(submachine).remove(target);
+                            transitions.remove(tempEmptyTransition);
+                            // Ajusta source das demais transicoes
+                            for (Sketch tempAdjustTransition: transitions) {
+                                if (tempAdjustTransition.getSource() == target) {
+                                    tempAdjustTransition.setSource(source);
+                                }
+                            }
+                            emptyTransitionEliminated = true;
+                        }
+                    }
+                }
+            }
+            if (!emptyTransitionEliminated) { break; }
         }
     }
 

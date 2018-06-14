@@ -33,9 +33,7 @@ public class LabelGrammar {
     {
         for (NTerm tempNterm : nterms) {
             // logger.debug("tempNterm: " + tempNterm.getValue());
-            if (nterm.equals(tempNterm.getValue())) {
-                return tempNterm;
-            }
+            if (nterm.equals(tempNterm.getValue())) { return tempNterm; }
         }
         return null;
     }
@@ -80,16 +78,6 @@ public class LabelGrammar {
                 }
                 // associate label token to expression token using list iterator
                 for (int i = 0; i < tempProduction.all.size(); i++) {
-                    /*
-                    if (!tempProduction.all.get(i).getType().equals("label")) {
-                        if ((i+1) < tempProduction.all.size()) {
-                            if (tempProduction.all.get(i+1).getType().equals("label")) {
-                                tempProduction.all.get(i).setLabels(tempProduction.all.get(i+1).getLabels());
-                                i++;
-                            }
-                        }
-                    }
-                    */
                     if (!tempProduction.all.get(i).getType().equals("label")) {  // para cada token da expression
                         if ((i+1) < tempProduction.all.size()) {  // verifica se ultrapassa limite
                             if (tempProduction.all.get(i+1).getType().equals("label")) { // verifica se o próximo token é label
