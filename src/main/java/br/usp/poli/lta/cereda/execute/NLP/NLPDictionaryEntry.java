@@ -1,5 +1,7 @@
 package br.usp.poli.lta.cereda.execute.NLP;
 
+import java.util.ArrayList;
+
 public class NLPDictionaryEntry {
 
     private String posTag;
@@ -16,6 +18,17 @@ public class NLPDictionaryEntry {
         this.attribute2 = attribute2;
         this.attribute3 = attribute3;
         this.attribute4 = attribute4;
+    }
+
+    public NLPDictionaryEntry(ArrayList<String> attributes) {
+        if (attributes.size() == 6) {
+            this.posTag = attributes.get(0);
+            this.value = attributes.get(1);
+            this.attribute1 = attributes.get(2);
+            this.attribute2 = attributes.get(3);
+            this.attribute3 = attributes.get(4);
+            this.attribute4 = attributes.get(5);
+        }
     }
 
     public String getPosTag() {

@@ -210,7 +210,9 @@ public class Main {
                             spaExecute.parseInput();
                         }
                         else {
-                            NLPLexer nlpLexer = new NLPLexer(inputText, inputNLPDictionaryFileName);
+                            NLPLexer nlpLexer = new NLPLexer(inputText, inputNLPDictionaryFileName, labelGrammar.getTermsList());
+                            SPAExecute spaExecute = new SPAExecute(nlpLexer, lmwg, labelGrammar.getTermsList());
+                            spaExecute.parseInput();
                         }
                     }
                     break;

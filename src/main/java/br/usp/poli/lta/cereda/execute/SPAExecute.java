@@ -1,5 +1,6 @@
 package br.usp.poli.lta.cereda.execute;
 
+import br.usp.poli.lta.cereda.execute.NLP.NLPLexer;
 import br.usp.poli.lta.cereda.mwirth2ape.ape.Action;
 import br.usp.poli.lta.cereda.mwirth2ape.ape.ActionState;
 import br.usp.poli.lta.cereda.mwirth2ape.ape.StructuredPushdownAutomaton2;
@@ -23,6 +24,7 @@ public class SPAExecute {
             getLogger(SPAExecute.class);
     // APE Generator
     private SimpleLexer lexer;
+    private NLPLexer nlpLexer;
     private Generator lmwg;
     private Stack<String> transducerStack;
     private List<Sketch> transitions;
@@ -44,6 +46,17 @@ public class SPAExecute {
         this.outputList = new LinkedList<>();
     }
 
+    public SPAExecute (NLPLexer nlpLexer, Generator lmwg, HashSet<String> dictionaryTerm) {
+        this.nlpLexer = nlpLexer;
+        this.lmwg = lmwg;
+        this.transducerStack = new Stack<>();
+        this.transitions = lmwg.getTransitions();
+        this.mapMachineStates = lmwg.getMapMachineStates();
+        this.spaTransitions = new HashSet<>();
+        this.stateCounter = 0;
+        this.dictionaryTerm = dictionaryTerm;
+        this.outputList = new LinkedList<>();
+    }
 
     public void parseInput() throws Exception {
         // Build SPA
@@ -166,7 +179,11 @@ public class SPAExecute {
         // Executar automato
         logger.debug("Started parsing.");
         spa.setup();
-        boolean result = spa.parse(lexer);
+        if (lexer != null) {
+            boolean result = spa.parse(lexer);
+        } else {
+            boolean result = spa.parse(nlpLexer);
+        }
         logger.debug("Finished parsing.");
 
         // Configurar saida (arquivo)
