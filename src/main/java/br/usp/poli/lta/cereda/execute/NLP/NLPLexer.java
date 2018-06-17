@@ -76,12 +76,14 @@ public class NLPLexer extends Lexer {
 
         // não há mais palavras
         if (!value.isEmpty()) {
+            newToken.setValue(value);
             // Pontuacao
             if (type.equals("punct")) {
                 NLPWord nlpWord = new NLPWord(type, value);
                 NLPToken nlpToken = new NLPToken();
                 nlpToken.addNlpWord(nlpWord);
                 newToken.setNlpToken(nlpToken);
+                newToken.setType(type);
             } else {
                 // Procura a palavra no dicionario
                 ArrayList<NLPDictionaryEntry> nlpDictionaryEntries = nlpDictionary.getEntry(value);
@@ -96,6 +98,7 @@ public class NLPLexer extends Lexer {
                         nlpToken.addNlpWord(nlpWord);
                     }
                     newToken.setNlpToken(nlpToken);
+                    newToken.setType("term");
                 }
             }
         }

@@ -26,8 +26,8 @@ public class NLPToken extends Token {
         if (!nlpWord.equals("")) {
             if (this.nlpWords == null) {
                 this.nlpWords = new ArrayList<>();
-                this.nlpWords.add(nlpWord);
             }
+            this.nlpWords.add(nlpWord);
         }
     }
 
