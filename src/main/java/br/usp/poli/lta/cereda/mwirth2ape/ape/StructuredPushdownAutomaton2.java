@@ -33,24 +33,17 @@ import java.util.*;
 
 /**
  * @author Paulo Roberto Massa Cereda
- * @version 1.0
+ * @version 1.1
  * @since 1.0
  */
-public class StructuredPushdownAutomaton2 {
+public class StructuredPushdownAutomaton2 extends StructuredPushdownAutomaton {
 
     private static final Logger logger = LoggerFactory.
             getLogger(StructuredPushdownAutomaton2.class);
-
-    private final Map<String, Pair<Integer, Set<Integer>>> submachines;
-    private final Set<Transition> transitions;
-    private Map<Integer, State> states;
-    private String submachine;
-    private final Stack<Integer> stack;
-    private Stack<List> tree;
-    private final Map<String, Action> operations;
+    private static Map<Integer, State> states;
 
     public StructuredPushdownAutomaton2() {
-
+        super();
         boolean tempflag = logger.isDebugEnabled();
         if (tempflag)
         {
@@ -64,21 +57,6 @@ public class StructuredPushdownAutomaton2 {
         tree = new Stack<>();
         operations = new HashMap<>();
     }
-
-    public void setSubmachine(String submachine) {
-        logger.debug("Submáquina inicial: {}", submachine);
-        this.submachine = submachine;
-    }
-
-    public void setOperation(String submachine, Action action) {
-        operations.put(submachine, action);
-    }
-
-    public void addTransition(Transition transition) {
-        logger.debug("Transição adicionada: {}", transition);
-        transitions.add(transition);
-    }
-
 
     public void addState(Integer id, State state) {
         if (this.states.get(id) == null) {
@@ -94,25 +72,7 @@ public class StructuredPushdownAutomaton2 {
         return this.states.get(id);
     }
 
-    public void addSubmachine(String name, int initial, Set<Integer> accepting) {
-        logger.debug(getSubmachineInfo(name, initial, accepting));
-        Pair<Integer, Set<Integer>> pair = new Pair<>();
-        pair.setFirst(initial);
-        pair.setSecond(accepting);
-        submachines.put(name, pair);
-    }
-
-    public void setup() {
-        logger.debug("Configurando otimização de lookahead para chamadas "
-                + "de submáquinas.");
-        for (Transition transition : transitions) {
-            if (transition.isSubmachineCall()) {
-                transition.setLookahead(submachines.get(
-                        transition.getSubmachine()).getFirst());
-            }
-        }
-    }
-
+    @Override
     public boolean parse(Lexer lexer) {
         logger.debug("Iniciando o processo de reconhecimento.");
         int state = submachines.get(submachine).getFirst();
@@ -304,21 +264,16 @@ public class StructuredPushdownAutomaton2 {
                                             attempt.getThird().
                                                     top()).getSecond().
                                             contains(attempt.getFourth())) {
-                                        logger.debug("{} encontra-se em um "
-                                                + "estado de aceitação da "
-                                                + "submáquina corrente, "
-                                                + "portanto é uma escolha "
+                                        logger.debug("{} encontra-se em um estado de aceitação da "
+                                                + "submáquina corrente, portanto é uma escolha "
                                                 + "válida.");
                                         analysis.add(attempt);
                                     }
                                 }
                                 if (analysis.isEmpty()) {
-                                    logger.debug("Os símbolos acabaram "
-                                            + "prematuramente sem que o "
-                                            + "lookahead pudesse ser "
-                                            + "resolvido. O processo de "
-                                            + "reconhecimento gerou uma "
-                                            + "exceção.");
+                                    logger.debug("Os símbolos acabaram prematuramente sem que o "
+                                            + "lookahead pudesse ser resolvido. O processo de "
+                                            + "reconhecimento gerou uma exceção.");
                                     return false;
                                 }
                                 else {
@@ -560,10 +515,6 @@ public class StructuredPushdownAutomaton2 {
         return result;
     }
 
-    private boolean deterministic(List<Transition> query) {
-        return query.size() == 1;
-    }
-
     private Integer checkAndDoEmptyTransition (Integer state) {
         Integer newState = -1;
         Token symbol = new Token();
@@ -613,180 +564,4 @@ public class StructuredPushdownAutomaton2 {
         return copy;
     }
 
-    private List<Quadruple<Integer, Stack<Integer>, Stack<String>, Integer>>
-         evaluate(List<Quadruple<Integer, Stack<Integer>, Stack<String>,
-                 Integer>> attempts, Token token) {
-        logger.debug("Iniciando avaliação.");
-        logger.debug("Tentativas: {}", attempts);
-        logger.debug("Token analisado: {}", token);
-        
-        Set<Quadruple<Integer, Stack<Integer>, Stack<String>, Integer>>
-                temp = new HashSet();
-        List<Quadruple<Integer, Stack<Integer>, Stack<String>, Integer>> 
-                result = new ArrayList<>();
-        
-        for (Quadruple<Integer, Stack<Integer>, Stack<String>, Integer>
-                attempt : attempts) {
-            logger.debug("Avaliação da tentativa {}.", attempt);
-            List<Transition> query = query(attempt.getFourth(), token);
-            for (Quadruple<Integer, Stack<Integer>, Stack<String>, Integer>
-                    out : update(attempt, query, token)) {
-                logger.debug("Resultado da avaliação corrente: {}", out);
-                if (!temp.contains(out)) {
-                    logger.debug("A avaliação {} não existe no conjunto de "
-                            + "avaliações, adicionando.", out);
-                    result.add(out);
-                    temp.add(out);
-                }
-                else {
-                    logger.debug("A avaliação {} já existe no conjunto de "
-                            + "avaliações, descartando.", out);
-                }
-            }
-        }
-        
-        logger.debug("Resultado da avaliação: {}", result);
-        return result;
-    }
-
-    private List<Quadruple<Integer, Stack<Integer>, Stack<String>, Integer>>
-         update(Quadruple<Integer, Stack<Integer>, Stack<String>, Integer> line,
-                 List<Transition> query, Token token) {
-        logger.debug("Iniciando atualização.");
-        logger.debug("Avaliação: {}", line);
-        logger.debug("Consulta: {}", query);
-        logger.debug("Token analisado: {}", token);
-        
-        List<Quadruple<Integer, Stack<Integer>, Stack<String>, Integer>> 
-                result = new ArrayList<>();
-        Set<Quadruple<Integer, Stack<Integer>, Stack<String>, Integer>> 
-                temp = new HashSet<>();
-        if (!query.isEmpty()) {
-            logger.debug("A consulta não está vazia.");
-            for (Transition transition : query) {
-                logger.debug("Transição corrente da consulta: {}", transition);
-                if (!transition.isSubmachineCall()) {
-                    logger.debug("A transição é um consumo de símbolo.");
-                    
-                    Quadruple<Integer, Stack<Integer>, Stack<String>, Integer>
-                            e = new Quadruple<>(line.getFirst(),
-                                    copy(line.getSecond()),
-                                    copy(line.getThird()),
-                                    transition.getTarget());
-                    logger.debug("Avaliação obtida: {}", e);
-                    
-                    if (!temp.contains(e)) {
-                        logger.debug("A avaliação {} não existe no conjunto "
-                                + "de avaliações, adicionando.", e);
-                        result.add(e);
-                    }
-                    else {
-                        logger.debug("A avaliação {} já existe no conjunto "
-                                + "de avaliações, descartando.", e);
-                    }
-                } else {
-                    
-                    logger.debug("A transição é uma chamada de submáquina.");
-                    Stack<Integer> stck = copy(line.getSecond());
-                    stck.push(transition.getTarget());
-
-                    Stack<String> mchns = copy(line.getThird());
-                    mchns.push(transition.getSubmachine());
-
-                    Quadruple<Integer, Stack<Integer>, Stack<String>, Integer>
-                            element = new Quadruple<>(line.getFirst(), stck,
-                                    mchns, submachines.get(mchns.top()).
-                                            getFirst());
-                    logger.debug("Avaliação obtida: {}", element);
-                    
-                    logger.debug("Chamando a atualização recursivamente para "
-                            + "obter a nova lista.");
-                    result.addAll(update(element, query(element.getFourth(),
-                            token), token));
-                }
-            }
-        } else {
-            logger.debug("Não existem transições para a consulta corrente.");
-            if (!line.getSecond().isEmpty()) {
-                if (submachines.get(line.getThird().top()).getSecond().
-                        contains(line.getFourth())) {
-                    logger.debug("A avaliação corrente é um estado de "
-                            + "aceitação da submáquina corrente, portanto "
-                            + "pode ser retornada.");
-                    Stack<Integer> stck = copy(line.getSecond());
-                    int detour = stck.pop();
-                    Stack<String> mchns = copy(line.getThird());
-                    mchns.pop();
-                    Quadruple<Integer, Stack<Integer>, Stack<String>, 
-                            Integer> element = new Quadruple<>(line.getFirst(),
-                                    stck, mchns, detour);
-                    logger.debug("Avaliação obtida: {}", element);
-                    
-                    result.addAll(update(element, query(element.getFourth(),
-                            token), token));
-                }
-            }
-        }
-        
-        logger.debug("Resultado da atualização: {}", result);
-        return result;
-    }
-
-    private String getSubmachineInfo(String name, int initial,
-            Set<Integer> accepting) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Submáquina: {");
-        sb.append("nome: ").append(name).append(", ");
-        sb.append("estado inicial: ").append(initial).append(", ");
-        sb.append("estados de aceitação: (");
-        if (accepting.isEmpty()) {
-            sb.append("vazio");
-        } else {
-            sb.append(StringUtils.join(accepting, ", "));
-        }
-        sb.append(")}");
-        return sb.toString();
-    }
-
-    public Set<Transition> getTransitions() {
-        return transitions;
-    }
-
-
-
-    public Map<String, Pair<Integer, Set<Integer>>> getSubmachines() {
-        return submachines;
-    }
-    
-    public List getTree() {
-        return tree.top();
-    }
-    
-    private Pair<List<Quadruple<Integer, Stack<Integer>, Stack<String>,
-                 Integer>>, List<Quadruple<Integer, Stack<Integer>, Stack<String>,
-                 Integer>>> split(List<Quadruple<Integer, Stack<Integer>, Stack<String>,
-                 Integer>> attempts, List<Transition> query) {
-        logger.debug("Com lookahead = 0, é necessário atualizar as"
-                + " possíveis chamadas de submáquinas para análise do "
-                + "símbolo corrente.");
-        logger.debug("Realizando a divisão das transições de chamadas de "
-                + "submáquinas e de consumo de símbolos.");
-        List<Quadruple<Integer, Stack<Integer>, Stack<String>, Integer>>
-                r1 = new ArrayList<>();
-        List<Quadruple<Integer, Stack<Integer>, Stack<String>, Integer>>
-                r2 = new ArrayList<>();
-        for (Quadruple<Integer, Stack<Integer>, Stack<String>, Integer>
-                attempt : attempts) {
-            if (query.get(attempt.getFirst()).isSubmachineCall()) {
-                r2.add(attempt);
-            }
-            else {
-                r1.add(attempt);
-            }
-        }
-        logger.debug("Transições de consumo de símbolos: {}", r1);
-        logger.debug("Transições de chamadas de submáquinas: {}", r2);
-        return new Pair<>(r1, r2);
-    }
-    
 }

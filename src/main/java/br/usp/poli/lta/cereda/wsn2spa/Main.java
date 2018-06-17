@@ -137,11 +137,12 @@ public class Main {
                         "try again.");
             }
         }
-        */
 
-        File inputNLPDictionaryFile = null;
+
+        File inputNLPDictionaryFile = null;*/
+
         String inputNLPDictionaryFileName = "";
-        if (!line.getOptionValue("d").isEmpty()) {
+        /* if (!line.getOptionValue("d").isEmpty()) {
             inputNLPDictionaryFileName = line.getOptionValue("d");
             inputNLPDictionaryFile = new File(inputNLPDictionaryFileName);
             if (!inputNLPDictionaryFile.exists()) {
@@ -151,7 +152,7 @@ public class Main {
                         "try again.");
             }
         }
-
+*/
 
         File file = new File(line.getArgs()[0]);
         if (!file.exists()) {
@@ -204,16 +205,15 @@ public class Main {
                     // Parse input sentence
                     if (inputFile != null) {
                         String inputText = FileUtils.readFileToString(inputFile, "UTF-8").trim();
-                        if (line.getOptionValue("d").isEmpty()) { // Check if input is NLP
+                        //if (line.getOptionValue("d").isEmpty()) { // Check if input is NLP
                             SimpleLexer simpleLexer = new SimpleLexer(inputText, labelGrammar.getTermsList());
                             SPAExecute spaExecute = new SPAExecute(simpleLexer, lmwg, labelGrammar.getTermsList());
                             spaExecute.parseInput();
-                        }
-                        else {
-                            NLPLexer nlpLexer = new NLPLexer(inputText, inputNLPDictionaryFileName, labelGrammar.getTermsList());
-                            SPAExecute spaExecute = new SPAExecute(nlpLexer, lmwg, labelGrammar.getTermsList());
-                            spaExecute.parseInput();
-                        }
+                        //}
+                        //else {
+                        //    NLPLexer nlpLexer = new NLPLexer(inputText, inputNLPDictionaryFileName, labelGrammar.getTermsList());
+                        //    SPAExecute spaExecute = new SPAExecute(nlpLexer, lmwg, labelGrammar.getTermsList());
+//                        }
                     }
                     break;
                 case 3:

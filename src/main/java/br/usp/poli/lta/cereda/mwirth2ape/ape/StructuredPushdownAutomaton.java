@@ -44,12 +44,12 @@ public class StructuredPushdownAutomaton {
     private static final Logger logger = LoggerFactory.
             getLogger(StructuredPushdownAutomaton.class);
 
-    private final Map<String, Pair<Integer, Set<Integer>>> submachines;
-    private final Set<Transition> transitions;
-    private String submachine;
-    private final Stack<Integer> stack;
-    private Stack<List> tree;
-    private final Map<String, Action> operations;
+    protected Map<String, Pair<Integer, Set<Integer>>> submachines;
+    protected Set<Transition> transitions;
+    protected String submachine;
+    protected Stack<Integer> stack;
+    protected Stack<List> tree;
+    protected Map<String, Action> operations;
 
     public StructuredPushdownAutomaton() {
 
@@ -521,7 +521,7 @@ public class StructuredPushdownAutomaton {
         return result;
     }
 
-    private boolean deterministic(List<Transition> query) {
+    protected boolean deterministic(List<Transition> query) {
         return query.size() == 1;
     }
 
@@ -533,7 +533,7 @@ public class StructuredPushdownAutomaton {
         return copy;
     }
 
-    private List<Quadruple<Integer, Stack<Integer>, Stack<String>, Integer>>
+    protected List<Quadruple<Integer, Stack<Integer>, Stack<String>, Integer>>
          evaluate(List<Quadruple<Integer, Stack<Integer>, Stack<String>,
                  Integer>> attempts, Token token) {
         logger.debug("Iniciando avaliação.");
@@ -680,7 +680,7 @@ public class StructuredPushdownAutomaton {
         return tree.top();
     }
     
-    private Pair<List<Quadruple<Integer, Stack<Integer>, Stack<String>,
+    protected Pair<List<Quadruple<Integer, Stack<Integer>, Stack<String>,
                  Integer>>, List<Quadruple<Integer, Stack<Integer>, Stack<String>,
                  Integer>>> split(List<Quadruple<Integer, Stack<Integer>, Stack<String>,
                  Integer>> attempts, List<Transition> query) {
