@@ -72,12 +72,47 @@ public class SPAExecute {
 
         SPAGetStruct spaStruct = new SPAGetStruct(this.transitions);
         Map<String, List<Sketch>> machineSketchesMap = spaStruct.getMachinesFromTransitions(); // map list of Sketch (transitions) to a machine
-        Map<String, Integer> machineStateQtyMap = spaStruct.getStateQtyFromMachineMap(machineSketchesMap);
+        Map<String, Integer> machineMaxStateIdMap = spaStruct.getMaxStateIdFromMachineMap(machineSketchesMap);
 
-        // Acao semantica associado a transicao
-        Action semanticActionTransition = new Action("semanticActionTransition") {
+        // Acao semantica associado a transicao com terminal
+        Action semanticActionTermTransition = new Action("semanticActionTermTransition") {
             @Override
             public void execute(Token token) {
+                if ((nlpLexer != null) && (token.getType().equals("term"))) {
+                    outputList.addLast("\"" + token.getValue() + "\"");
+                    logger.debug("Ação semântica: Terminal consumido: POS tag {}, value \"{}\".",
+                            token.getNlpToken().getNlpWords().get(0).getPosTag(), token.getValue());
+                }
+            }
+
+            @Override
+            public List execute(int state, List tree) {
+                return null;
+            }
+        };
+
+        // Acao semantica associado a transicao com não terminal
+        Action semanticActionNtermTransition = new Action("semanticActionNtermTransition") {
+            @Override
+            public void execute(Token token) {
+                if ((nlpLexer != null)) {
+                    logger.debug("Ação semântica: Transiçao com chamada de submáquina.");
+                }
+            }
+
+            @Override
+            public List execute(int state, List tree) {
+                return null;
+            }
+        };
+
+        // Acao semantica associado a transicao em vazio
+        Action semanticActionEmptyTransition = new Action("semanticActionEmptyTransition") {
+            @Override
+            public void execute(Token token) {
+                if ((nlpLexer != null)) {
+                    logger.debug("Ação semântica: Transição em vazio.");
+                }
             }
 
             @Override
@@ -90,6 +125,7 @@ public class SPAExecute {
         ActionState semanticActionState = new ActionState("semanticActionState") {
             @Override
             public void execute(LinkedList<LabelElement> labels) {
+                logger.debug("Ação semântica: Labels");
                 for (LabelElement singleLabelElement : labels) {
                     if (singleLabelElement != null) { // verifica se não retornou elemento de rotulo nulo
                         String labelSymbol = singleLabelElement.getValue();
@@ -159,8 +195,8 @@ public class SPAExecute {
                     newTransition = new Transition(
                             tempSource, tempSketch.getToken().getValue(), tempTarget
                     );
-
                     newTransition.setSubmachineToken(tempSketch.getToken());
+                    newTransition.addPostAction(semanticActionNtermTransition);
                 }
                 else if (tempSketch.getToken().getType().equals("ε")) {
                     Token tempToken = null;
@@ -168,16 +204,17 @@ public class SPAExecute {
                             tempSource, tempToken, tempTarget
                     );
                     newTransition.setSubmachineToken(tempSketch.getToken());
+                    newTransition.addPostAction(semanticActionEmptyTransition);
                 }
                 else {
                     newTransition = new Transition(
                             tempSource, tempSketch.getToken(), tempTarget
                     );
+                    newTransition.addPostAction(semanticActionTermTransition);
                 }
-                newTransition.addPreAction(semanticActionTransition);
                 spa.addTransition(newTransition);
             }
-            stateCounter = stateCounter + machineStateQtyMap.get(machine);
+            stateCounter = stateCounter + machineMaxStateIdMap.get(machine) + 1;
         }
         logger.debug("Finished building SPA parser.");
         // end Build SPA

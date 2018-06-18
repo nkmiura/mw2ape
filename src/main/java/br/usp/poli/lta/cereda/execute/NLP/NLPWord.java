@@ -1,23 +1,24 @@
 package br.usp.poli.lta.cereda.execute.NLP;
 
 public class NLPWord {
-    String type;
+    String posTag;
     String value;
     NLPDictionaryEntry nlpDictionaryEntry;
 
     public NLPWord() {
         this.nlpDictionaryEntry = new NLPDictionaryEntry("","","","","","");
-        this.type = "";
+        this.posTag = "";
         this.value = "";
     }
 
-    public NLPWord(String type, String value) {
-        this.type = type;
+    public NLPWord(String posTag, String value) {
+        this.posTag = posTag;
         this.value = value;
+
     }
 
-    public NLPWord(String type, String value, NLPDictionaryEntry nlpDictionaryEntry) {
-        this.type = type;
+    public NLPWord(String posTag, String value, NLPDictionaryEntry nlpDictionaryEntry) {
+        this.posTag = posTag;
         this.value = value;
         this.nlpDictionaryEntry = nlpDictionaryEntry;
     }
@@ -30,12 +31,12 @@ public class NLPWord {
         this.nlpDictionaryEntry = nlpDictionaryEntry;
     }
 
-    public String getType() {
-        return type;
+    public String getPosTag() {
+        return posTag;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setPosTag(String posTag) {
+        this.posTag = posTag;
     }
 
     public String getValue() {

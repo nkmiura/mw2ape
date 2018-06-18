@@ -119,5 +119,4 @@ public class Token {
         final Token reference = (Token) object;
         return new EqualsBuilder().append(type, reference.type).isEquals();
     }
-
 }

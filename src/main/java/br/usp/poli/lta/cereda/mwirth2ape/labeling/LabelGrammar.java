@@ -32,7 +32,7 @@ public class LabelGrammar {
     public NTerm searchNterm(String nterm)
     {
         for (NTerm tempNterm : nterms) {
-            // logger.debug("tempNterm: " + tempNterm.getValue());
+            // logger.debug("tempNterm: " + tempNterm.getCanonical());
             if (nterm.equals(tempNterm.getValue())) { return tempNterm; }
         }
         return null;
@@ -45,12 +45,12 @@ public class LabelGrammar {
             for (Production tempProduction : tempNterm.productions) {
                 boolean firstProductionToken = true;
                 for (ProductionToken tempProductionToken : tempProduction.expression) {
-                    //logger.debug(" token type: " + tempProductionToken.getValue());
+                    //logger.debug(" token type: " + tempProductionToken.getCanonical());
                     if (tempProductionToken.getType().equals("nterm")) {
                         NTerm foundNterm = searchNterm(tempProductionToken.getValue());
                         if (foundNterm == null) {
                             result = false;
-                            // logger.debug("nterm " + tempProductionToken.getValue() + " not found in grammar productions.");
+                            // logger.debug("nterm " + tempProductionToken.getCanonical() + " not found in grammar productions.");
                         }
                         else {
                             tempProductionToken.setNterm(foundNterm);

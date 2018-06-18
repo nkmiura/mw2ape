@@ -210,9 +210,8 @@ public class StructuredPushdownAutomaton2 extends StructuredPushdownAutomaton {
 
                     logger.debug("Tentando decidir a melhor escolha com "
                             + "lookahead = 0 (análise do token corrente).");
-                    Pair<List<Quadruple<Integer, Stack<Integer>,
-                                                                    Stack<String>, Integer>>, List<Quadruple<Integer,
-                                                                    Stack<Integer>, Stack<String>, Integer>>> pair =
+                    Pair<List<Quadruple<Integer, Stack<Integer>,Stack<String>, Integer>>,
+                            List<Quadruple<Integer, Stack<Integer>, Stack<String>, Integer>>> pair =
                             split(attempts, query);
                     attempts.clear();
 
@@ -505,7 +504,9 @@ public class StructuredPushdownAutomaton2 extends StructuredPushdownAutomaton {
                 if (transition.isSubmachineCall()) {
                     result.add(transition);
                 } else {
-                    if (transition.getToken().equals(symbol) || transition.getToken().getType().equals("ε")) {
+                    if ((transition.getToken().getType().equals(symbol.getType())
+                    && (transition.getToken().getValue().equals(symbol.getValue())))
+                            || transition.getToken().getType().equals("ε")) {
                         result.add(transition);
                     }
                 }

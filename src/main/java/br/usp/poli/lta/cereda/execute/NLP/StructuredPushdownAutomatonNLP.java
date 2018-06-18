@@ -67,8 +67,7 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
             if (query.isEmpty()) {
 
                 if (stack.isEmpty()) {
-                    logger.debug("Não há transições válidas e a pilha está "
-                            + "vazia. A cadeia não é válida.");
+                    logger.debug("Não há transições válidas e a pilha está vazia. A cadeia não é válida.");
                     return false;
                 } else {
                     String current = machines.pop();
@@ -83,13 +82,10 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
                         if (branch.size() == 1) {
                             branch.add("ε");
                         }
-                        logger.debug("Árvore da submáquina corrente: {}",
-                                branch);
+                        logger.debug("Árvore da submáquina corrente: {}", branch);
                         if (operations.containsKey(current)) {
-                            logger.debug("Executando ação semântica no "
-                                    + "retorno da submáquina.");
-                            branch = operations.get(current).
-                                    execute(reference, branch);
+                            logger.debug("Executando ação semântica no retorno da submáquina.");
+                            branch = operations.get(current).execute(reference, branch);
                             logger.debug("Árvore após a ação semântica no "
                                     + "retorno da submáquina: {}", branch);
                         }
@@ -180,9 +176,7 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
 
                     logger.debug("Tentando decidir a melhor escolha com "
                             + "lookahead = 0 (análise do token corrente).");
-                    Pair<List<Quadruple<Integer, Stack<Integer>,
-                                                                    Stack<String>, Integer>>, List<Quadruple<Integer,
-                                                                    Stack<Integer>, Stack<String>, Integer>>> pair =
+                    Pair<List<Quadruple<Integer, Stack<Integer>, Stack<String>, Integer>>, List<Quadruple<Integer,                                                                     Stack<Integer>, Stack<String>, Integer>>> pair =
                             split(attempts, query);
                     attempts.clear();
 
@@ -201,142 +195,9 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
 
                     logger.debug("Resultado com lookahead = 0: {}", attempts);
 
+                    // Inicio look ahead > 0
                     if (attempts.size() < 1) {
-
                         logger.debug("Iniciando a operação de lookahead.");
-
-                        do {
-                            if (lexer.hasNext()) {
-                                payback.push(lexer.getNext());
-                                logger.debug("Símbolos na pilha de "
-                                        + "lookahead: {}", payback);
-                                logger.debug("Avaliando as escolhas com o "
-                                        + "token do topo da pilha.");
-                                logger.debug("Topo da pilha de lookahed: {}",
-                                        payback.top());
-                                attempts = evaluate(attempts, payback.top());
-                                logger.debug("Resultado da avaliação: {}",
-                                        attempts);
-                            } else {
-
-                                logger.debug("Não há símbolos no analisador "
-                                        + "léxico, iniciando operação de "
-                                        + "análise da pilha de estados.");
-
-                                List<Quadruple<Integer, Stack<Integer>,
-                                        Stack<String>, Integer>> analysis =
-                                        new ArrayList<>();
-
-                                for (Quadruple<Integer, Stack<Integer>,
-                                        Stack<String>, Integer> attempt :
-                                        attempts) {
-                                    if (submachines.get(
-                                            attempt.getThird().
-                                                    top()).getSecond().
-                                            contains(attempt.getFourth())) {
-                                        logger.debug("{} encontra-se em um estado de aceitação da "
-                                                + "submáquina corrente, portanto é uma escolha "
-                                                + "válida.");
-                                        analysis.add(attempt);
-                                    }
-                                }
-                                if (analysis.isEmpty()) {
-                                    logger.debug("Os símbolos acabaram prematuramente sem que o "
-                                            + "lookahead pudesse ser resolvido. O processo de "
-                                            + "reconhecimento gerou uma exceção.");
-                                    return false;
-                                }
-                                else {
-                                    logger.debug("Resultado da análise: {} "
-                                            + "escolhas válidas",
-                                            analysis.size());
-                                    if (analysis.size() != 1) {
-                                        attempts.clear();
-
-                                        for (Quadruple<Integer, Stack<Integer>,
-                                                Stack<String>, Integer>
-                                                current : analysis) {
-                                            logger.debug("Verificando escolha"
-                                                    + " {}.", current);
-                                            if (!current.getSecond().
-                                                    isEmpty()) {
-                                                logger.debug("A escolha "
-                                                        + "corrente é um "
-                                                        + "retorno de "
-                                                        + "submáquina.");
-                                                Quadruple<Integer,
-                                                        Stack<Integer>,
-                                                        Stack<String>,
-                                                        Integer> quadruple =
-                                                        new Quadruple<>();
-
-                                                Stack<Integer> states =
-                                                        copy(current.getSecond());
-                                                Stack<String> names =
-                                                        copy(current.getThird());
-
-                                                quadruple.setFirst(
-                                                        current.getFirst());
-                                                quadruple.setFourth(
-                                                        states.pop());
-                                                names.pop();
-                                                quadruple.setSecond(states);
-                                                quadruple.setThird(names);
-
-                                                logger.debug("A escolha {} "
-                                                        + "foi atualizada para "
-                                                        + "{}.", current,
-                                                        attempts);
-                                                attempts.add(quadruple);
-                                            }
-                                            else {
-                                                logger.debug("A escolha "
-                                                        + "corrente é um "
-                                                        + "consumo de "
-                                                        + "símbolo.");
-                                                logger.debug("Escolha "
-                                                        + "adicionada: {}",
-                                                        current);
-                                                attempts.add(current);
-                                            }
-                                        }
-
-                                        logger.debug("Procurando por "
-                                                + "tentativas com pilha de "
-                                                + "estados não-vazias.");
-                                        boolean found = false;
-                                        for (Quadruple<Integer, Stack<Integer>,
-                                                Stack<String>, Integer>
-                                                attempt : attempts) {
-                                            if (!attempt.getSecond().
-                                                    isEmpty()) {
-                                                found = true;
-                                            }
-                                        }
-
-                                        if (!found) {
-                                            logger.debug("Existem vários "
-                                                    + "estados de aceitação, "
-                                                    + "o reconhecimento é "
-                                                    + "não-determinístico.");
-                                            return true;
-                                        }
-                                    }
-                                    else {
-                                        attempts = analysis;
-                                    }
-                                }
-
-                                logger.debug("Tentativas após análise: {}",
-                                        attempts);
-
-                            }
-                            lookahead++;
-                            logger.debug("Lookahead corrente: {}",
-                                    lookahead);
-
-                        } while (attempts.size() > 1);
-
                     }
 
                     logger.debug("O não-determinismo foi resolvido com "
@@ -349,13 +210,6 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
                         lexer.push(payback.pop());
                     }
 
-                    if (attempts.isEmpty()) {
-                        logger.debug("O lookahead indicou que não há "
-                                + "transições válidas com o próximo token, "
-                                + "indicando que a cadeia não é válida.");
-                        return false;
-                    }
-
                     logger.debug("Tentativas: {}", attempts);
                     logger.debug("Transição escolhida pelo lookahead: {}",
                             query.get(attempts.get(0).getFirst()));
@@ -366,14 +220,10 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
                         action.execute(symbol);
                     }
 
-                    if (query.get(attempts.get(0).getFirst()).
-                            isSubmachineCall()) {
-                        machines.push(query.get(attempts.get(0).getFirst()).
-                                getSubmachine());
-                        stack.push(query.get(attempts.get(0).getFirst()).
-                                getTarget());
-                        state = query.get(attempts.get(0).getFirst()).
-                                getLookahead();
+                    if (query.get(attempts.get(0).getFirst()).isSubmachineCall()) {
+                        machines.push(query.get(attempts.get(0).getFirst()).getSubmachine());
+                        stack.push(query.get(attempts.get(0).getFirst()).getTarget());
+                        state = query.get(attempts.get(0).getFirst()).getLookahead();
                         lexer.push(symbol);
                         logger.debug("A transição é uma chamada à submáquina "
                                 + "'{}', empilhando o estado de retorno {} "
@@ -385,11 +235,9 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
                                                 attempts.get(0).getFirst())
                                                 .getTarget(), state, symbol);
                         tree.push(new ArrayList());
-                        tree.top().add(query.get(attempts.get(0).
-                                getFirst()).getSubmachine());
+                        tree.top().add(query.get(attempts.get(0).getFirst()).getSubmachine());
                     } else {
-                        state = query.get(attempts.get(0).getFirst()).
-                                getTarget();
+                        state = query.get(attempts.get(0).getFirst()).getTarget();
                         logger.debug("A transição é um consumo de símbolo,"
                                 + " o novo estado de destino é {}.", state);
                         tree.top().add(symbol);
@@ -466,5 +314,29 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
         }
     }
 
-
+    @Override
+    protected List<Transition> query(int state, Token symbol) {
+        logger.debug("Executando consulta com estado {} e token {}.", state, symbol);
+        List<Transition> result = new ArrayList<>();
+        for (Transition transition : transitions) {
+            if (transition.getSource() == state) {
+                if (transition.isSubmachineCall()) {
+                    result.add(transition);
+                } else {
+                    if (transition.getToken().getType().equals("ε")) {
+                        result.add(transition);
+                    }
+                    else if (symbol.getNlpToken() != null) {
+                        for (NLPWord currentNLPWord: symbol.getNlpToken().getNlpWords()) {
+                            if (transition.getToken().getValue().equals(currentNLPWord.posTag) ) {
+                                result.add(transition);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        logger.debug("Transições encontradas: {}", result);
+        return result;
+    }
 }

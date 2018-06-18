@@ -5,15 +5,15 @@ import java.util.ArrayList;
 public class NLPDictionaryEntry {
 
     private String posTag;
-    private String value;
+    private String canonical;
     private String attribute1;
     private String attribute2;
     private String attribute3;
     private String attribute4;
 
-    public NLPDictionaryEntry(String posTag, String value, String attribute1, String attribute2, String attribute3, String attribute4) {
+    public NLPDictionaryEntry(String posTag, String canonical, String attribute1, String attribute2, String attribute3, String attribute4) {
         this.posTag = posTag;
-        this.value = value;
+        this.canonical = canonical;
         this.attribute1 = attribute1;
         this.attribute2 = attribute2;
         this.attribute3 = attribute3;
@@ -23,7 +23,7 @@ public class NLPDictionaryEntry {
     public NLPDictionaryEntry(ArrayList<String> attributes) {
         if (attributes.size() == 6) {
             this.posTag = attributes.get(0);
-            this.value = attributes.get(1);
+            this.canonical = attributes.get(1);
             this.attribute1 = attributes.get(2);
             this.attribute2 = attributes.get(3);
             this.attribute3 = attributes.get(4);
@@ -39,12 +39,12 @@ public class NLPDictionaryEntry {
         this.posTag = posTag;
     }
 
-    public String getValue() {
-        return value;
+    public String getCanonical() {
+        return canonical;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setCanonical(String canonical) {
+        this.canonical = canonical;
     }
 
     public String getAttribute1() {
@@ -83,7 +83,7 @@ public class NLPDictionaryEntry {
     public String toString() {
         return "NLPDictionaryEntry{" +
                 "posTag='" + posTag + '\'' +
-                ", value='" + value + '\'' +
+                ", canonical='" + canonical + '\'' +
                 ", attribute1='" + attribute1 + '\'' +
                 ", attribute2='" + attribute2 + '\'' +
                 ", attribute3='" + attribute3 + '\'' +

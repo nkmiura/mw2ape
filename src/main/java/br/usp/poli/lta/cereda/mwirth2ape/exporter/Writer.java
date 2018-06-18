@@ -84,7 +84,7 @@ public class Writer {
                     t.setSymbol(sketch.getSubmachine().concat(" (call)"));
                 }
                 else {
-                    t.setSymbol(sketch.getToken().getValue());
+                    t.setSymbol(sketch.getToken().getCanonical());
                 }
             }
             if (sketch.getToken() != null) {

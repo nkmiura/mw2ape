@@ -26,10 +26,6 @@ public class NLPLexer extends Lexer {
         splitPrepDetUnion();
     }
 
-//    public boolean hasNext() {
-//        return !this.nlpTokens.isEmpty() || !bufferIsEmpty();
-//    }
-
     @Override
     public Token recognize() {
         Token newToken = new Token();
@@ -53,12 +49,11 @@ public class NLPLexer extends Lexer {
                         value = String.valueOf(symbol);
                         done = true;
                     } else if (contains(symbol, ' ', '\t', '\n', '\r')) {
-                        cursor++;
                     } else {
                         value = value.concat(String.valueOf(symbol));
                         state = 1;
-                        cursor++;
                     }
+                    cursor++;
                     break;
                 case 1:
                     if (isPunct(symbol)) {
@@ -80,10 +75,13 @@ public class NLPLexer extends Lexer {
             // Pontuacao
             if (type.equals("punct")) {
                 NLPWord nlpWord = new NLPWord(type, value);
+                NLPDictionaryEntry nlpDictionaryEntry = new NLPDictionaryEntry(
+                        "punct", value, "", "", "", "");
+                nlpWord.setNlpDictionaryEntry(nlpDictionaryEntry);
                 NLPToken nlpToken = new NLPToken();
                 nlpToken.addNlpWord(nlpWord);
                 newToken.setNlpToken(nlpToken);
-                newToken.setType(type);
+                newToken.setType("term");
             } else {
                 // Procura a palavra no dicionario
                 ArrayList<NLPDictionaryEntry> nlpDictionaryEntries = nlpDictionary.getEntry(value);

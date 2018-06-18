@@ -606,9 +606,8 @@ public class Generator {
             for (Sketch tempEmptyTransition : emptyTransitionList) {  // Processa cada transição em vazio
                 Integer source = tempEmptyTransition.getSource();
                 Integer target = tempEmptyTransition.getTarget();
+                String submachine = tempEmptyTransition.getName();
                 if (target != 1) {  // do nothing if target is the accepting state of the submachine
-                    String submachine = tempEmptyTransition.getName();
-
                     List<Sketch> sourceOutTransitions = new ArrayList<>();
                     for (Sketch tempSourceOutTransition: transitions) { // verifica se há mais transiçoes saindo do estado inicial
                         if ((tempSourceOutTransition.getName().equals(submachine)) &&
@@ -646,7 +645,8 @@ public class Generator {
                             transitions.remove(tempEmptyTransition);
                             // Ajusta source das demais transicoes
                             for (Sketch tempAdjustTransition: transitions) {
-                                if (tempAdjustTransition.getSource() == target) {
+                                if ((tempAdjustTransition.getName().equals(submachine)) &&
+                                        (tempAdjustTransition.getSource() == target)) {
                                     tempAdjustTransition.setSource(source);
                                 }
                             }
