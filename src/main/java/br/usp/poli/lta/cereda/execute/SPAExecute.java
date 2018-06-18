@@ -1,10 +1,8 @@
 package br.usp.poli.lta.cereda.execute;
 
 import br.usp.poli.lta.cereda.execute.NLP.NLPLexer;
-import br.usp.poli.lta.cereda.mwirth2ape.ape.Action;
-import br.usp.poli.lta.cereda.mwirth2ape.ape.ActionState;
-import br.usp.poli.lta.cereda.mwirth2ape.ape.StructuredPushdownAutomaton2;
-import br.usp.poli.lta.cereda.mwirth2ape.ape.Transition;
+import br.usp.poli.lta.cereda.execute.NLP.StructuredPushdownAutomatonNLP;
+import br.usp.poli.lta.cereda.mwirth2ape.ape.*;
 import br.usp.poli.lta.cereda.mwirth2ape.ape.conversion.Sketch;
 import br.usp.poli.lta.cereda.mwirth2ape.ape.conversion.State;
 import br.usp.poli.lta.cereda.mwirth2ape.labeling.LabelElement;
@@ -61,7 +59,15 @@ public class SPAExecute {
     public void parseInput() throws Exception {
         // Build SPA
         logger.debug("Started building SPA parser.");
-        StructuredPushdownAutomaton2 spa = new StructuredPushdownAutomaton2();
+
+        StructuredPushdownAutomaton spa;
+
+        if (lexer != null) {
+            spa = new StructuredPushdownAutomaton2();
+        } else {
+            spa = new StructuredPushdownAutomatonNLP();
+        }
+
         spa.setSubmachine(this.lmwg.getMain());  // set main machine
 
         SPAGetStruct spaStruct = new SPAGetStruct(this.transitions);
@@ -192,18 +198,18 @@ public class SPAExecute {
     }
 
 
-    private void addSPAState(Integer id, String submachine, StructuredPushdownAutomaton2 spa, LinkedList<LabelElement> labels, ActionState actionState) {
-
-        if (labels != null) {
-            if (spa.getState(id) == null) {
-                State newState = new State(id, submachine, labels);
-                newState.addActionState(actionState);
-                spa.addState(id, newState);
+    private void addSPAState(Integer id, String submachine, Object spa, LinkedList<LabelElement> labels, ActionState actionState) {
+        if (spa instanceof StructuredPushdownAutomaton2) {
+            if (labels != null) {
+                if (((StructuredPushdownAutomaton2)spa).getState(id) == null) {
+                    State newState = new State(id, submachine, labels);
+                    newState.addActionState(actionState);
+                    ((StructuredPushdownAutomaton2)spa).addState(id, newState);
+                }
+            } else {
+                State newState = new State(id, submachine, null);
+                ((StructuredPushdownAutomaton2)spa).addState(id, newState);
             }
-        }
-        else {
-            State newState = new State (id, submachine, null);
-            spa.addState(id, newState);
         }
     }
 

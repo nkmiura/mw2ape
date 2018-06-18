@@ -17,15 +17,15 @@
 * for more details.
 * 
 **/
-package br.usp.poli.lta.cereda.mwirth2ape.ape;
+package br.usp.poli.lta.cereda.execute.NLP;
 
+import br.usp.poli.lta.cereda.mwirth2ape.ape.*;
 import br.usp.poli.lta.cereda.mwirth2ape.ape.conversion.State;
 import br.usp.poli.lta.cereda.mwirth2ape.lexer.Lexer;
 import br.usp.poli.lta.cereda.mwirth2ape.model.Token;
 import br.usp.poli.lta.cereda.mwirth2ape.structure.Stack;
 import br.usp.poli.lta.cereda.mwirth2ape.tuple.Pair;
 import br.usp.poli.lta.cereda.mwirth2ape.tuple.Quadruple;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,41 +36,11 @@ import java.util.*;
  * @version 1.1
  * @since 1.0
  */
-public class StructuredPushdownAutomaton2 extends StructuredPushdownAutomaton {
+public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2 {
 
     private static final Logger logger = LoggerFactory.
-            getLogger(StructuredPushdownAutomaton2.class);
-    protected static Map<Integer, State> states;
+            getLogger(StructuredPushdownAutomatonNLP.class);
 
-    public StructuredPushdownAutomaton2() {
-        super();
-        boolean tempflag = logger.isDebugEnabled();
-        if (tempflag)
-        {
-            logger.debug("Debug enabled.");
-        }
-        logger.debug("Novo autômato de pilha estruturado inicializado.");
-        submachines = new HashMap<>();
-        transitions = new HashSet<>();
-        states = new HashMap<>();
-        stack = new Stack<>();
-        tree = new Stack<>();
-        operations = new HashMap<>();
-    }
-
-    public void addState(Integer id, State state) {
-        if (this.states.get(id) == null) {
-            this.states.put(id, state);
-            logger.debug("Estado adicionado: {}, {}", id, state);
-        }
-        else {
-            logger.debug("Estado já existente: {}, []", id, this.states.get(id));
-        }
-    }
-
-    public State getState(Integer id) {
-        return this.states.get(id);
-    }
 
     @Override
     public boolean parse(Lexer lexer) {
@@ -496,72 +466,5 @@ public class StructuredPushdownAutomaton2 extends StructuredPushdownAutomaton {
         }
     }
 
-    protected List<Transition> query(int state, Token symbol) {
-        logger.debug("Executando consulta com estado {} e token {}.",
-                state, symbol);
-        List<Transition> result = new ArrayList<>();
-        for (Transition transition : transitions) {
-            if (transition.getSource() == state) {
-                if (transition.isSubmachineCall()) {
-                    result.add(transition);
-                } else {
-                    if (transition.getToken().equals(symbol) || transition.getToken().getType().equals("ε")) {
-                        result.add(transition);
-                    }
-                }
-            }
-        }
-        logger.debug("Transições encontradas: {}", result);
-        return result;
-    }
-
-    protected Integer checkAndDoEmptyTransition (Integer state) {
-        Integer newState = -1;
-        Token symbol = new Token();
-        List<Transition> query = query(state, symbol);
-        if (!query.isEmpty()) {
-            if (deterministic(query)) {
-                logger.debug("Existe apenas uma transição válida, "
-                        + "portanto o passo é determinístico.");
-                if (query.get(0).getToken().getType().equals("ε")) {
-                    logger.debug("A transição é uma chamada em vazio.");
-                    newState = query.get(0).getTarget();
-                    for (Action action : query.get(0).getPreActions()) {
-                        logger.debug("Executando ação anterior: {}", action);
-                        action.execute(symbol);
-                    }
-                    for (Action action : query.get(0).getPostActions()) {
-                        logger.debug("Executando ação posterior: {}", action);
-                        action.execute(symbol);
-                    }
-                } else {
-                    logger.debug("O estado corrente {} não é de aceitação na "
-                            + "submáquina corrente e não existe transição em vazio. "
-                            + "A cadeia não foi aceita.", state);
-                }
-            }
-        }
-        return newState;
-    }
-
-    protected void checkAndDoActionState(Integer state) {
-        if (this.states.get(state).getActionList() != null) {
-            for (ActionState actionState : this.states.get(state).getActionList()) {
-                if (this.states.get(state).getLabelElements() != null) {
-                    logger.debug("Executando ação semântica {} do estado {} com labels: {}",
-                            actionState, state, this.states.get(state).getLabelElements());
-                    actionState.execute(this.states.get(state).getLabelElements());
-                }
-            }
-        }
-    }
-
-    protected <T> Stack<T> copy(Stack<T> original) {
-        Stack<T> copy = new Stack<>();
-        for (T element : original.getList()) {
-            copy.push(element);
-        }
-        return copy;
-    }
 
 }

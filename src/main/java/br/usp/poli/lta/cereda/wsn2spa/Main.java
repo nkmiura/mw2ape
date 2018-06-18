@@ -142,17 +142,7 @@ public class Main {
         File inputNLPDictionaryFile = null;*/
 
         String inputNLPDictionaryFileName = "";
-        /* if (!line.getOptionValue("d").isEmpty()) {
-            inputNLPDictionaryFileName = line.getOptionValue("d");
-            inputNLPDictionaryFile = new File(inputNLPDictionaryFileName);
-            if (!inputNLPDictionaryFile.exists()) {
-                throw new Exception("The provided input NLP dictionary file " +
-                        inputNLPDictionaryFileName +
-                        " does not exist. Make sure the location is correct and " +
-                        "try again.");
-            }
-        }
-*/
+
 
         File file = new File(line.getArgs()[0]);
         if (!file.exists()) {
@@ -205,20 +195,31 @@ public class Main {
                     // Parse input sentence
                     if (inputFile != null) {
                         String inputText = FileUtils.readFileToString(inputFile, "UTF-8").trim();
-                        //if (line.getOptionValue("d").isEmpty()) { // Check if input is NLP
+                        if (!line.hasOption("n")) { // Check if input is NLP
                             SimpleLexer simpleLexer = new SimpleLexer(inputText, labelGrammar.getTermsList());
                             SPAExecute spaExecute = new SPAExecute(simpleLexer, lmwg, labelGrammar.getTermsList());
                             spaExecute.parseInput();
-                        //}
-                        //else {
-                        //    NLPLexer nlpLexer = new NLPLexer(inputText, inputNLPDictionaryFileName, labelGrammar.getTermsList());
-                        //    SPAExecute spaExecute = new SPAExecute(nlpLexer, lmwg, labelGrammar.getTermsList());
-//                        }
+                        }
+                        else {
+                            if (line.hasOption("d")) {
+                                if (!line.getOptionValue("d").isEmpty()) {
+                                    inputNLPDictionaryFileName = line.getOptionValue("d");
+                                    NLPLexer nlpLexer = new NLPLexer(inputText, inputNLPDictionaryFileName, labelGrammar.getTermsList());
+                                    SPAExecute spaExecute = new SPAExecute(nlpLexer, lmwg, labelGrammar.getTermsList());
+                                    spaExecute.parseInput();
+                                }
+                                else {
+                                    throw new Exception("NLP processing requires an NLP dictionary file. " +
+                                            " Provide the dictionary and try again.");
+                                }
+                            } else {
+                                throw new Exception("NLP processing requires an NLP dictionary file. " +
+                                        " Provide the dictionary and try again.");
+                            }
+                        }
                     }
                     break;
                 case 3:
-
-
                     break;
             }
 

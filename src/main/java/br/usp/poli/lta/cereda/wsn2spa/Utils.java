@@ -60,7 +60,7 @@ public class Utils {
         options.addOption("m", "minimize", false, "state minimization");
         options.addOption("g", "gui", false, "open graphical interface");
         options.addOption("i", "input_file", true, "input file to be parsed");
-        options.addOption("n", "nlp_input_file", true, "nlp input file to be parsed");
+        options.addOption("n", "nlp", false, "nlp processing");
         options.addOption("d", "nlp_dictionary_file", true, "nlp dictionary file");
         options.addOption("t", "type", true, "parsing type");
         return options;
