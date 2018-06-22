@@ -608,27 +608,47 @@ public class Generator {
                 Integer target = tempEmptyTransition.getTarget();
                 String submachine = tempEmptyTransition.getName();
                 if (target != 1) {  // do nothing if target is the accepting state of the submachine
+                    List<Sketch> sourceInTransitions = new ArrayList<>();
+                    for (Sketch tempSourceInTransition: transitions) { // verifica se há multiplas transiçoes entrando do estado source
+                        if ((tempSourceInTransition.getName().equals(submachine)) &&
+                                (tempSourceInTransition.getTarget() == source) &&
+                                (! tempSourceInTransition.equals(tempEmptyTransition))) {
+                            sourceInTransitions.add(tempSourceInTransition);
+                        }
+                    }
                     List<Sketch> sourceOutTransitions = new ArrayList<>();
-                    for (Sketch tempSourceOutTransition: transitions) { // verifica se há mais transiçoes saindo do estado inicial
+                    for (Sketch tempSourceOutTransition: transitions) { // verifica se há multiplas transiçoes saindo do estado source
                         if ((tempSourceOutTransition.getName().equals(submachine)) &&
                                 (tempSourceOutTransition.getSource() == source) &&
                                 (! tempSourceOutTransition.equals(tempEmptyTransition))) {
                             sourceOutTransitions.add(tempSourceOutTransition);
                         }
                     }
-                    if (sourceOutTransitions.isEmpty()) {  // se não há outras transições saindo do source
-                        List<Sketch> targetInTransitions = new ArrayList<>();
-                        for (Sketch tempTargetInTransition: transitions) {
-                            if ((tempTargetInTransition.getName().equals(submachine)) &&
-                                    (tempTargetInTransition.getTarget() == target) &&
-                                    (! tempTargetInTransition.equals(tempEmptyTransition))) {
-                                targetInTransitions.add(tempTargetInTransition);
-                            }
+                    List<Sketch> targetInTransitions = new ArrayList<>();
+                    for (Sketch tempTargetInTransition: transitions) { // verifica se há multiplas transiçoes entrando do estado target
+                        if ((tempTargetInTransition.getName().equals(submachine)) &&
+                                (tempTargetInTransition.getTarget() == target) &&
+                                (! tempTargetInTransition.equals(tempEmptyTransition))) {
+                            targetInTransitions.add(tempTargetInTransition);
                         }
-                        if (targetInTransitions.isEmpty()) {
+                    }
+                    /*
+                    List<Sketch> targetOutTransitions = new ArrayList<>();
+                    for (Sketch tempTargetOutTransition: transitions) { // verifica se há multiplas transiçoes saindo do estado target
+                        if ((tempTargetOutTransition.getName().equals(submachine)) &&
+                                (tempTargetOutTransition.getSource() == target) &&
+                                (! tempTargetOutTransition.equals(tempEmptyTransition))) {
+                            targetOutTransitions.add(tempTargetOutTransition);
+                        }
+                    }
+                    */
+
+                    if (targetInTransitions.isEmpty()) {  // se não há outras transições entrando no target
+
+                        if (sourceOutTransitions.isEmpty()) {
                             // A transicao é unica entre source e target
                             // Junta labels no estado source
-                            logger.debug("Eliminando transição em vazio {}.",tempEmptyTransition);
+                            logger.debug("Eliminando transição em vazio tipo 1: {}.",tempEmptyTransition);
                             if (mapMachineStates.get(submachine).get(source) != null) {
                                 if (this.mapMachineStates.get(submachine).get(target) != null) {
                                     this.mapMachineStates.get(submachine).get(source).addAll(
@@ -640,17 +660,55 @@ public class Generator {
                                     this.mapMachineStates.get(submachine).put(source, this.mapMachineStates.get(submachine).get(target));
                                 }
                             }
-                            // Deleta transição e estado target
                             this.mapMachineStates.get(submachine).remove(target);
                             transitions.remove(tempEmptyTransition);
+                            emptyTransitionList.remove(tempEmptyTransition);
                             // Ajusta source das demais transicoes
                             for (Sketch tempAdjustTransition: transitions) {
-                                if ((tempAdjustTransition.getName().equals(submachine)) &&
+                                if (tempAdjustTransition.getName().equals(submachine) &&
                                         (tempAdjustTransition.getSource() == target)) {
                                     tempAdjustTransition.setSource(source);
                                 }
                             }
+                            emptyTransitionList.remove(tempEmptyTransition);
                             emptyTransitionEliminated = true;
+                            break;
+                        }
+                        else {
+                            if (this.mapMachineStates.get(submachine).get(target) == null) {
+                                logger.debug("Eliminando transição em vazio tipo 2: {}.",tempEmptyTransition);
+                                this.mapMachineStates.get(submachine).remove(target);
+                                transitions.remove(tempEmptyTransition);
+                                // Ajusta source das demais transicoes
+                                for (Sketch tempAdjustTransition: transitions) {
+                                    if (tempAdjustTransition.getName().equals(submachine) &&
+                                            (tempAdjustTransition.getSource() == target)) {
+                                        tempAdjustTransition.setSource(source);
+                                    }
+                                }
+                                emptyTransitionList.remove(tempEmptyTransition);
+                                emptyTransitionEliminated = true;
+                                break;
+                            }
+                        }
+                    }
+                    else {
+                        if ((sourceInTransitions.size() == 0) && (sourceOutTransitions.size() == 0)) {
+                            if (this.mapMachineStates.get(submachine).get(source) == null) {
+                                logger.debug("Eliminando transição em vazio tipo 3: {}.",tempEmptyTransition);
+                                // Deleta transição e estado source qdo estado source tem só 1 entrada e saída e não tem label.
+                                this.mapMachineStates.get(submachine).remove(source);
+                                transitions.remove(tempEmptyTransition);
+                                for (Sketch tempAdjustTransition: transitions) {
+                                    if (tempAdjustTransition.getName().equals(submachine) &&
+                                            (tempAdjustTransition.getTarget() == source)) {
+                                        tempAdjustTransition.setTarget(target);
+                                    }
+                                }
+                                emptyTransitionList.remove(tempEmptyTransition);
+                                emptyTransitionEliminated = true;
+                                break;
+                            }
                         }
                     }
                 }
