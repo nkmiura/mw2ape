@@ -122,6 +122,4 @@ public class SPAGetStruct {
         return spec;
     }
 
-
-
 }

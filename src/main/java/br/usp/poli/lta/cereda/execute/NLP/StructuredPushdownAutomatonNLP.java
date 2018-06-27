@@ -19,9 +19,8 @@
 **/
 package br.usp.poli.lta.cereda.execute.NLP;
 
+import br.usp.poli.lta.cereda.execute.SPAExecuteNLP;
 import br.usp.poli.lta.cereda.mwirth2ape.ape.*;
-import br.usp.poli.lta.cereda.mwirth2ape.ape.conversion.State;
-import br.usp.poli.lta.cereda.mwirth2ape.lexer.Lexer;
 import br.usp.poli.lta.cereda.mwirth2ape.model.Token;
 import br.usp.poli.lta.cereda.mwirth2ape.structure.Stack;
 import br.usp.poli.lta.cereda.mwirth2ape.tuple.Pair;
@@ -30,21 +29,33 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
+import java.lang.InterruptedException;
 
 /**
  * @author Paulo Roberto Massa Cereda
  * @version 1.1
  * @since 1.0
  */
-public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2 {
+public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2  {
 
     private static final Logger logger = LoggerFactory.
             getLogger(StructuredPushdownAutomatonNLP.class);
 
+    private NLPLexer lexer;
 
-    @Override
-    public boolean parse(Lexer lexer) {
-        logger.debug("Iniciando o processo de reconhecimento.");
+    private NLPOutputList nlpOutputList;
+
+
+    public StructuredPushdownAutomatonNLP (NLPLexer lexer, NLPOutputList nlpOutputList) {
+
+        this.lexer = lexer;
+        this.nlpOutputList = nlpOutputList;
+    }
+
+
+    //@Override
+    public boolean parse() {
+        logger.debug("Iniciando o processo de reconhecimento. Thread: " + Thread.currentThread().getName());
         int state = submachines.get(submachine).getFirst();
         stack.clear();
         Token symbol;

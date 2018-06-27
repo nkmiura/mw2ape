@@ -22,6 +22,7 @@ package br.usp.poli.lta.cereda.wsn2spa;
 import br.usp.poli.lta.cereda.execute.NLP.NLPDictionary;
 import br.usp.poli.lta.cereda.execute.NLP.NLPLexer;
 import br.usp.poli.lta.cereda.execute.SPAExecute;
+import br.usp.poli.lta.cereda.execute.SPAExecuteNLP;
 import br.usp.poli.lta.cereda.execute.SimpleLexer;
 import br.usp.poli.lta.cereda.mwirth2ape.labeling.LabelGrammar;
 import br.usp.poli.lta.cereda.mwirth2ape.mwirth.LMWirthLexer;
@@ -205,7 +206,7 @@ public class Main {
                                 if (!line.getOptionValue("d").isEmpty()) {
                                     inputNLPDictionaryFileName = line.getOptionValue("d");
                                     NLPLexer nlpLexer = new NLPLexer(inputText, inputNLPDictionaryFileName, labelGrammar.getTermsList());
-                                    SPAExecute spaExecute = new SPAExecute(nlpLexer, lmwg, labelGrammar.getTermsList());
+                                    SPAExecuteNLP spaExecute = new SPAExecuteNLP(nlpLexer, lmwg, labelGrammar.getTermsList());
                                     spaExecute.parseInput();
                                 }
                                 else {

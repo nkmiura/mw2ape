@@ -31,7 +31,9 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
  */
 public abstract class Action {
 
-    private final String name;
+    protected static String name;
+
+    public Action() {}
 
     public Action(String name) {
         this.name = name;
