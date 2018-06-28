@@ -19,8 +19,8 @@
 **/
 package br.usp.poli.lta.cereda.execute.NLP;
 
-import br.usp.poli.lta.cereda.execute.SPAExecuteNLP;
 import br.usp.poli.lta.cereda.mwirth2ape.ape.*;
+import br.usp.poli.lta.cereda.mwirth2ape.ape.conversion.State;
 import br.usp.poli.lta.cereda.mwirth2ape.model.Token;
 import br.usp.poli.lta.cereda.mwirth2ape.structure.Stack;
 import br.usp.poli.lta.cereda.mwirth2ape.tuple.Pair;
@@ -29,12 +29,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
-import java.lang.InterruptedException;
 
 /**
- * @author Paulo Roberto Massa Cereda
- * @version 1.1
- * @since 1.0
+ * @author Paulo Roberto Massa Cereda, Newton Kiyotaka Miura
+ * @version 1.2
+ * @since 1.1
  */
 public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2  {
 
@@ -42,39 +41,62 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
             getLogger(StructuredPushdownAutomatonNLP.class);
 
     private NLPLexer lexer;
-
     private NLPOutputList nlpOutputList;
-
+    private int state;
+    private Token symbol;
+    private Stack<String> machines;
+    private List<Transition> query;
 
     public StructuredPushdownAutomatonNLP (NLPLexer lexer, NLPOutputList nlpOutputList) {
-
         this.lexer = lexer;
         this.nlpOutputList = nlpOutputList;
     }
 
+    public StructuredPushdownAutomatonNLP (StructuredPushdownAutomatonNLP originalSPA, Transition transition)
+    {
+        this.state = originalSPA.state;
+        this.lexer = originalSPA.lexer.clone(originalSPA.lexer);
+        this.stack = originalSPA.stack.clone();
+        this.tree = originalSPA.tree.clone();
+        this.query = new ArrayList<>();
+        this.query.add(transition);
+        // A lista de resultado é clonada no NLPSpaThread
+    }
 
-    //@Override
-    public boolean parse() {
+
+    public boolean parse(boolean isClone) {
+        boolean isCloneLocal = isClone;
         logger.debug("Iniciando o processo de reconhecimento. Thread: " + Thread.currentThread().getName());
-        int state = submachines.get(submachine).getFirst();
-        stack.clear();
-        Token symbol;
-        Stack<String> machines = new Stack<>();
-        machines.push(submachine);
+        if (isCloneLocal) {
 
-        tree = new Stack<>();
-        tree.push(new ArrayList());
-        tree.top().add(submachine);
 
-        checkAndDoActionState(state);
+        } else {
+            state = submachines.get(submachine).getFirst();
+            stack.clear();
 
-        while (lexer.hasNext()) {
-            symbol = lexer.getNext();
+            machines = new Stack<>();
+            machines.push(submachine);
+
+            tree = new Stack<>();
+            tree.push(new ArrayList());
+            tree.top().add(submachine);
+
+            checkAndDoActionState(state);
+        }
+
+        while (lexer.hasNext() || isCloneLocal) {
             logger.debug("# Token corrente: {}", symbol);
             logger.debug("# Estado corrente: {}", state);
-            List<Transition> query = query(state, symbol);
+            if (isCloneLocal) {
+                isCloneLocal = false;
+            } else {
+                symbol = lexer.getNext();
+                this.query = query(state, symbol);
+            }
+
             logger.debug("# Estado corrente da pilha: {}", stack);
             logger.debug("# Transições válidas encontradas: {}", query);
+
             if (query.isEmpty()) {
 
                 if (stack.isEmpty()) {
@@ -112,155 +134,67 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
                     }
                 }
             } else {
-                if (deterministic(query)) {
-                    logger.debug("Existe apenas uma transição válida, "
-                            + "portanto o passo é determinístico.");
-                    for (Action action : query.get(0).getPreActions()) {
-                        logger.debug("Executando ação anterior: {}", action);
-                        action.execute(symbol);
-                    }
-                    if (query.get(0).isSubmachineCall()) {
-                        machines.push(query.get(0).getSubmachine());
-                        stack.push(query.get(0).getTarget());
-                        state = query.get(0).getLookahead();
-                        lexer.push(symbol);
-                        logger.debug("A transição é uma chamada à "
-                                + "submáquina '{}', empilhando o estado de "
-                                + "retorno {} na pilha, desviando a execução "
-                                + "para o estado {} e devolvendo o token "
-                                + "corrente {} ao analisador léxico.",
-                                query.get(0).getSubmachine(),
-                                query.get(0).getTarget(), state, symbol);
-                        tree.push(new ArrayList());
-                        tree.top().add(query.get(0).getSubmachine());
-                    } else {
-                        state = query.get(0).getTarget();
-                        if (!query.get(0).getToken().getType().equals("ε")) {
-                            logger.debug("A transição é um consumo de símbolo, "
-                                    + "o novo estado de destino é {}.", state);
-                            tree.top().add(symbol);
+                if (!deterministic(query)) {
+                    // Clona spa e inicia nova thread
+
+                    int queryIndex = 0;
+                    lexer.push(symbol);
+                    for (Transition tempTransition: query) {
+                        if (queryIndex > 0) {
+                            StructuredPushdownAutomatonNLP newSpa =
+                                    new StructuredPushdownAutomatonNLP(this, tempTransition);
+                            NLPSpaThread NLPSpaThread = new NLPSpaThread(newSpa,
+                                    this.nlpOutputList, Thread.currentThread().getId());
+                            Thread newThread = new Thread(NLPSpaThread);
+                            newThread.start();
                         }
-                        else {
-                            lexer.push(symbol);
-                            logger.debug("A transição é uma chamada em vazio. "
-                                            + "Devolvendo o token "
-                                            + "corrente {} ao analisador léxico.",
-                                    symbol);
-                        }
+                        queryIndex++;
                     }
-                    for (Action action : query.get(0).getPostActions()) {   // Newton Dúvida: esta ação não seria aplicavel somente para transição com terminal?
-                        logger.debug("Executando ação posterior: {}", action);
-                        action.execute(symbol);
-                    }
-                    checkAndDoActionState(state); // acao semantica no estado
+                    symbol = lexer.getNext();
+
+                }
+                else {
+                }
+                logger.debug("Existe apenas uma transição válida, "
+                        + "portanto o passo é determinístico.");
+                for (Action action : query.get(0).getPreActions()) {
+                    logger.debug("Executando ação anterior: {}", action);
+                    action.execute(symbol);
+                }
+                if (query.get(0).isSubmachineCall()) {
+                    machines.push(query.get(0).getSubmachine());
+                    stack.push(query.get(0).getTarget());
+                    state = query.get(0).getLookahead();
+                    lexer.push(symbol);
+                    logger.debug("A transição é uma chamada à "
+                                    + "submáquina '{}', empilhando o estado de "
+                                    + "retorno {} na pilha, desviando a execução "
+                                    + "para o estado {} e devolvendo o token "
+                                    + "corrente {} ao analisador léxico.",
+                            query.get(0).getSubmachine(),
+                            query.get(0).getTarget(), state, symbol);
+                    tree.push(new ArrayList());
+                    tree.top().add(query.get(0).getSubmachine());
                 } else {
-// newton
-                    logger.debug("Existem {} transições válidas. Iniciando "
-                            + "operação de lookahead para descoberta da "
-                            + "melhor transição.", query.size());
-                    List<Quadruple<Integer, Stack<Integer>, Stack<String>,
-                            Integer>> attempts = new ArrayList<>();
-                    Stack<Token> payback = new Stack<>();
-
-
-                    logger.debug("Definindo as possíveis escolhas.");
-                    for (int i = 0; i < query.size(); i++) {
-                        Quadruple<Integer, Stack<Integer>,
-                                Stack<String>, Integer> attempt;
-                        if (!query.get(i).isSubmachineCall()) {
-                            attempt = new Quadruple<>(i, copy(stack),
-                                    copy(machines), query.get(i).getTarget());
-                        }
-                        else {
-                            Stack<Integer> s = copy(stack);
-                            s.push(query.get(i).getTarget());
-                            Stack<String> m = copy(machines);
-                            m.push(query.get(i).getSubmachine());
-                            attempt = new Quadruple<>(i, s, m,
-                                    submachines.get(m.top()).getFirst());
-                        }
-                        attempts.add(attempt);
-                    }
-                    logger.debug("Lista de possíveis escolhas: {}", attempts);
-
-                    int lookahead = 0;
-
-                    logger.debug("Tentando decidir a melhor escolha com "
-                            + "lookahead = 0 (análise do token corrente).");
-                    Pair<List<Quadruple<Integer, Stack<Integer>, Stack<String>, Integer>>, List<Quadruple<Integer,                                                                     Stack<Integer>, Stack<String>, Integer>>> pair =
-                            split(attempts, query);
-                    attempts.clear();
-
-                    if (!pair.getFirst().isEmpty()) {
-                        attempts.addAll(pair.getFirst());
-                    }
-
-                    if (!pair.getSecond().isEmpty()) {
-                        List<Quadruple<Integer, Stack<Integer>, Stack<String>,
-                                Integer>> result = pair.getSecond();
-                        result = evaluate(result, symbol);
-                        if (!result.isEmpty()) {
-                            attempts.addAll(result);
-                        }
-                    }
-
-                    logger.debug("Resultado com lookahead = 0: {}", attempts);
-
-                    // Inicio look ahead > 0
-                    if (attempts.size() < 1) {
-                        logger.debug("Iniciando a operação de lookahead.");
-                    }
-
-                    logger.debug("O não-determinismo foi resolvido com "
-                            + "lookahead = {}, devolvendo símbolos ao "
-                            + "analisador léxico.", lookahead);
-
-                    logger.debug("Devolvendo tokens ao analisador "
-                            + "sintático. Pilha de lookahead: {}", payback);
-                    while (!payback.isEmpty()) {
-                        lexer.push(payback.pop());
-                    }
-
-                    logger.debug("Tentativas: {}", attempts);
-                    logger.debug("Transição escolhida pelo lookahead: {}",
-                            query.get(attempts.get(0).getFirst()));
-
-                    for (Action action : query.get(attempts.get(0).
-                            getFirst()).getPreActions()) {
-                        logger.debug("Executando ação anterior: {}", action);
-                        action.execute(symbol);
-                    }
-
-                    if (query.get(attempts.get(0).getFirst()).isSubmachineCall()) {
-                        machines.push(query.get(attempts.get(0).getFirst()).getSubmachine());
-                        stack.push(query.get(attempts.get(0).getFirst()).getTarget());
-                        state = query.get(attempts.get(0).getFirst()).getLookahead();
-                        lexer.push(symbol);
-                        logger.debug("A transição é uma chamada à submáquina "
-                                + "'{}', empilhando o estado de retorno {} "
-                                + "na pilha, desviando a execução para o "
-                                + "estado {} e devolvendo o token corrente {} "
-                                + "ao analisador léxico.", query.get(
-                                        attempts.get(0).getFirst()).
-                                        getSubmachine(), query.get(
-                                                attempts.get(0).getFirst())
-                                                .getTarget(), state, symbol);
-                        tree.push(new ArrayList());
-                        tree.top().add(query.get(attempts.get(0).getFirst()).getSubmachine());
-                    } else {
-                        state = query.get(attempts.get(0).getFirst()).getTarget();
-                        logger.debug("A transição é um consumo de símbolo,"
-                                + " o novo estado de destino é {}.", state);
+                    state = query.get(0).getTarget();
+                    if (!query.get(0).getToken().getType().equals("ε")) {
+                        logger.debug("A transição é um consumo de símbolo, "
+                                + "o novo estado de destino é {}.", state);
                         tree.top().add(symbol);
                     }
-
-                    for (Action action : query.get(attempts.get(0).getFirst()).
-                            getPostActions()) {
-                        logger.debug("Executando ação posterior: {}", action);
-                        action.execute(symbol);
+                    else {
+                        lexer.push(symbol);
+                        logger.debug("A transição é uma chamada em vazio. "
+                                        + "Devolvendo o token "
+                                        + "corrente {} ao analisador léxico.",
+                                symbol);
                     }
-                    checkAndDoActionState(state); // acao semantica no estado
                 }
+                for (Action action : query.get(0).getPostActions()) {
+                    logger.debug("Executando ação posterior: {}", action);
+                    action.execute(symbol);
+                }
+                checkAndDoActionState(state); // acao semantica no estado
             }
         }
 

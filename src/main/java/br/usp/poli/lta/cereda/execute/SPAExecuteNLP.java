@@ -2,7 +2,7 @@ package br.usp.poli.lta.cereda.execute;
 
 import br.usp.poli.lta.cereda.execute.NLP.NLPLexer;
 import br.usp.poli.lta.cereda.execute.NLP.NLPOutputList;
-import br.usp.poli.lta.cereda.execute.NLP.SPAThread;
+import br.usp.poli.lta.cereda.execute.NLP.NLPSpaThread;
 import br.usp.poli.lta.cereda.execute.NLP.StructuredPushdownAutomatonNLP;
 import br.usp.poli.lta.cereda.mwirth2ape.ape.*;
 import br.usp.poli.lta.cereda.mwirth2ape.ape.conversion.Sketch;
@@ -175,15 +175,15 @@ public class SPAExecuteNLP extends SPAExecute {
         spa.setup();
 
         // Executar automato
-        SPAThread spaThread = new SPAThread(spa, this.nlpOutputList);
-        Thread thread = new Thread(spaThread);
+        NLPSpaThread NLPSpaThread = new NLPSpaThread(spa, this.nlpOutputList, -1);
+        Thread thread = new Thread(NLPSpaThread);
 
         logger.debug("Started parsing.");
 
         thread.start();
 //        spa.parse();
 
-        while (thread.isAlive()) {
+        while (this.nlpOutputList.isAnyThreadAlive()) {
             Thread.sleep(1000);
         }
 
@@ -197,5 +197,8 @@ public class SPAExecuteNLP extends SPAExecute {
         logger.debug(this.nlpOutputList.toString());
 
     }
+
+
+
 
 }

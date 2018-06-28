@@ -171,7 +171,7 @@ public class StructuredPushdownAutomaton2 extends StructuredPushdownAutomaton {
                                     symbol);
                         }
                     }
-                    for (Action action : query.get(0).getPostActions()) {   // Newton Dúvida: esta ação não seria aplicavel somente para transição com terminal?
+                    for (Action action : query.get(0).getPostActions()) {
                         logger.debug("Executando ação posterior: {}", action);
                         action.execute(symbol);
                     }

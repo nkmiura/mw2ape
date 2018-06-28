@@ -680,7 +680,11 @@ public class StructuredPushdownAutomaton {
     public List getTree() {
         return tree.top();
     }
-    
+
+    public Stack<Integer> getStack() {
+        return stack;
+    }
+
     protected Pair<List<Quadruple<Integer, Stack<Integer>, Stack<String>,
                  Integer>>, List<Quadruple<Integer, Stack<Integer>, Stack<String>,
                  Integer>>> split(List<Quadruple<Integer, Stack<Integer>, Stack<String>,

@@ -14,23 +14,38 @@ public class NLPLexer extends Lexer {
     private static final Logger logger = LoggerFactory.
             getLogger(NLPLexer.class);
 
+    int state;
     NLPDictionary nlpDictionary;
-    LinkedList<NLPToken> nlpTokens;
     private Set<String> termDictionary;
+
+    public NLPLexer(String input, NLPDictionary nlpDictionary, Set<String> termDictionary)
+    {
+        this.input = input;
+        this.nlpDictionary = nlpDictionary;
+        this.termDictionary = termDictionary;
+        //this.state = state;
+    }
 
     public NLPLexer(String input, String yamlDictionaryFileName, HashSet<String> termDictionary) {
         super(input);
         nlpDictionary = new NLPDictionary(yamlDictionaryFileName);
-        nlpTokens = new LinkedList<>();
         this.termDictionary = termDictionary;
         splitPrepDetUnion();
+    }
+
+
+    public NLPLexer clone(NLPLexer nlpLexer)
+    {
+        NLPLexer newLexer = new NLPLexer(this.input, this.nlpDictionary, this.termDictionary);
+        newLexer.state = nlpLexer.state;
+        newLexer.cursor = nlpLexer.cursor;
+        newLexer.buffer = nlpLexer.buffer.clone();
+        return newLexer;
     }
 
     @Override
     public Token recognize() {
         Token newToken = new Token();
-
-        //newToken.setNlpToken(this.nlpTokens.pop());
 
         int state = 0; // estado inicial
         char symbol;
@@ -75,8 +90,10 @@ public class NLPLexer extends Lexer {
             // Pontuacao
             if (type.equals("punct")) {
                 NLPWord nlpWord = new NLPWord(type, value);
-                NLPDictionaryEntry nlpDictionaryEntry = new NLPDictionaryEntry(
-                        "punct", value, "", "", "", "");
+                ArrayList<String> newDictionaryEntry = new ArrayList<>();
+                newDictionaryEntry.add(value);
+                newDictionaryEntry.add("punct");
+                NLPDictionaryEntry nlpDictionaryEntry = new NLPDictionaryEntry(newDictionaryEntry);
                 nlpWord.setNlpDictionaryEntry(nlpDictionaryEntry);
                 NLPToken nlpToken = new NLPToken();
                 nlpToken.addNlpWord(nlpWord);

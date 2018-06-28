@@ -6,7 +6,7 @@ public class NLPWord {
     NLPDictionaryEntry nlpDictionaryEntry;
 
     public NLPWord() {
-        this.nlpDictionaryEntry = new NLPDictionaryEntry("","","","","","");
+        this.nlpDictionaryEntry = new NLPDictionaryEntry();
         this.posTag = "";
         this.value = "";
     }

@@ -33,7 +33,7 @@ public abstract class Lexer {
     
     protected String input;
     protected int cursor;
-    private final Stack<Token> buffer;
+    protected Stack<Token> buffer;
 
     public Lexer() {
         buffer = new Stack<>();

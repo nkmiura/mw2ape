@@ -38,6 +38,12 @@ public class Stack<T> {
         this.list = new ArrayList<>();
     }
 
+    public Stack clone() {
+        Stack newStack = new Stack();
+        newStack.list.addAll(this.list);
+        return newStack;
+    }
+
     public void push(T entry) {
         list.add(entry);
     }

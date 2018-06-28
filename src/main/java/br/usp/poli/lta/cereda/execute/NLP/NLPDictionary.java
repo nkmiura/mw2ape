@@ -52,10 +52,7 @@ public class NLPDictionary {
         if (word != "") {
             ArrayList<ArrayList<String>> result = this.dictionaryHashMap.get(word);
             for (ArrayList<String> tempEntry: result) {
-                NLPDictionaryEntry nlpDictionaryEntry = new NLPDictionaryEntry(
-                    tempEntry.get(0),tempEntry.get(1),tempEntry.get(2),
-                    tempEntry.get(3),tempEntry.get(4),tempEntry.get(5)
-                );
+                NLPDictionaryEntry nlpDictionaryEntry = new NLPDictionaryEntry(tempEntry);
                 nlpDictionaryEntries.add(nlpDictionaryEntry);
             }
         }

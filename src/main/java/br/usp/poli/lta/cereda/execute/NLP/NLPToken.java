@@ -14,6 +14,18 @@ public class NLPToken extends Token {
         this.nlpWords = nlpWords;
     }
 
+    /*
+    public NLPToken clone(NLPToken originalNLPToken) {
+        NLPToken newNLPToken = new NLPToken();
+
+        newNLPToken.setType(originalNLPToken.getType());
+        newNLPToken.setValue(originalNLPToken.getValue());
+        newNLPToken.
+
+        return newNLPToken;
+    }
+    */
+
     public ArrayList<NLPWord> getNlpWords() {
         return nlpWords;
     }
