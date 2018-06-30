@@ -57,7 +57,7 @@ public class SPAExecuteNLP extends SPAExecute {
             @Override
             public void execute(Token token) {
                 long threadId = Thread.currentThread().getId();
-                if ((nlpLexer != null) && (token.getType().equals("term"))) {
+                if (token.getType().equals("term")) {
                     nlpOutputList.insertOutputResult(threadId,"\"" + token.getValue() + "\"");
                     //outputList.addLast("\"" + token.getValue() + "\"");
                     logger.debug("ThreadID {}: Ação semântica: Terminal consumido: POS tag {}, value \"{}\".",
@@ -77,10 +77,8 @@ public class SPAExecuteNLP extends SPAExecute {
             @Override
             public void execute(Token token) {
                 long threadId = Thread.currentThread().getId();
-                if ((nlpLexer != null)) {
-                    logger.debug("ThreadID {}: Ação semântica: Transiçao com chamada de submáquina.",
-                            String.valueOf(threadId));
-                }
+                logger.debug("ThreadID {}: Ação semântica: Transiçao com chamada de submáquina.",
+                       String.valueOf(threadId));
             }
 
             @Override
@@ -94,9 +92,7 @@ public class SPAExecuteNLP extends SPAExecute {
             @Override
             public void execute(Token token) {
                 long threadId = Thread.currentThread().getId();
-                if ((nlpLexer != null)) {
-                    logger.debug("ThreadID {}: Ação semântica: Transição em vazio.", String.valueOf(threadId));
-                }
+                logger.debug("ThreadID {}: Ação semântica: Transição em vazio.", String.valueOf(threadId));
             }
 
             @Override
@@ -108,7 +104,7 @@ public class SPAExecuteNLP extends SPAExecute {
         // Acao semantica associado ao estado (maquina de Moore) para gerar saída e manipular pilha de acordo com rotulos
         ActionState semanticActionState = new ActionState("semanticActionState") {
             @Override
-            public void execute(LinkedList<LabelElement> labels) {
+            public void execute(LinkedList<LabelElement> labels, Stack<String> transducerStack) {
                 long threadId = Thread.currentThread().getId();
 
                 logger.debug("ThreadID {}: Ação semântica: Labels", String.valueOf(threadId));

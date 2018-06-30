@@ -22,6 +22,8 @@ package br.usp.poli.lta.cereda.mwirth2ape.ape;
 import br.usp.poli.lta.cereda.mwirth2ape.labeling.LabelElement;
 import java.util.LinkedList;
 import java.util.List;
+
+import br.usp.poli.lta.cereda.mwirth2ape.structure.Stack;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -34,11 +36,12 @@ public abstract class ActionState {
 
     private final String name;
 
+
     public ActionState(String name) {
         this.name = name;
     }
 
-    public abstract void execute(LinkedList<LabelElement> labels);
+    public abstract void execute(LinkedList<LabelElement> labels, Stack<String> transducerStack);
     //public abstract List execute(int state, List tree);
 
     @Override

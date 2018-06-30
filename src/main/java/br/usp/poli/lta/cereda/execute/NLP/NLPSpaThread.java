@@ -1,5 +1,6 @@
 package br.usp.poli.lta.cereda.execute.NLP;
 
+import br.usp.poli.lta.cereda.mwirth2ape.structure.Stack;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,6 +21,7 @@ public class NLPSpaThread implements Runnable {
     private StructuredPushdownAutomatonNLP spaNLP;
     private NLPOutputList nlpOutputList;
     private boolean isClone;
+    private Stack<String> transducerStack;
 
 
     public NLPSpaThread(StructuredPushdownAutomatonNLP spaNLP, NLPOutputList nlpOutputList, long parentThreadId)

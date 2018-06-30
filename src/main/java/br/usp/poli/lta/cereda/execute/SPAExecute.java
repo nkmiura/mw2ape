@@ -127,7 +127,7 @@ public class SPAExecute {
         // Acao semantica associado ao estado (maquina de Moore) para gerar saída e manipular pilha de acordo com rotulos
         ActionState semanticActionState = new ActionState("semanticActionState") {
             @Override
-            public void execute(LinkedList<LabelElement> labels) {
+            public void execute(LinkedList<LabelElement> labels, Stack<String> transducerStack) {
                 logger.debug("Ação semântica: Labels");
                 for (LabelElement singleLabelElement : labels) {
                     if (singleLabelElement != null) { // verifica se não retornou elemento de rotulo nulo
@@ -261,8 +261,10 @@ public class SPAExecute {
                 Integer tempSource = tempSketch.getSource() + stateCounter;
                 Integer tempTarget = tempSketch.getTarget() + stateCounter;
 
-                addSPAState(tempSource, machine, spa, this.mapMachineStates.get(machine).get(tempSketch.getSource()), semanticActionState);
-                addSPAState(tempTarget, machine, spa, this.mapMachineStates.get(machine).get(tempSketch.getTarget()), semanticActionState);
+                addSPAState(tempSource, machine, spa, this.mapMachineStates.get(machine).get(tempSketch.getSource()),
+                        semanticActionState);
+                addSPAState(tempTarget, machine, spa, this.mapMachineStates.get(machine).get(tempSketch.getTarget()),
+                        semanticActionState);
 
                 //State tempState = new State (tempSketch.getSource(), machine, this.mapMachineStates.get(machine).get(tempSketch.getSource()));
 
@@ -296,7 +298,8 @@ public class SPAExecute {
     }
 
 
-    protected void addSPAState(Integer id, String submachine, Object spa, LinkedList<LabelElement> labels, ActionState actionState) {
+    protected void addSPAState(Integer id, String submachine, Object spa, LinkedList<LabelElement> labels,
+                               ActionState actionState) {
         if (spa instanceof StructuredPushdownAutomaton2) {
             if (labels != null) {
                 if (((StructuredPushdownAutomaton2)spa).getState(id) == null) {

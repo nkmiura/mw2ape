@@ -46,6 +46,7 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
     private Token symbol;
     private Stack<String> machines;
     private List<Transition> query;
+    //private Stack<String> transducerStack;
 
     public StructuredPushdownAutomatonNLP (NLPLexer lexer, NLPOutputList nlpOutputList) {
         this.lexer = lexer;
@@ -60,6 +61,7 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
         this.tree = originalSPA.tree.clone();
         this.query = new ArrayList<>();
         this.query.add(transition);
+        this.transducerStack = originalSPA.transducerStack.clone();
         // A lista de resultado é clonada no NLPSpaThread
     }
 
@@ -81,7 +83,7 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
             tree.push(new ArrayList());
             tree.top().add(submachine);
 
-            checkAndDoActionState(state);
+            checkAndDoActionState(state, transducerStack);
         }
 
         while (lexer.hasNext() || isCloneLocal) {
@@ -123,7 +125,7 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
                                     + "retorno da submáquina: {}", branch);
                         }
                         tree.top().add(branch);
-                        checkAndDoActionState(state); // acao semantica do estado
+                        checkAndDoActionState(state, transducerStack); // acao semantica do estado
                     } else {
                         logger.debug("Não há transições válidas e o estado "
                                 + "corrente não é de aceitação. Não é "
@@ -194,7 +196,7 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
                     logger.debug("Executando ação posterior: {}", action);
                     action.execute(symbol);
                 }
-                checkAndDoActionState(state); // acao semantica no estado
+                checkAndDoActionState(state, transducerStack); // acao semantica no estado
             }
         }
 
@@ -217,12 +219,12 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
                     branch = operations.get(current).execute(reference, branch);
                 }
                 tree.top().add(branch);
-                checkAndDoActionState(state); // acao semantica do estado
+                checkAndDoActionState(state, transducerStack); // acao semantica do estado
             } else {
                 Integer newState = checkAndDoEmptyTransition(state);
                 if (newState != -1) {
                     state = newState;
-                    checkAndDoActionState(state); // acao semantica do estado
+                    checkAndDoActionState(state, transducerStack); // acao semantica do estado
                 }
                 else {
                     return false;
@@ -236,7 +238,7 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
                 Integer newState = checkAndDoEmptyTransition(state);
                 if (newState != -1) {
                     state = newState;
-                    checkAndDoActionState(state); // acao semantica do estado
+                    checkAndDoActionState(state, transducerStack); // acao semantica do estado
                 }
                 else {
                     done = true;

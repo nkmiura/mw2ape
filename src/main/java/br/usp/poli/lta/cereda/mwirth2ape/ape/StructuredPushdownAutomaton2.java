@@ -41,9 +41,9 @@ public class StructuredPushdownAutomaton2 extends StructuredPushdownAutomaton {
     private static final Logger logger = LoggerFactory.
             getLogger(StructuredPushdownAutomaton2.class);
     protected static Map<Integer, State> states;
+    protected Stack<String> transducerStack;
 
     public StructuredPushdownAutomaton2() {
-        super();
         boolean tempflag = logger.isDebugEnabled();
         if (tempflag)
         {
@@ -56,6 +56,7 @@ public class StructuredPushdownAutomaton2 extends StructuredPushdownAutomaton {
         stack = new Stack<>();
         tree = new Stack<>();
         operations = new HashMap<>();
+        transducerStack = new Stack<>();
     }
 
     public void addState(Integer id, State state) {
@@ -85,7 +86,7 @@ public class StructuredPushdownAutomaton2 extends StructuredPushdownAutomaton {
         tree.push(new ArrayList());
         tree.top().add(submachine);
 
-        checkAndDoActionState(state);
+        checkAndDoActionState(state, transducerStack);
 
         while (lexer.hasNext()) {
             symbol = lexer.getNext();
@@ -124,7 +125,7 @@ public class StructuredPushdownAutomaton2 extends StructuredPushdownAutomaton {
                                     + "retorno da submáquina: {}", branch);
                         }
                         tree.top().add(branch);
-                        checkAndDoActionState(state); // acao semantica do estado
+                        checkAndDoActionState(state, transducerStack); // acao semantica do estado
                     } else {
                         logger.debug("Não há transições válidas e o estado "
                                 + "corrente não é de aceitação. Não é "
@@ -175,7 +176,7 @@ public class StructuredPushdownAutomaton2 extends StructuredPushdownAutomaton {
                         logger.debug("Executando ação posterior: {}", action);
                         action.execute(symbol);
                     }
-                    checkAndDoActionState(state); // acao semantica no estado
+                    checkAndDoActionState(state, transducerStack); // acao semantica no estado
                 } else {
 // newton
                     logger.debug("Existem {} transições válidas. Iniciando "
@@ -429,7 +430,7 @@ public class StructuredPushdownAutomaton2 extends StructuredPushdownAutomaton {
                         logger.debug("Executando ação posterior: {}", action);
                         action.execute(symbol);
                     }
-                    checkAndDoActionState(state); // acao semantica no estado
+                    checkAndDoActionState(state, transducerStack); // acao semantica no estado
                 }
             }
         }
@@ -453,12 +454,12 @@ public class StructuredPushdownAutomaton2 extends StructuredPushdownAutomaton {
                     branch = operations.get(current).execute(reference, branch);
                 }
                 tree.top().add(branch);
-                checkAndDoActionState(state); // acao semantica do estado
+                checkAndDoActionState(state, transducerStack); // acao semantica do estado
             } else {
                 Integer newState = checkAndDoEmptyTransition(state);
                 if (newState != -1) {
                     state = newState;
-                    checkAndDoActionState(state); // acao semantica do estado
+                    checkAndDoActionState(state, transducerStack); // acao semantica do estado
                 }
                 else {
                     return false;
@@ -472,7 +473,7 @@ public class StructuredPushdownAutomaton2 extends StructuredPushdownAutomaton {
                 Integer newState = checkAndDoEmptyTransition(state);
                 if (newState != -1) {
                     state = newState;
-                    checkAndDoActionState(state); // acao semantica do estado
+                    checkAndDoActionState(state, transducerStack); // acao semantica do estado
                 }
                 else {
                     done = true;
@@ -545,13 +546,16 @@ public class StructuredPushdownAutomaton2 extends StructuredPushdownAutomaton {
         return newState;
     }
 
-    protected void checkAndDoActionState(Integer state) {
+    protected void checkAndDoActionState(Integer state, Stack<String> transducerStack) {
+
+
+
         if (this.states.get(state).getActionList() != null) {
             for (ActionState actionState : this.states.get(state).getActionList()) {
                 if (this.states.get(state).getLabelElements() != null) {
                     logger.debug("Executando ação semântica {} do estado {} com labels: {}",
                             actionState, state, this.states.get(state).getLabelElements());
-                    actionState.execute(this.states.get(state).getLabelElements());
+                    actionState.execute(this.states.get(state).getLabelElements(), transducerStack);
                 }
             }
         }
