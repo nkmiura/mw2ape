@@ -46,22 +46,26 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
     private Token symbol;
     private Stack<String> machines;
     private List<Transition> query;
-    //private Stack<String> transducerStack;
+    private NLPTransducerStackList nlpTransducerStackList;
 
-    public StructuredPushdownAutomatonNLP (NLPLexer lexer, NLPOutputList nlpOutputList) {
+    public StructuredPushdownAutomatonNLP (NLPLexer lexer, NLPOutputList nlpOutputList,
+                                           NLPTransducerStackList nlpTransducerStackList) {
         this.lexer = lexer;
         this.nlpOutputList = nlpOutputList;
+        this.nlpTransducerStackList = nlpTransducerStackList;
     }
 
     public StructuredPushdownAutomatonNLP (StructuredPushdownAutomatonNLP originalSPA, Transition transition)
     {
         this.state = originalSPA.state;
+        this.states = originalSPA.states;
         this.lexer = originalSPA.lexer.clone(originalSPA.lexer);
         this.stack = originalSPA.stack.clone();
         this.tree = originalSPA.tree.clone();
+        this.nlpTransducerStackList = originalSPA.nlpTransducerStackList;
         this.query = new ArrayList<>();
         this.query.add(transition);
-        this.transducerStack = originalSPA.transducerStack.clone();
+
         // A lista de resultado é clonada no NLPSpaThread
     }
 
@@ -70,7 +74,7 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
         boolean isCloneLocal = isClone;
         logger.debug("Iniciando o processo de reconhecimento. Thread: " + Thread.currentThread().getName());
         if (isCloneLocal) {
-
+            symbol = lexer.getNext();
 
         } else {
             state = submachines.get(submachine).getFirst();
@@ -89,6 +93,7 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
         while (lexer.hasNext() || isCloneLocal) {
             logger.debug("# Token corrente: {}", symbol);
             logger.debug("# Estado corrente: {}", state);
+
             if (isCloneLocal) {
                 isCloneLocal = false;
             } else {
@@ -137,16 +142,17 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
                 }
             } else {
                 if (!deterministic(query)) {
+                    logger.debug("Existe apenas múltiplas transições válidas, "
+                            + "portanto o passo é não-determinístico.");
                     // Clona spa e inicia nova thread
-
                     int queryIndex = 0;
                     lexer.push(symbol);
                     for (Transition tempTransition: query) {
                         if (queryIndex > 0) {
                             StructuredPushdownAutomatonNLP newSpa =
                                     new StructuredPushdownAutomatonNLP(this, tempTransition);
-                            NLPSpaThread NLPSpaThread = new NLPSpaThread(newSpa,
-                                    this.nlpOutputList, Thread.currentThread().getId());
+                            NLPSpaThread NLPSpaThread = new NLPSpaThread(newSpa, this.nlpOutputList,
+                                    this.nlpTransducerStackList, Thread.currentThread().getId());
                             Thread newThread = new Thread(NLPSpaThread);
                             newThread.start();
                         }

@@ -1,11 +1,9 @@
 package br.usp.poli.lta.cereda.execute;
 
-import br.usp.poli.lta.cereda.execute.NLP.NLPLexer;
-import br.usp.poli.lta.cereda.execute.NLP.NLPOutputList;
-import br.usp.poli.lta.cereda.execute.NLP.NLPSpaThread;
-import br.usp.poli.lta.cereda.execute.NLP.StructuredPushdownAutomatonNLP;
+import br.usp.poli.lta.cereda.execute.NLP.*;
 import br.usp.poli.lta.cereda.mwirth2ape.ape.*;
 import br.usp.poli.lta.cereda.mwirth2ape.ape.conversion.Sketch;
+import br.usp.poli.lta.cereda.mwirth2ape.ape.conversion.State;
 import br.usp.poli.lta.cereda.mwirth2ape.labeling.LabelElement;
 import br.usp.poli.lta.cereda.mwirth2ape.labeling.Production;
 import br.usp.poli.lta.cereda.mwirth2ape.model.Token;
@@ -22,6 +20,8 @@ public class SPAExecuteNLP extends SPAExecute {
     // APE Generator
     private NLPLexer nlpLexer;
     private NLPOutputList nlpOutputList;
+    private NLPTransducerStackList nlpTransducerStackList;
+    private NLPAction nlpAction;
 
 
     public SPAExecuteNLP(NLPLexer nlpLexer, Generator lmwg, HashSet<String> dictionaryTerm) {
@@ -35,6 +35,8 @@ public class SPAExecuteNLP extends SPAExecute {
         this.dictionaryTerm = dictionaryTerm;
         this.outputList = new LinkedList<>();
         this.nlpOutputList = new NLPOutputList();
+        this.nlpTransducerStackList = new NLPTransducerStackList();
+        this.nlpAction = new NLPAction(this.nlpOutputList, dictionaryTerm, this.nlpTransducerStackList);
     }
 
     public void parseInput() throws Exception {
@@ -43,7 +45,8 @@ public class SPAExecuteNLP extends SPAExecute {
 
         //this.nlpOutputList.incrementOutputList(Thread.currentThread().getId());
         //this.nlpOutputList.setParseResult(Thread.currentThread().getId(),true);
-        StructuredPushdownAutomatonNLP spa = new StructuredPushdownAutomatonNLP(this.nlpLexer, this.nlpOutputList);
+        StructuredPushdownAutomatonNLP spa = new StructuredPushdownAutomatonNLP(this.nlpLexer,
+                this.nlpOutputList, this.nlpTransducerStackList);
         //Runnable spa = new StructuredPushdownAutomatonNLP(threadIdCounter, this.nlpLexer, this.outputResults);
 
         spa.setSubmachine(this.lmwg.getMain());  // set main machine
@@ -163,15 +166,14 @@ public class SPAExecuteNLP extends SPAExecute {
         };
 
         // Construcao do automato
-        buildSPA(spa, machineSketchesMap, stateCounter, machineMaxStateIdMap,
-                semanticActionState,
-                semanticActionNtermTransition, semanticActionTermTransition, semanticActionEmptyTransition);
+        buildSPA(spa, machineSketchesMap, stateCounter, machineMaxStateIdMap, nlpAction);
 
         // end Build SPA
         spa.setup();
 
         // Executar automato
-        NLPSpaThread NLPSpaThread = new NLPSpaThread(spa, this.nlpOutputList, -1);
+        NLPSpaThread NLPSpaThread = new NLPSpaThread(spa, this.nlpOutputList,
+                this.nlpTransducerStackList, -1);
         Thread thread = new Thread(NLPSpaThread);
 
         logger.debug("Started parsing.");
@@ -194,7 +196,75 @@ public class SPAExecuteNLP extends SPAExecute {
 
     }
 
+    //@Override
+    protected void buildSPA (StructuredPushdownAutomaton spa, Map<String, List<Sketch>> machineSketchesMap,
+                             Integer stateCounter, Map<String, Integer> machineMaxStateIdMap, NLPAction nlpAction)
+    {
 
+        // Construcao do automato
+        for (String machine : machineSketchesMap.keySet()) {
+            List<Sketch> tempSketches = machineSketchesMap.get(machine); // Get transitions for a machine
+            // set submachine name with start, end
+            spa.addSubmachine(machine, stateCounter,  getSet(stateCounter + 1));
+            // get states
+            for (Sketch tempSketch: tempSketches) {
+                Transition newTransition;
 
+                Integer tempSource = tempSketch.getSource() + stateCounter;
+                Integer tempTarget = tempSketch.getTarget() + stateCounter;
+
+                addSPAState(tempSource, machine, spa, this.mapMachineStates.get(machine).get(tempSketch.getSource()),
+                        nlpAction.semanticActionState);
+                addSPAState(tempTarget, machine, spa, this.mapMachineStates.get(machine).get(tempSketch.getTarget()),
+                        nlpAction.semanticActionState);
+
+                //State tempState = new State (tempSketch.getSource(), machine, this.mapMachineStates.get(machine).get(tempSketch.getSource()));
+
+                if (tempSketch.getToken().getType().equals("nterm")) {
+                    newTransition = new Transition(
+                            tempSource, tempSketch.getToken().getValue(), tempTarget
+                    );
+                    newTransition.setSubmachineToken(tempSketch.getToken());
+                    newTransition.addPostAction(nlpAction.semanticActionNtermTransition);
+                }
+                else if (tempSketch.getToken().getType().equals("ε")) {
+                    Token tempToken = null;
+                    newTransition = new Transition(
+                            tempSource, tempToken, tempTarget
+                    );
+                    newTransition.setSubmachineToken(tempSketch.getToken());
+                    newTransition.addPostAction(nlpAction.semanticActionEmptyTransition);
+                }
+                else {
+                    newTransition = new Transition(
+                            tempSource, tempSketch.getToken(), tempTarget
+                    );
+                    newTransition.addPostAction(nlpAction.semanticActionTermTransition);
+                }
+                spa.addTransition(newTransition);
+            }
+            stateCounter = stateCounter + machineMaxStateIdMap.get(machine) + 1;
+        }
+        logger.debug("Finished building SPA parser.");
+
+    }
+
+    /*
+    @Override
+    protected void addSPAState(Integer id, String submachine, Object spa, LinkedList<LabelElement> labels,
+                               ActionState actionState) {
+        if (spa instanceof StructuredPushdownAutomaton2) {
+            if (labels != null) {
+                if (((StructuredPushdownAutomaton2)spa).getState(id) == null) {
+                    State newState = new State(id, submachine, labels);
+                    newState.addActionState(actionState);
+                    ((StructuredPushdownAutomaton2)spa).addState(id, newState);
+                }
+            } else {
+                State newState = new State(id, submachine, null);
+                ((StructuredPushdownAutomaton2)spa).addState(id, newState);
+            }
+        }
+    } */
 
 }

@@ -1,6 +1,5 @@
 package br.usp.poli.lta.cereda.execute.NLP;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.HashMap;
@@ -16,7 +15,7 @@ public class NLPOutputList {
         this.outputResults = new HashMap<>();
     }
 
-    public void incrementOutputList (long threadID, Thread thread)
+    public synchronized void incrementOutputList (long threadID, Thread thread)
     {
         if (!this.outputResults.containsKey(threadID)) {
             NLPOutputResult newOutputResult = new NLPOutputResult();
@@ -32,7 +31,7 @@ public class NLPOutputList {
         }
     }
 
-    public void cloneOutputResult (long originalThreadID, long newThreadID) {
+    public synchronized void cloneOutputResult (long originalThreadID, long newThreadID) {
         if (this.outputResults.containsKey(originalThreadID)) {
             if (!this.outputResults.containsKey(newThreadID)) {
                 NLPOutputResult newOutputResult = new NLPOutputResult();
@@ -49,7 +48,7 @@ public class NLPOutputList {
         }
     }
 
-    public boolean insertOutputResult (long threadId, String partialResult) {
+    public synchronized boolean insertOutputResult (long threadId, String partialResult) {
         if (this.outputResults.containsKey(threadId)) {
             this.outputResults.get(threadId).outputList.addLast(partialResult);
             return true;
@@ -64,7 +63,7 @@ public class NLPOutputList {
         else { return null; }
     }
 
-    public boolean setParseResult(long threadId, boolean result) {
+    public synchronized boolean setParseResult(long threadId, boolean result) {
         if (this.outputResults.containsKey(threadId)) {
             this.outputResults.get(threadId).parseResult = result;
             return true;

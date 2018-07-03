@@ -68,6 +68,4 @@ public abstract class Action {
         return new EqualsBuilder().append(name, reference.getName()).isEquals();
     }
 
-
-
 }

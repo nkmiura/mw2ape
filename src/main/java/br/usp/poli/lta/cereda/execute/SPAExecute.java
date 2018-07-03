@@ -243,6 +243,8 @@ public class SPAExecute {
         logger.debug(this.outputList.toString());
     }
 
+
+
     protected void buildSPA (StructuredPushdownAutomaton spa, Map<String, List<Sketch>> machineSketchesMap,
                              Integer stateCounter, Map<String, Integer> machineMaxStateIdMap, ActionState semanticActionState,
                              Action semanticActionNtermTransition, Action semanticActionTermTransition,

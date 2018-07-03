@@ -40,7 +40,7 @@ public class StructuredPushdownAutomaton2 extends StructuredPushdownAutomaton {
 
     private static final Logger logger = LoggerFactory.
             getLogger(StructuredPushdownAutomaton2.class);
-    protected static Map<Integer, State> states;
+    protected Map<Integer, State> states;
     protected Stack<String> transducerStack;
 
     public StructuredPushdownAutomaton2() {
