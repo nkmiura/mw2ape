@@ -80,7 +80,7 @@ public class NLPOutputList {
         }
     }
 
-    public Boolean isAnyThreadAlive() {
+    public synchronized Boolean isAnyThreadAlive() {
         Boolean result = false;
 
         for (NLPOutputResult tempNLPOutputResult: this.outputResults.values()) {

@@ -182,7 +182,7 @@ public class SPAExecuteNLP extends SPAExecute {
 //        spa.parse();
 
         while (this.nlpOutputList.isAnyThreadAlive()) {
-            Thread.sleep(1000);
+            Thread.sleep(10000);
         }
 
         logger.debug("Finished parsing.");

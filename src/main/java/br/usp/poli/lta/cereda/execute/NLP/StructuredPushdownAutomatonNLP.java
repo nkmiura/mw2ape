@@ -62,6 +62,7 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
         this.lexer = originalSPA.lexer.clone(originalSPA.lexer);
         this.stack = originalSPA.stack.clone();
         this.tree = originalSPA.tree.clone();
+        //this.machines = originalSPA.machines.clone();
         this.nlpTransducerStackList = originalSPA.nlpTransducerStackList;
         this.query = new ArrayList<>();
         this.query.add(transition);
@@ -142,21 +143,22 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
                 }
             } else {
                 if (!deterministic(query)) {
-                    logger.debug("Existe apenas múltiplas transições válidas, "
+                    logger.debug("Existem múltiplas transições válidas, "
                             + "portanto o passo é não-determinístico.");
                     // Clona spa e inicia nova thread
-                    int queryIndex = 0;
+                    //int queryIndex = 0;
                     lexer.push(symbol);
-                    for (Transition tempTransition: query) {
-                        if (queryIndex > 0) {
-                            StructuredPushdownAutomatonNLP newSpa =
-                                    new StructuredPushdownAutomatonNLP(this, tempTransition);
-                            NLPSpaThread NLPSpaThread = new NLPSpaThread(newSpa, this.nlpOutputList,
+                    for (Integer i = 1; i < query.size(); i++) {
+                    //for (Transition tempTransition: query) {
+                        //if (queryIndex > 0) {
+                        StructuredPushdownAutomatonNLP newSpa =
+                                    new StructuredPushdownAutomatonNLP(this, query.get(i));
+                        NLPSpaThread NLPSpaThread = new NLPSpaThread(newSpa, this.nlpOutputList,
                                     this.nlpTransducerStackList, Thread.currentThread().getId());
-                            Thread newThread = new Thread(NLPSpaThread);
-                            newThread.start();
-                        }
-                        queryIndex++;
+                        Thread newThread = new Thread(NLPSpaThread);
+                        newThread.start();
+                        //}
+                        //queryIndex++;
                     }
                     symbol = lexer.getNext();
 
