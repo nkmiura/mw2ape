@@ -48,6 +48,24 @@ public class NLPOutputList {
         }
     }
 
+    public synchronized void cloneOutputResult (long newThreadID, NLPOutputResult nlpOutputResult) {
+        if (!this.outputResults.containsKey(newThreadID)) {
+            NLPOutputResult newOutputResult = new NLPOutputResult();
+            LinkedList<String> newOutputList = new LinkedList<>();
+            newOutputList.addAll(nlpOutputResult.getOutputList());
+            newOutputResult.setOutputList(newOutputList);
+            this.outputResults.put(newThreadID, newOutputResult);
+            logger.debug("Clonando resultados para thread {}.", newThreadID);
+        } else {
+            logger.debug("Resultados não existentes para o thread {}.",
+                    String.valueOf(nlpOutputResult));
+        }
+    }
+
+    public void setOutputResults(HashMap<Long, NLPOutputResult> outputResults) {
+        this.outputResults = outputResults;
+    }
+
     public synchronized boolean insertOutputResult (long threadId, String partialResult) {
         if (this.outputResults.containsKey(threadId)) {
             this.outputResults.get(threadId).outputList.addLast(partialResult);
@@ -61,6 +79,14 @@ public class NLPOutputList {
             return this.outputResults.get(threadID).outputList;
         }
         else { return null; }
+    }
+
+    public boolean setOutputResult (long threadID, NLPOutputResult nlpOutputResult) {
+        if (this.outputResults.containsKey(threadID)) {
+            this.outputResults.put(threadID, nlpOutputResult);
+            return true;
+        }
+        else { return false; }
     }
 
     public synchronized boolean setParseResult(long threadId, boolean result) {

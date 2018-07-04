@@ -47,12 +47,15 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
     private Stack<String> machines;
     private List<Transition> query;
     private NLPTransducerStackList nlpTransducerStackList;
+    private NLPOutputResult tempNLPOutputResult;
+    private Stack<String> tempNLPTransducerStack;
 
     public StructuredPushdownAutomatonNLP (NLPLexer lexer, NLPOutputList nlpOutputList,
                                            NLPTransducerStackList nlpTransducerStackList) {
         this.lexer = lexer;
         this.nlpOutputList = nlpOutputList;
         this.nlpTransducerStackList = nlpTransducerStackList;
+
     }
 
     public StructuredPushdownAutomatonNLP (StructuredPushdownAutomatonNLP originalSPA, Transition transition)
@@ -62,14 +65,29 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
         this.lexer = originalSPA.lexer.clone(originalSPA.lexer);
         this.stack = originalSPA.stack.clone();
         this.tree = originalSPA.tree.clone();
-        //this.machines = originalSPA.machines.clone();
+        this.transitions = originalSPA.transitions;
+        this.machines = originalSPA.machines;
+        this.submachines = originalSPA.submachines;
+        this.submachine = originalSPA.submachine;
         this.nlpTransducerStackList = originalSPA.nlpTransducerStackList;
+        this.nlpOutputList = originalSPA.nlpOutputList;
         this.query = new ArrayList<>();
         this.query.add(transition);
+        this.tempNLPOutputResult = new NLPOutputResult();
+        this.tempNLPOutputResult.setOutputList(this.nlpOutputList.getOutputResult(Thread.currentThread().getId()));
+        this.tempNLPTransducerStack = originalSPA.nlpTransducerStackList.getTransducerStackList(Thread.currentThread().getId()).clone();
+
 
         // A lista de resultado é clonada no NLPSpaThread
     }
 
+    public NLPOutputResult getTempNLPOutputResult() {
+        return tempNLPOutputResult;
+    }
+
+    public Stack<String> getTempNLPTransducerStack() {
+        return tempNLPTransducerStack;
+    }
 
     public boolean parse(boolean isClone) {
         boolean isCloneLocal = isClone;
@@ -261,6 +279,7 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
             }
             logger.debug("Resultado do reconhecimento: cadeia {}",
                     (result ? "aceita" : "rejeitada"));
+            logger.debug(this.nlpOutputList.getOutputResult(Thread.currentThread().getId()).toString());
             return result;
         } else {
             logger.debug("A pilha não está vazia e o estado corrente não "

@@ -48,8 +48,11 @@ public class NLPSpaThread implements Runnable {
         logger.debug("Thread run: thread id: " + String.valueOf(this.threadId) +
                 " - name: " + this.threadName + " - clone: " + String.valueOf(isClone));
         if (this.isClone) {
-            this.nlpOutputList.cloneOutputResult(this.parentThreadId, this.threadId);
-            this.nlpTransducerStackList.cloneTransducerStackList(this.parentThreadId, this.threadId);
+            this.nlpOutputList.cloneOutputResult(this.threadId, this.spaNLP.getTempNLPOutputResult());
+
+
+            this.nlpTransducerStackList.cloneTransducerStackList(this.threadId, this.spaNLP.getTempNLPTransducerStack());
+
         } else {
             this.nlpOutputList.incrementOutputList(this.threadId, Thread.currentThread());
             this.nlpTransducerStackList.incrementTransducerStackList(this.threadId);

@@ -23,17 +23,15 @@ public class NLPTransducerStackList {
         this.transducerStackList.put(threadID, newTransducerStack);
     }
 
-    public void cloneTransducerStackList(long originalThreadID, long newThreadID) {
-        if (this.transducerStackList.containsKey(originalThreadID)) {
-            if (!this.transducerStackList.containsKey(newThreadID)) {
-                Stack<String> newTransducerStack = this.transducerStackList.get(originalThreadID).clone();
-                this.transducerStackList.put(newThreadID, newTransducerStack);
-                logger.debug("Clonando transducer stack do thread {} para thread {}.",
-                        originalThreadID, newThreadID);
-            }
+    public void cloneTransducerStackList(long newThreadID, Stack<String> newTransducerStack) {
+        if (!this.transducerStackList.containsKey(newThreadID)) {
+            this.transducerStackList.put(newThreadID, newTransducerStack);
+            logger.debug("Clonando transducer stack para thread {}.", newThreadID);
+
         } else {
-            logger.debug("Resultados não existentes para o thread {}.",
-                    String.valueOf(originalThreadID));
+            logger.debug("Transducer stack não existente para o thread {}.",
+                    String.valueOf(newThreadID));
         }
     }
+
 }
