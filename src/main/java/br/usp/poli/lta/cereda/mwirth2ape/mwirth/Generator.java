@@ -23,7 +23,6 @@ import br.usp.poli.lta.cereda.mwirth2ape.ape.Action;
 import br.usp.poli.lta.cereda.mwirth2ape.ape.StructuredPushdownAutomaton;
 import br.usp.poli.lta.cereda.mwirth2ape.ape.Transition;
 import br.usp.poli.lta.cereda.mwirth2ape.ape.conversion.Sketch;
-import br.usp.poli.lta.cereda.mwirth2ape.ape.conversion.State;
 import br.usp.poli.lta.cereda.mwirth2ape.labeling.*;
 import br.usp.poli.lta.cereda.mwirth2ape.model.Token;
 import br.usp.poli.lta.cereda.mwirth2ape.structure.Stack;
@@ -34,7 +33,6 @@ import java.util.*;
 
 /**
  * @author Paulo Roberto Massa Cereda
- * @modified by Newton Kiyotaka Miura
  * @version 1.2
  * @since 1.0
  */
@@ -47,7 +45,7 @@ public class Generator {
 
     // APE Generator
     private final MWirthLexer lexer;
-    private final Stack<Pair<Integer, Integer>> helper;
+    private final Stack<Pair<Integer, Integer>> helperPairStack;
     private final List<Sketch> transitions;
     private int current;
     private int counter;
@@ -59,14 +57,14 @@ public class Generator {
     private NTerm currentNterm;
     private Production currentProduction;
     // Generate APE with labels
-    private HashMap<String, HashMap<Integer, LinkedList<LabelElement>>> mapMachineStates;
-    private HashMap<Integer, LinkedList<LabelElement>> currentMapMachineStates;
+    private HashMap<String, HashMap<Integer, LinkedList<LabelElement>>> mapMachineStatesLabels;
+    private HashMap<Integer, LinkedList<LabelElement>> currentStatesLabels;
 
     public Generator(MWirthLexer mWirthLexer, int type) {
 
         this.type = type;
         this.lexer = mWirthLexer;
-        this.helper = new Stack<>();
+        this.helperPairStack = new Stack<>();
         this.transitions = new ArrayList<>();
         this.current = 0;
         this.counter = 1;
@@ -79,11 +77,11 @@ public class Generator {
 
         this.type = type;
         this.lexer = lmWirthLexer;
-        this.helper = new Stack<>();
+        this.helperPairStack = new Stack<>();
         this.transitions = new ArrayList<>();
         this.current = 0;
         this.counter = 0;
-        this.mapMachineStates = new HashMap<>();
+        this.mapMachineStatesLabels = new HashMap<>();
     }
 
     // Newton
@@ -112,7 +110,7 @@ public class Generator {
             public void execute(Token token) {
                 switch(type) {
                     case 0:
-                        helper.clear();
+                        helperPairStack.clear();
                         current = 0;
                         counter = 1;
                         machine = token.getValue();
@@ -125,13 +123,13 @@ public class Generator {
                         currentProduction = currentNterm.addProduction(token.getValue());
                         break;
                     case 2:
-                        helper.clear();
+                        helperPairStack.clear();
                         current = 0;
                         counter = 1;
                         machine = token.getValue();
 
-                        currentMapMachineStates = new HashMap<>();
-                        mapMachineStates.put(machine,currentMapMachineStates);
+                        currentStatesLabels = new HashMap<>();
+                        mapMachineStatesLabels.put(machine, currentStatesLabels);
                         if (main == null) {
                             main = machine;
                         }
@@ -165,7 +163,7 @@ public class Generator {
                         transition = new Sketch(machine, current, token, counter);
                         transitions.add(transition);
                         putStateLabels(counter,token.getProductionToken().getNextLabels());
-                        //currentMapMachineStates.put(counter,token.getProductionToken().getNextLabels());
+                        //currentStatesLabels.put(counter,token.getProductionToken().getNextLabels());
                         current = counter;
                         counter++;
                         break;
@@ -200,7 +198,7 @@ public class Generator {
                         transition = new Sketch(machine, current, token, counter);
                         transitions.add(transition);
                         putStateLabels(counter,token.getProductionToken().getNextLabels());
-                        //currentMapMachineStates.put(counter,token.getProductionToken().getNextLabels());
+                        //currentStatesLabels.put(counter,token.getProductionToken().getNextLabels());
                         current = counter;
                         counter++;
                         break;
@@ -227,17 +225,17 @@ public class Generator {
                         current = counter;
                         counter++;
                         break;
+                    case 1:
+                        registerExpressionToken(token);
+                        registerLabelToken("ε");
+                        break;
                     case 2:
                         transition = new Sketch(machine, current, token, counter);
                         transitions.add(transition);
                         putStateLabels(counter,token.getProductionToken().getNextLabels());
-                        //currentMapMachineStates.put(counter,token.getProductionToken().getNextLabels());
+                        //currentStatesLabels.put(counter,token.getProductionToken().getNextLabels());
                         current = counter;
                         counter++;
-                        break;
-                    case 1:
-                        registerExpressionToken(token);
-                        registerLabelToken("ε");
                         break;
                     default:
                         break;
@@ -256,16 +254,16 @@ public class Generator {
             public void execute(Token token) {
                 switch(type) {
                     case 0:
-                        helper.push(new Pair<>(current, counter));
+                        helperPairStack.push(new Pair<>(current, counter));
                         counter++;
                         break;
                     case 1:
                         registerLabelToken("[");
                         break;
                     case 2:
-                        helper.push(new Pair<>(current, counter));
+                        helperPairStack.push(new Pair<>(current, counter));
                         putStateLabels(current,token.getProductionToken().getNextLabels());
-                        //currentMapMachineStates.put(current,token.getProductionToken().getNextLabels());
+                        //currentStatesLabels.put(current,token.getProductionToken().getNextLabels());
                         counter++;
                         break;
                     default:
@@ -284,7 +282,7 @@ public class Generator {
             public void execute(Token token) {
                 switch(type) {
                     case 0:
-                        helper.push(new Pair<>(current, counter));
+                        helperPairStack.push(new Pair<>(current, counter));
                         counter++;
                         break;
                     case 1:
@@ -292,9 +290,9 @@ public class Generator {
                         registerLabelToken(null);
                         break;
                     case 2:
-                        helper.push(new Pair<>(current, counter));
+                        helperPairStack.push(new Pair<>(current, counter));
                         putStateLabels(current,token.getProductionToken().getNextLabels());
-                        //currentMapMachineStates.put(current,token.getProductionToken().getNextLabels());
+                        //currentStatesLabels.put(current,token.getProductionToken().getNextLabels());
                         counter++;
                         break;
                     default:
@@ -314,10 +312,10 @@ public class Generator {
                 switch(type) {
                     case 0:
                         Sketch transition = new Sketch(machine, current,
-                                helper.top().getSecond());
+                                helperPairStack.top().getSecond());
                         transitions.add(transition);
-                        current = helper.top().getSecond();
-                        helper.pop();
+                        current = helperPairStack.top().getSecond();
+                        helperPairStack.pop();
                         break;
                     case 1:
                         registerExpressionToken(token);
@@ -327,12 +325,12 @@ public class Generator {
                         token.setType("ε");
                         token.setValue("ε");
                         Sketch transition2 = new Sketch(machine, current, token,
-                                helper.top().getSecond());
+                                helperPairStack.top().getSecond());
                         transitions.add(transition2);
-                        putStateLabels(helper.top().getSecond(),token.getProductionToken().getNextLabels());
-                        //currentMapMachineStates.put(helper.top().getSecond(),token.getProductionToken().getNextLabels());
-                        current = helper.top().getSecond();
-                        helper.pop();
+                        putStateLabels(helperPairStack.top().getSecond(),token.getProductionToken().getNextLabels());
+                        //currentStatesLabels.put(helperPairStack.top().getSecond(),token.getProductionToken().getNextLabels());
+                        current = helperPairStack.top().getSecond();
+                        helperPairStack.pop();
                         break;
                     default:
                         break;
@@ -352,10 +350,10 @@ public class Generator {
                 switch(type) {
                     case 0:
                         Sketch transition = new Sketch(machine, current,
-                                helper.top().getSecond());
+                                helperPairStack.top().getSecond());
                         transitions.add(transition);
-                        current = helper.top().getSecond();
-                        helper.pop();
+                        current = helperPairStack.top().getSecond();
+                        helperPairStack.pop();
                         break;
                     case 1:
                         registerExpressionToken(token);
@@ -370,12 +368,12 @@ public class Generator {
                             token.getProductionToken().setValue("ε");
                         }
                         Sketch transition2 = new Sketch(machine, current,
-                                token, helper.top().getSecond());
+                                token, helperPairStack.top().getSecond());
                         transitions.add(transition2);
-                        putStateLabels(helper.top().getSecond(),token.getProductionToken().getNextLabels());
-                        //currentMapMachineStates.put(helper.top().getSecond(),token.getProductionToken().getNextLabels());
-                        current = helper.top().getSecond();
-                        helper.pop();
+                        putStateLabels(helperPairStack.top().getSecond(),token.getProductionToken().getNextLabels());
+                        //currentStatesLabels.put(helperPairStack.top().getSecond(),token.getProductionToken().getNextLabels());
+                        current = helperPairStack.top().getSecond();
+                        helperPairStack.pop();
                         break;
                     default:
                         break;
@@ -394,17 +392,17 @@ public class Generator {
             public void execute(Token token) {
                 switch(type) {
                     case 0:
+                    case 1:
+                        registerExpressionToken(token);
+                        registerLabelToken(null);
+                        break;
                     case 2:
                         token.setType("ε");
                         token.setValue("ε");
                         Sketch transition = new Sketch(machine, current, token,
-                                helper.top().getSecond());
+                                helperPairStack.top().getSecond());
                         transitions.add(transition);
-                        current = helper.top().getFirst();
-                        break;
-                    case 1:
-                        registerExpressionToken(token);
-                        registerLabelToken(null);
+                        current = helperPairStack.top().getFirst();
                         break;
                     default:
                         break;
@@ -431,11 +429,11 @@ public class Generator {
                         token.setType("ε");
                         token.setValue("ε");
                         Sketch transition = new Sketch(machine, current, token,
-                                helper.top().getSecond());
+                                helperPairStack.top().getSecond());
                         transitions.add(transition);
-                        current = helper.top().getSecond();
+                        current = helperPairStack.top().getSecond();
 
-                        helper.push(new Pair<>(helper.top().getSecond(), helper.top().getFirst()));
+                        helperPairStack.push(new Pair<>(helperPairStack.top().getSecond(), helperPairStack.top().getFirst()));
                         break;
                 }
             }
@@ -459,13 +457,13 @@ public class Generator {
                         token.setType("ε");
                         token.setValue("ε");
                         Sketch transition1 = new Sketch(machine, current, token,
-                                helper.top().getSecond());
+                                helperPairStack.top().getSecond());
                         transitions.add(transition1);
-                        current = helper.top().getSecond();
-                        helper.pop();
+                        current = helperPairStack.top().getSecond();
+                        helperPairStack.pop();
 
-                        current = helper.top().getSecond();
-                        helper.pop();
+                        current = helperPairStack.top().getSecond();
+                        helperPairStack.pop();
                         break;
                 }
             }
@@ -649,18 +647,18 @@ public class Generator {
                             // A transicao é unica entre source e target
                             // Junta labels no estado source
                             logger.debug("Eliminando transição em vazio tipo 1: {}.",tempEmptyTransition);
-                            if (mapMachineStates.get(submachine).get(source) != null) {
-                                if (this.mapMachineStates.get(submachine).get(target) != null) {
-                                    this.mapMachineStates.get(submachine).get(source).addAll(
-                                            this.mapMachineStates.get(submachine).get(target));
+                            if (mapMachineStatesLabels.get(submachine).get(source) != null) {
+                                if (this.mapMachineStatesLabels.get(submachine).get(target) != null) {
+                                    this.mapMachineStatesLabels.get(submachine).get(source).addAll(
+                                            this.mapMachineStatesLabels.get(submachine).get(target));
                                 }
                             }
                             else {
-                                if (this.mapMachineStates.get(submachine).get(target) != null) {
-                                    this.mapMachineStates.get(submachine).put(source, this.mapMachineStates.get(submachine).get(target));
+                                if (this.mapMachineStatesLabels.get(submachine).get(target) != null) {
+                                    this.mapMachineStatesLabels.get(submachine).put(source, this.mapMachineStatesLabels.get(submachine).get(target));
                                 }
                             }
-                            this.mapMachineStates.get(submachine).remove(target);
+                            this.mapMachineStatesLabels.get(submachine).remove(target);
                             transitions.remove(tempEmptyTransition);
                             emptyTransitionList.remove(tempEmptyTransition);
                             // Ajusta source das demais transicoes
@@ -675,9 +673,9 @@ public class Generator {
                             break;
                         }
                         else {
-                            if (this.mapMachineStates.get(submachine).get(target) == null) {
+                            if (this.mapMachineStatesLabels.get(submachine).get(target) == null) {
                                 logger.debug("Eliminando transição em vazio tipo 2: {}.",tempEmptyTransition);
-                                this.mapMachineStates.get(submachine).remove(target);
+                                this.mapMachineStatesLabels.get(submachine).remove(target);
                                 transitions.remove(tempEmptyTransition);
                                 // Ajusta source das demais transicoes
                                 for (Sketch tempAdjustTransition: transitions) {
@@ -694,10 +692,10 @@ public class Generator {
                     }
                     else {
                         if ((sourceInTransitions.size() == 0) && (sourceOutTransitions.size() == 0)) {
-                            if (this.mapMachineStates.get(submachine).get(source) == null) {
+                            if (this.mapMachineStatesLabels.get(submachine).get(source) == null) {
                                 logger.debug("Eliminando transição em vazio tipo 3: {}.",tempEmptyTransition);
                                 // Deleta transição e estado source qdo estado source tem só 1 entrada e saída e não tem label.
-                                this.mapMachineStates.get(submachine).remove(source);
+                                this.mapMachineStatesLabels.get(submachine).remove(source);
                                 transitions.remove(tempEmptyTransition);
                                 for (Sketch tempAdjustTransition: transitions) {
                                     if (tempAdjustTransition.getName().equals(submachine) &&
@@ -724,14 +722,14 @@ public class Generator {
 
     private void putStateLabels (Integer state, LinkedList<LabelElement> labels)
     {
-        //currentMapMachineStates.put(helper.top().getSecond(),token.getProductionToken().getNextLabels());
-        if (this.currentMapMachineStates.get(state) == null) {
-            this.currentMapMachineStates.put(state, labels);
+        //currentStatesLabels.put(helperPairStack.top().getSecond(),token.getProductionToken().getNextLabels());
+        if (this.currentStatesLabels.get(state) == null) {
+            this.currentStatesLabels.put(state, labels);
             logger.debug("Estado {}. Rotulo {} adicionado.", state, labels);
         }
         else {
             logger.debug("Estado {}. Rotulo {} não adicionado. Rotulo pre-existente: {}.",
-                    state, labels, this.currentMapMachineStates.get(state).toString());
+                    state, labels, this.currentStatesLabels.get(state).toString());
         }
 
     }
@@ -746,8 +744,8 @@ public class Generator {
         return transitions;
     }
 
-    public HashMap<String, HashMap<Integer, LinkedList<LabelElement>>> getMapMachineStates() {
-        return mapMachineStates;
+    public HashMap<String, HashMap<Integer, LinkedList<LabelElement>>> getMapMachineStatesLabels() {
+        return mapMachineStatesLabels;
     }
 
     public String getMain() {

@@ -3,7 +3,6 @@ package br.usp.poli.lta.cereda.execute;
 import br.usp.poli.lta.cereda.execute.NLP.*;
 import br.usp.poli.lta.cereda.mwirth2ape.ape.*;
 import br.usp.poli.lta.cereda.mwirth2ape.ape.conversion.Sketch;
-import br.usp.poli.lta.cereda.mwirth2ape.ape.conversion.State;
 import br.usp.poli.lta.cereda.mwirth2ape.labeling.LabelElement;
 import br.usp.poli.lta.cereda.mwirth2ape.labeling.Production;
 import br.usp.poli.lta.cereda.mwirth2ape.model.Token;
@@ -29,7 +28,7 @@ public class SPAExecuteNLP extends SPAExecute {
         this.lmwg = lmwg;
         this.transducerStack = new Stack<>();
         this.transitions = lmwg.getTransitions();
-        this.mapMachineStates = lmwg.getMapMachineStates();
+        this.mapMachineStates = lmwg.getMapMachineStatesLabels();
         this.spaTransitions = new HashSet<>();
         this.stateCounter = 0;
         this.dictionaryTerm = dictionaryTerm;
@@ -55,115 +54,6 @@ public class SPAExecuteNLP extends SPAExecute {
         Map<String, List<Sketch>> machineSketchesMap = spaStruct.getMachinesFromTransitions(); // map list of Sketch (transitions) to a machine
         Map<String, Integer> machineMaxStateIdMap = spaStruct.getMaxStateIdFromMachineMap(machineSketchesMap);
 
-        // Acao semantica associado a transicao com terminal
-        Action semanticActionTermTransition = new Action("semanticActionTermTransition") {
-            @Override
-            public void execute(Token token) {
-                long threadId = Thread.currentThread().getId();
-                if (token.getType().equals("term")) {
-                    nlpOutputList.insertOutputResult(threadId,"\"" + token.getValue() + "\"");
-                    //outputList.addLast("\"" + token.getValue() + "\"");
-                    logger.debug("ThreadID {}: Ação semântica: Terminal consumido: POS tag {}, value \"{}\".",
-                            String.valueOf(threadId),
-                            token.getNlpToken().getNlpWords().get(0).getPosTag(), token.getValue());
-                }
-            }
-
-            @Override
-            public List execute(int state, List tree) {
-                return null;
-            }
-        };
-
-        // Acao semantica associado a transicao com não terminal
-        Action semanticActionNtermTransition = new Action("semanticActionNtermTransition") {
-            @Override
-            public void execute(Token token) {
-                long threadId = Thread.currentThread().getId();
-                logger.debug("ThreadID {}: Ação semântica: Transiçao com chamada de submáquina.",
-                       String.valueOf(threadId));
-            }
-
-            @Override
-            public List execute(int state, List tree) {
-                return null;
-            }
-        };
-
-        // Acao semantica associado a transicao em vazio
-        Action semanticActionEmptyTransition = new Action("semanticActionEmptyTransition") {
-            @Override
-            public void execute(Token token) {
-                long threadId = Thread.currentThread().getId();
-                logger.debug("ThreadID {}: Ação semântica: Transição em vazio.", String.valueOf(threadId));
-            }
-
-            @Override
-            public List execute(int state, List tree) {
-                return null;
-            }
-        };
-
-        // Acao semantica associado ao estado (maquina de Moore) para gerar saída e manipular pilha de acordo com rotulos
-        ActionState semanticActionState = new ActionState("semanticActionState") {
-            @Override
-            public void execute(LinkedList<LabelElement> labels, Stack<String> transducerStack) {
-                long threadId = Thread.currentThread().getId();
-
-                logger.debug("ThreadID {}: Ação semântica: Labels", String.valueOf(threadId));
-                for (LabelElement singleLabelElement : labels) {
-                    if (singleLabelElement != null) { // verifica se não retornou elemento de rotulo nulo
-                        String labelSymbol = singleLabelElement.getValue();
-                        Production labelProduction = singleLabelElement.getProduction();
-                        if (labelProduction == null) {
-                            if (labelSymbol.equals("ε")) {
-                                nlpOutputList.insertOutputResult(threadId,"()");
-                                //outputList.addLast("()");
-                            } else if (dictionaryTerm.contains(String.valueOf(labelSymbol))) {
-                                nlpOutputList.insertOutputResult(threadId,"(" + labelSymbol + ")");
-                                //outputList.addLast("(" + labelSymbol + ")");
-                            } else if (labelSymbol.equals("[")) {
-                                nlpOutputList.insertOutputResult(threadId,"[(");
-                                //outputList.addLast("[(");
-                                transducerStack.push("]");
-                            } else if (labelSymbol.equals("]")) {
-                                StringBuilder sb = new StringBuilder();
-                                while (!transducerStack.top().equals("]")) {
-                                    sb.append(transducerStack.pop());
-                                }
-                                transducerStack.pop();
-                                sb.reverse();
-                                sb.append("]");
-                                nlpOutputList.insertOutputResult(threadId,sb.toString());
-                                //outputList.addLast(sb.toString());
-                            }
-                        }
-                        else {
-                            if (labelProduction.getRecursion().equals("right")) {
-                                nlpOutputList.insertOutputResult(threadId,labelProduction.getIdentifier() + ")");
-                                //outputList.addLast(labelProduction.getIdentifier() + ")");
-                            }
-                            else if (labelProduction.getRecursion().equals("left")) {
-                                String stackElement = ")" + labelProduction.getIdentifier();
-                                transducerStack.push(stackElement);
-                                nlpOutputList.insertOutputResult(threadId,"(");
-                                //outputList.addLast("(");
-                            }
-                            else {
-                                StringBuilder sb = new StringBuilder();
-                                while (!transducerStack.top().equals("]")) {
-                                    sb.append(transducerStack.pop());
-                                }
-                                sb.reverse();
-                                sb.append(labelProduction.getIdentifier()).append(")");
-                                nlpOutputList.insertOutputResult(threadId,sb.toString());
-                                //outputList.addLast(sb.toString());
-                            }
-                        }
-                    }
-                }
-            }
-        };
 
         // Construcao do automato
         buildSPA(spa, machineSketchesMap, stateCounter, machineMaxStateIdMap, nlpAction);
@@ -179,7 +69,6 @@ public class SPAExecuteNLP extends SPAExecute {
         logger.debug("Started parsing.");
 
         thread.start();
-//        spa.parse();
 
         while (this.nlpOutputList.isAnyThreadAlive()) {
             Thread.sleep(10000);
@@ -248,23 +137,5 @@ public class SPAExecuteNLP extends SPAExecute {
         logger.debug("Finished building SPA parser.");
 
     }
-
-    /*
-    @Override
-    protected void addSPAState(Integer id, String submachine, Object spa, LinkedList<LabelElement> labels,
-                               ActionState actionState) {
-        if (spa instanceof StructuredPushdownAutomaton2) {
-            if (labels != null) {
-                if (((StructuredPushdownAutomaton2)spa).getState(id) == null) {
-                    State newState = new State(id, submachine, labels);
-                    newState.addActionState(actionState);
-                    ((StructuredPushdownAutomaton2)spa).addState(id, newState);
-                }
-            } else {
-                State newState = new State(id, submachine, null);
-                ((StructuredPushdownAutomaton2)spa).addState(id, newState);
-            }
-        }
-    } */
 
 }

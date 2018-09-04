@@ -41,6 +41,7 @@ public abstract class ActionState {
     }
 
     public abstract void execute(LinkedList<LabelElement> labels, Stack<String> transducerStack);
+
     //public abstract List execute(int state, List tree);
 
     @Override

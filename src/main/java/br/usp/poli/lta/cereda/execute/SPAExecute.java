@@ -39,7 +39,7 @@ public class SPAExecute {
         this.lmwg = lmwg;
         this.transducerStack = new Stack<>();
         this.transitions = lmwg.getTransitions();
-        this.mapMachineStates = lmwg.getMapMachineStates();
+        this.mapMachineStates = lmwg.getMapMachineStatesLabels();
         this.spaTransitions = new HashSet<>();
         this.stateCounter = 0;
         this.dictionaryTerm = dictionaryTerm;
@@ -52,7 +52,7 @@ public class SPAExecute {
         this.lmwg = lmwg;
         this.transducerStack = new Stack<>();
         this.transitions = lmwg.getTransitions();
-        this.mapMachineStates = lmwg.getMapMachineStates();
+        this.mapMachineStates = lmwg.getMapMachineStatesLabels();
         this.spaTransitions = new HashSet<>();
         this.stateCounter = 0;
         this.dictionaryTerm = dictionaryTerm;

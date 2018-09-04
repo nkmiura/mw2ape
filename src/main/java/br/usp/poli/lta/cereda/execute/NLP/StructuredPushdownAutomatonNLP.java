@@ -170,9 +170,9 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
                     //for (Transition tempTransition: query) {
                         //if (queryIndex > 0) {
                         StructuredPushdownAutomatonNLP newSpa =
-                                    new StructuredPushdownAutomatonNLP(this, query.get(i));
+                                new StructuredPushdownAutomatonNLP(this, query.get(i));
                         NLPSpaThread NLPSpaThread = new NLPSpaThread(newSpa, this.nlpOutputList,
-                                    this.nlpTransducerStackList, Thread.currentThread().getId());
+                                this.nlpTransducerStackList, Thread.currentThread().getId());
                         Thread newThread = new Thread(NLPSpaThread);
                         newThread.start();
                         //}

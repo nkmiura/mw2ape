@@ -51,7 +51,6 @@ import org.yaml.snakeyaml.Yaml;
 /**
  * 
  * @author Paulo Roberto Massa Cereda
- * @modified by Newton Kiyotaka Miura
  * @version 1.2
  * @since 1.0
  */
