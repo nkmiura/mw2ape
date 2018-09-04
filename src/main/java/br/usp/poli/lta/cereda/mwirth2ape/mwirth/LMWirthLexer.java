@@ -44,23 +44,92 @@ public class LMWirthLexer extends MWirthLexer {
         try {
             for (NTerm tempNterm: labelGrammar.nterms) {
                 // Loop para cada nterm
+                LinkedList<LabelElement> newLabels1 = new LinkedList<>();
+                Integer productionIndex = 0;
                 for (Production tempProduction: tempNterm.productions) {
                     // token nterm inicial
-                    ProductionToken newProductionToken1 = new ProductionToken("nterm", tempNterm.getValue());
-                    newProductionToken1.setNterm(tempNterm);
-                    this.productionTokens.add(newProductionToken1);
-                    // token "=" e label "[" associado
-                    ProductionToken newProductionToken2 = new ProductionToken("=", "=");
-                    LabelElement newLabelElement = new LabelElement();
-                    newLabelElement.setValue("[");
-                    LinkedList<LabelElement> newLabels = new LinkedList<>();
-                    newLabels.add(newLabelElement);
-                    newProductionToken2.setNextLabels(newLabels);
-                    this.productionTokens.add(newProductionToken2);
-                    // tokens da descricao da producao
-                    for (ProductionToken tempProductionToken: tempProduction.expression) {
-                        this.productionTokens.add(tempProductionToken);
+                    if (productionIndex == 0) {
+                        ProductionToken newProductionToken1 = new ProductionToken("nterm", tempNterm.getValue());
+                        newProductionToken1.setNterm(tempNterm);
+                        this.productionTokens.add(newProductionToken1);
+                        // token "=" e label "[" associado
+                        ProductionToken newProductionToken2 = new ProductionToken("=", "=");
+                        LabelElement newLabelElement1 = new LabelElement();
+                        newLabelElement1.setValue("[");
+                        newLabels1.add(newLabelElement1);
+                        newProductionToken2.setNextLabels(newLabels1);
+                        this.productionTokens.add(newProductionToken2);
+                        // Se tiver mais de uma produção, abre parênteses
+                        if (tempNterm.productions.size() > 1) {
+                            ProductionToken newProductionToken3 = new ProductionToken("(","("); // novo token (
+                            this.productionTokens.add(newProductionToken3); // adiciona token (
+
+                            tempProduction.expression.getLast().setValue(")");
+                            tempProduction.expression.getLast().setType(")");
+                            tempProduction.expression.getLast().getNextLabels().removeLast();
+
+                            // Edição de labels
+                            Integer expressionSize = tempProduction.expression.size();
+                            if (tempProduction.expression.get(expressionSize-2).getNextLabels() == null) {
+                                LinkedList<LabelElement> newLabels = new LinkedList<>();
+                                tempProduction.expression.get(expressionSize-2).setNextLabels(newLabels);
+                            }
+                            tempProduction.expression.get(expressionSize-2).getNextLabels().addAll(tempProduction.expression.getLast().getNextLabels());
+                            tempProduction.expression.getLast().getNextLabels().clear();
+
+                            // tokens da descricao da primeira producao
+                            for (ProductionToken tempProductionToken : tempProduction.expression) {
+                                this.productionTokens.add(tempProductionToken);
+                            }
+
+                            ProductionToken newProductionToken4 = new ProductionToken("|","|"); // novo token )
+                            this.productionTokens.add(newProductionToken4);
+                        }
+                        else {
+                            // tokens da descricao da producao unica
+                            for (ProductionToken tempProductionToken : tempProduction.expression) {
+                                this.productionTokens.add(tempProductionToken);
+                            }
+                        }
                     }
+                    else { // A partir da 2a produção
+
+                        ProductionToken newProductionToken3 = new ProductionToken("(","("); // novo token (
+                        this.productionTokens.add(newProductionToken3); // adiciona token (                            // ajuste do ultimo elemento de . para |
+
+                        tempProduction.expression.getLast().setValue(")");
+                        tempProduction.expression.getLast().setType(")");
+                        tempProduction.expression.getLast().getNextLabels().removeLast();
+
+                        // Edição de labels
+                        Integer expressionSize = tempProduction.expression.size();
+                        if (tempProduction.expression.get(expressionSize-2).getNextLabels() == null) {
+                            LinkedList<LabelElement> newLabels = new LinkedList<>();
+                            tempProduction.expression.get(expressionSize-2).setNextLabels(newLabels);
+                        }
+                        tempProduction.expression.get(expressionSize-2).getNextLabels().addAll(tempProduction.expression.getLast().getNextLabels());
+                        tempProduction.expression.getLast().getNextLabels().clear();
+
+                        // tokens da descricao da primeira producao
+                        for (ProductionToken tempProductionToken : tempProduction.expression) {
+                            this.productionTokens.add(tempProductionToken);
+                        }
+
+                        if (productionIndex < (tempNterm.productions.size() - 1)) {
+                            ProductionToken newProductionToken4 = new ProductionToken("|","|"); // novo token )
+                            this.productionTokens.add(newProductionToken4);
+                        }
+                        else {
+                            ProductionToken newProductionToken4 = new ProductionToken(".","."); // novo token .
+                            LinkedList<LabelElement> newLabels = new LinkedList<>();
+                            LabelElement newLabelElement = new LabelElement();
+                            newLabelElement.setValue("]");
+                            newLabels.add(newLabelElement);
+                            newProductionToken4.setNextLabels(newLabels);
+                            this.productionTokens.add(newProductionToken4);
+                        }
+                    }
+                    productionIndex++;
                 }
             }
         }

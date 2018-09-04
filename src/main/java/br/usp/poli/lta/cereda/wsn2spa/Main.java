@@ -114,16 +114,17 @@ public class Main {
         }
 
         File inputFile = null;
-        if (!line.getOptionValue("i").isEmpty()) {
+        if (line.hasOption("i")) {
             String inputFileName = line.getOptionValue("i");
             inputFile = new File(inputFileName);
             if (!inputFile.exists()) {
                 throw new Exception("The provided input sentence file " +
-                inputFileName +
-                " does not exist. Make sure the location is correct and " +
-                "try again.");
+                        inputFileName +
+                        " does not exist. Make sure the location is correct and " +
+                        "try again.");
             }
         }
+
 
         /*
         File inputNLPFile = null;
@@ -187,7 +188,7 @@ public class Main {
                     mwg.generateAutomaton();
                     labelGrammar = mwg.getLabelGrammar();
                     lmwl = new LMWirthLexer();
-                    lmwl.LGrammarToProductionTokens(labelGrammar);
+                    lmwl.LGrammarToProductionTokens(labelGrammar); /* Manipular gramática aqui */
                     System.out.println(lmwl.toString());
                     lmwg = new Generator(lmwl, 2);
                     lmwg.generateAutomaton();
