@@ -143,7 +143,9 @@ public class Transition {
         sb.append(", destino: ").append(target);
         if (!preActions.isEmpty()) {
             sb.append(", ações anteriores: ").append("(");
-            sb.append(StringUtils.join(preActions, ", "));
+            for (Action tempAction : preActions) {
+                sb.append(StringUtils.join(tempAction.toString(), ", "));
+            }
             sb.append(")");
         }
         if (!postActions.isEmpty()) {
