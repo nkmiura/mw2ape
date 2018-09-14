@@ -124,6 +124,66 @@ public class SPAExecute {
             }
         };
 
+        // Acao semantica associado a transicao para gerar saída e manipular pilha de acordo com rotulos
+        ActionLabels semanticActionLabels = new ActionLabels ("semanticActionLabels") {
+            @Override
+            public void execute(LinkedList<LabelElement> labels, Stack<String> transducerStack) {
+                long threadId = Thread.currentThread().getId();
+                //transducerStack = nlpTransducerStackList.getTransducerStackList(threadId);
+
+                logger.debug("ThreadID {}: Ação semântica: Labels", String.valueOf(threadId));
+                for (LabelElement singleLabelElement : labels) {
+                    if (singleLabelElement != null) { // verifica se não retornou elemento de rotulo nulo
+                        String labelSymbol = singleLabelElement.getValue();
+                        Production labelProduction = singleLabelElement.getProduction();
+                        if (labelProduction == null) {
+                            if (labelSymbol.equals("ε")) {
+                                //nlpOutputList.insertOutputResult(threadId, "()");
+                                outputList.addLast("()");
+                            } else if (dictionaryTerm.contains(String.valueOf(labelSymbol))) {
+                                //nlpOutputList.insertOutputResult(threadId, "(" + labelSymbol + ")");
+                                outputList.addLast("(" + labelSymbol + ")");
+                            } else if (labelSymbol.equals("[")) {
+                                //nlpOutputList.insertOutputResult(threadId, "[(");
+                                outputList.addLast("[(");
+                                transducerStack.push("]");
+                            } else if (labelSymbol.equals("]")) {
+                                StringBuilder sb = new StringBuilder();
+                                while (!transducerStack.top().equals("]")) {
+                                    sb.append(transducerStack.pop());
+                                }
+                                transducerStack.pop();
+                                sb.reverse();
+                                sb.append("]");
+                                //nlpOutputList.insertOutputResult(threadId, sb.toString());
+                                outputList.addLast(sb.toString());
+                            }
+                        } else {
+                            if (labelProduction.getRecursion().equals("right")) {
+                                //nlpOutputList.insertOutputResult(threadId, labelProduction.getIdentifier() + ")");
+                                outputList.addLast(labelProduction.getIdentifier() + ")");
+                            } else if (labelProduction.getRecursion().equals("left")) {
+                                String stackElement = ")" + labelProduction.getIdentifier();
+                                transducerStack.push(stackElement);
+                                //nlpOutputList.insertOutputResult(threadId, "(");
+                                outputList.addLast("(");
+                            } else {
+                                StringBuilder sb = new StringBuilder();
+                                while (!transducerStack.top().equals("]")) {
+                                    sb.append(transducerStack.pop());
+                                }
+                                sb.reverse();
+                                sb.append(labelProduction.getIdentifier()).append(")");
+                                //nlpOutputList.insertOutputResult(threadId, sb.toString());
+                                outputList.addLast(sb.toString());
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+
         // Acao semantica associado ao estado (maquina de Moore) para gerar saída e manipular pilha de acordo com rotulos
         ActionState semanticActionState = new ActionState("semanticActionState") {
             @Override
@@ -177,9 +237,11 @@ public class SPAExecute {
         };
 
 
+
         buildSPA(spa, machineSketchesMap, stateCounter, machineMaxStateIdMap,
                 semanticActionState,
-                semanticActionNtermTransition, semanticActionTermTransition, semanticActionEmptyTransition);
+                semanticActionNtermTransition, semanticActionTermTransition, semanticActionEmptyTransition,
+                semanticActionLabels);
         // Construcao do automato
         /*
         for (String machine : machineSketchesMap.keySet()) {
@@ -248,7 +310,7 @@ public class SPAExecute {
     protected void buildSPA (StructuredPushdownAutomaton spa, Map<String, List<Sketch>> machineSketchesMap,
                              Integer stateCounter, Map<String, Integer> machineMaxStateIdMap, ActionState semanticActionState,
                              Action semanticActionNtermTransition, Action semanticActionTermTransition,
-                             Action semanticActionEmptyTransition)
+                             Action semanticActionEmptyTransition, ActionLabels semanticActionLabels)
     {
 
         // Construcao do automato
@@ -291,6 +353,7 @@ public class SPAExecute {
                     );
                     newTransition.addPostAction(semanticActionTermTransition);
                 }
+                newTransition.addLabelAction(semanticActionLabels);
                 spa.addTransition(newTransition);
             }
             stateCounter = stateCounter + machineMaxStateIdMap.get(machine) + 1;

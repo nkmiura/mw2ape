@@ -20,6 +20,7 @@
 package br.usp.poli.lta.cereda.mwirth2ape.ape;
 
 import br.usp.poli.lta.cereda.mwirth2ape.ape.conversion.State;
+import br.usp.poli.lta.cereda.mwirth2ape.labeling.LabelElement;
 import br.usp.poli.lta.cereda.mwirth2ape.lexer.Lexer;
 import br.usp.poli.lta.cereda.mwirth2ape.model.Token;
 import br.usp.poli.lta.cereda.mwirth2ape.structure.Stack;
@@ -547,9 +548,6 @@ public class StructuredPushdownAutomaton2 extends StructuredPushdownAutomaton {
     }
 
     protected void checkAndDoActionState(Integer state, Stack<String> transducerStack) {
-
-
-
         if (this.states.get(state).getActionList() != null) {
             for (ActionState actionState : this.states.get(state).getActionList()) {
                 if (this.states.get(state).getLabelElements() != null) {

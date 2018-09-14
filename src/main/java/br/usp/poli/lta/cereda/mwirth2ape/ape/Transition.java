@@ -19,8 +19,10 @@
 **/
 package br.usp.poli.lta.cereda.mwirth2ape.ape;
 
+import br.usp.poli.lta.cereda.mwirth2ape.labeling.LabelElement;
 import br.usp.poli.lta.cereda.mwirth2ape.model.Token;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
@@ -38,6 +40,7 @@ public class Transition {
     private int lookahead;
     private final List<Action> preActions;
     private final List<Action> postActions;
+    private final List<ActionLabels> labelActions;
 
     public Transition(int source, Token token, int target) {
         this.source = source;
@@ -47,11 +50,13 @@ public class Transition {
         this.lookahead = -1;
         this.preActions = new ArrayList<>();
         this.postActions = new ArrayList<>();
+        this.labelActions = new ArrayList<>();
     }
 
     public Transition() {
         this.preActions = new ArrayList<>();
         this.postActions = new ArrayList<>();
+        this.labelActions = new ArrayList<>();
     }
 
     public Transition(int source, String submachine, int target) {
@@ -62,6 +67,7 @@ public class Transition {
         this.lookahead = -1;
         this.preActions = new ArrayList<>();
         this.postActions = new ArrayList<>();
+        this.labelActions = new ArrayList<>();
     }
 
     public int getSource() {
@@ -102,13 +108,13 @@ public class Transition {
         this.submachine = submachine;
     }
 
-    public void addPostAction(Action action) {
-        postActions.add(action);
-    }
+    public void addPostAction(Action action) { postActions.add(action); }
 
     public void addPreAction(Action action) {
         preActions.add(action);
     }
+
+    public void addLabelAction(ActionLabels actionLabels) { labelActions.add(actionLabels); }
 
     public void setLookahead(int lookahead) {
         this.lookahead = lookahead;
@@ -128,6 +134,14 @@ public class Transition {
 
     public List<Action> getPostActions() {
         return postActions;
+    }
+
+    public List<ActionLabels> getLabelActions() {
+        return labelActions;
+    }
+
+    public LinkedList<LabelElement> getLabelElements() {  // Retorna labels associados a direita
+        return token.getProductionToken().getNextLabels();
     }
 
     @Override

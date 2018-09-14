@@ -1,5 +1,6 @@
 package br.usp.poli.lta.cereda.execute.NLP;
 
+import br.usp.poli.lta.cereda.mwirth2ape.ape.ActionLabels;
 import br.usp.poli.lta.cereda.mwirth2ape.structure.Stack;
 import br.usp.poli.lta.cereda.mwirth2ape.ape.Action;
 import br.usp.poli.lta.cereda.mwirth2ape.ape.ActionState;
@@ -26,6 +27,7 @@ public class NLPAction {
     public Action semanticActionTermTransition;
     public Action semanticActionNtermTransition;
     public Action semanticActionEmptyTransition;
+    public ActionLabels semanticActionLabels;
     public ActionState semanticActionState;
     //public Action
 
@@ -82,6 +84,71 @@ public class NLPAction {
             @Override
             public List execute(int state, List tree) {
                 return null;
+            }
+        };
+
+        // Acao semantica associado a transicao para gerar saída e manipular pilha de acordo com rotulos
+        this.semanticActionLabels = new ActionLabels ("semanticActionLabels") {
+            @Override
+            public void execute(LinkedList<LabelElement> labels, Stack<String> transducerStack) {
+                long threadId = Thread.currentThread().getId();
+                transducerStack = nlpTransducerStackList.getTransducerStackList(threadId);
+
+                logger.debug("ThreadID {}: Ação semântica: Labels", String.valueOf(threadId));
+                if (labels != null) {
+                    logger.debug("Com labels.");
+                    for (LabelElement singleLabelElement : labels) {
+                        if (singleLabelElement != null) { // verifica se não retornou elemento de rotulo nulo
+                            String labelSymbol = singleLabelElement.getValue();
+                            Production labelProduction = singleLabelElement.getProduction();
+                            if (labelProduction == null) {
+                                if (labelSymbol.equals("ε")) {
+                                    nlpOutputList.insertOutputResult(threadId, "()");
+                                    //outputList.addLast("()");
+                                } else if (dictionaryTerm.contains(String.valueOf(labelSymbol))) {
+                                    nlpOutputList.insertOutputResult(threadId, "(" + labelSymbol + ")");
+                                    //outputList.addLast("(" + labelSymbol + ")");
+                                } else if (labelSymbol.equals("[")) {
+                                    nlpOutputList.insertOutputResult(threadId, "[(");
+                                    //outputList.addLast("[(");
+                                    transducerStack.push("]");
+                                } else if (labelSymbol.equals("]")) {
+                                    StringBuilder sb = new StringBuilder();
+                                    while (!transducerStack.top().equals("]")) {
+                                        sb.append(transducerStack.pop());
+                                    }
+                                    transducerStack.pop();
+                                    sb.reverse();
+                                    sb.append("]");
+                                    nlpOutputList.insertOutputResult(threadId, sb.toString());
+                                    //outputList.addLast(sb.toString());
+                                }
+                            } else {
+                                if (labelProduction.getRecursion().equals("right")) {
+                                    nlpOutputList.insertOutputResult(threadId, labelProduction.getIdentifier() + ")");
+                                    //outputList.addLast(labelProduction.getIdentifier() + ")");
+                                } else if (labelProduction.getRecursion().equals("left")) {
+                                    String stackElement = ")" + labelProduction.getIdentifier();
+                                    transducerStack.push(stackElement);
+                                    nlpOutputList.insertOutputResult(threadId, "(");
+                                    //outputList.addLast("(");
+                                } else {
+                                    StringBuilder sb = new StringBuilder();
+                                    while (!transducerStack.top().equals("]")) {
+                                        sb.append(transducerStack.pop());
+                                    }
+                                    sb.reverse();
+                                    sb.append(labelProduction.getIdentifier()).append(")");
+                                    nlpOutputList.insertOutputResult(threadId, sb.toString());
+                                    //outputList.addLast(sb.toString());
+                                }
+                            }
+                        }
+                    }
+                }
+                else {
+                    logger.debug("Sem labels.");
+                }
             }
         };
 

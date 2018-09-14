@@ -130,6 +130,7 @@ public class SPAExecuteNLP extends SPAExecute {
                     );
                     newTransition.addPostAction(nlpAction.semanticActionTermTransition);
                 }
+                newTransition.addLabelAction(nlpAction.semanticActionLabels); // 2018.09.14
                 spa.addTransition(newTransition);
             }
             stateCounter = stateCounter + machineMaxStateIdMap.get(machine) + 1;

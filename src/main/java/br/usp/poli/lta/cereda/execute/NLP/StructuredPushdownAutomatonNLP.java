@@ -20,11 +20,8 @@
 package br.usp.poli.lta.cereda.execute.NLP;
 
 import br.usp.poli.lta.cereda.mwirth2ape.ape.*;
-import br.usp.poli.lta.cereda.mwirth2ape.ape.conversion.State;
 import br.usp.poli.lta.cereda.mwirth2ape.model.Token;
 import br.usp.poli.lta.cereda.mwirth2ape.structure.Stack;
-import br.usp.poli.lta.cereda.mwirth2ape.tuple.Pair;
-import br.usp.poli.lta.cereda.mwirth2ape.tuple.Quadruple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -92,10 +89,10 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
     public boolean parse(boolean isClone) {
         boolean isCloneLocal = isClone;
         logger.debug("Iniciando o processo de reconhecimento. Thread: " + Thread.currentThread().getName());
-        if (isCloneLocal) {
+        if (isCloneLocal) { // Nao eh clone
             symbol = lexer.getNext();
 
-        } else {
+        } else { // Eh clone - primeira execucao
             state = submachines.get(submachine).getFirst();
             stack.clear();
 
@@ -105,6 +102,8 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
             tree = new Stack<>();
             tree.push(new ArrayList());
             tree.top().add(submachine);
+
+
 
             checkAndDoActionState(state, transducerStack);
         }
@@ -219,10 +218,19 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
                     }
                 }
                 for (Action action : query.get(0).getPostActions()) {
-                    logger.debug("Executando ação posterior: {}", action);
+                    logger.debug("Executando ação posterior: {}", action.getName());
                     action.execute(symbol);
                 }
-                checkAndDoActionState(state, transducerStack); // acao semantica no estado
+                //
+
+                for (ActionLabels actionLabel:  query.get(0).getLabelActions()) {
+                    logger.debug("Executando rotina de label: {}", actionLabel.getName());
+                    actionLabel.execute(query.get(0).getLabelElements(), transducerStack);
+                }
+
+
+                //
+                //checkAndDoActionState(state, transducerStack); // acao semantica no estado - comentar para retirar 2018.09.14
             }
         }
 
@@ -245,6 +253,8 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
                     branch = operations.get(current).execute(reference, branch);
                 }
                 tree.top().add(branch);
+                // processar label
+
                 checkAndDoActionState(state, transducerStack); // acao semantica do estado
             } else {
                 Integer newState = checkAndDoEmptyTransition(state);
