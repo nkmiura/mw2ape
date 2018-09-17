@@ -98,6 +98,7 @@ public class Dot {
         String symbol;
         if (transition.epsilon()) {
             symbol = "ɛ";
+            //symbol = "ɛ,";
         }
         else {
             symbol = transition.getSymbol().getValue();

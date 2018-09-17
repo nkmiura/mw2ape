@@ -19,6 +19,7 @@
 **/
 package br.usp.poli.lta.cereda.mwirth2ape.ape;
 
+import br.usp.poli.lta.cereda.execute.NLP.NLPSPAStackElement;
 import br.usp.poli.lta.cereda.mwirth2ape.ape.conversion.State;
 import br.usp.poli.lta.cereda.mwirth2ape.labeling.LabelElement;
 import br.usp.poli.lta.cereda.mwirth2ape.lexer.Lexer;
@@ -43,6 +44,7 @@ public class StructuredPushdownAutomaton2 extends StructuredPushdownAutomaton {
             getLogger(StructuredPushdownAutomaton2.class);
     protected Map<Integer, State> states;
     protected Stack<String> transducerStack;
+    protected Stack<NLPSPAStackElement> nlpStack;
 
     public StructuredPushdownAutomaton2() {
         boolean tempflag = logger.isDebugEnabled();
@@ -55,6 +57,7 @@ public class StructuredPushdownAutomaton2 extends StructuredPushdownAutomaton {
         transitions = new HashSet<>();
         states = new HashMap<>();
         stack = new Stack<>();
+        nlpStack = new Stack<>();
         tree = new Stack<>();
         operations = new HashMap<>();
         transducerStack = new Stack<>();
@@ -536,6 +539,10 @@ public class StructuredPushdownAutomaton2 extends StructuredPushdownAutomaton {
                     for (Action action : query.get(0).getPostActions()) {
                         logger.debug("Executando ação posterior: {}", action);
                         action.execute(symbol);
+                    }
+                    for (ActionLabels actionLabel:  query.get(0).getLabelActions()) {
+                        logger.debug("Executando rotina de label: {}", actionLabel.getName());
+                        actionLabel.execute(query.get(0).getLabelElements(), transducerStack);
                     }
                 } else {
                     logger.debug("O estado corrente {} não é de aceitação na "

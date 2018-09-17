@@ -45,7 +45,7 @@ public class SPAExecuteNLP extends SPAExecute {
         //this.nlpOutputList.incrementOutputList(Thread.currentThread().getId());
         //this.nlpOutputList.setParseResult(Thread.currentThread().getId(),true);
         StructuredPushdownAutomatonNLP spa = new StructuredPushdownAutomatonNLP(this.nlpLexer,
-                this.nlpOutputList, this.nlpTransducerStackList);
+                this.nlpOutputList, this.nlpTransducerStackList, this.nlpAction);
         //Runnable spa = new StructuredPushdownAutomatonNLP(threadIdCounter, this.nlpLexer, this.outputResults);
 
         spa.setSubmachine(this.lmwg.getMain());  // set main machine
