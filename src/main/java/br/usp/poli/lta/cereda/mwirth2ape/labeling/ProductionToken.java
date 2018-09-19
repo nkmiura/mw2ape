@@ -63,6 +63,15 @@ public class ProductionToken extends Token {
         return nextLabels;
     }
 
+    public void pushNextLabels(LinkedList<LabelElement> newNextLabels) {
+        newNextLabels.addAll(this.nextLabels);
+        this.nextLabels = newNextLabels;
+    }
+
+    public void addNextLabels(LinkedList<LabelElement> newNextLabels) {
+        this.nextLabels.addAll(newNextLabels);
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
