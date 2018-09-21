@@ -577,7 +577,7 @@ public class Generator {
                 logger.debug("# Newton: " + labelGrammar.toString());
                 break;
             case 2:
-                reduceDeterministicEmptyTransitions();
+                //reduceDeterministicEmptyTransitions();
                 break;
             default:
                 break;
@@ -688,7 +688,7 @@ public class Generator {
                             }
                         }
                         else {
-                            # parei aqui 2018.09.18
+                            //# parei aqui 2018.09.18
                             // Tem label na transicao
                             for (Sketch tempAdjustTransition: transitions) {
                                 if (tempAdjustTransition.getName().equals(submachine) &&
