@@ -171,7 +171,7 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
                         // Executa acao semantica pos-retorno de submaquina - 2018.09.17
                         for (ActionLabels actionLabel: nlpState.getTransition().getLabelActions()) {
                             logger.debug("Executando rotina de label: {}", actionLabel.getName());
-                            actionLabel.execute(nlpState.getTransition().getLabelElements(), transducerStack);
+                            actionLabel.execute(nlpState.getTransition().getPostLabelElements(), transducerStack);
                         }
                         //checkAndDoActionState(state, transducerStack); // acao semantica do estado
                     } else {
@@ -210,8 +210,13 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
                 logger.debug("Existe apenas uma transição válida, "
                         + "portanto o passo é determinístico.");
                 for (Action action : query.get(0).getPreActions()) {
+
                     logger.debug("Executando ação anterior: {}", action);
                     action.execute(symbol);
+                }
+                for (ActionLabels actionLabel:  query.get(0).getLabelActions()) {
+                    logger.debug("Executando rotina de label pre transicao: {}", actionLabel.getName());
+                    actionLabel.execute(query.get(0).getPreLabelElements(), transducerStack);
                 }
                 if (query.get(0).isSubmachineCall()) {
                     machines.push(query.get(0).getSubmachine());
@@ -255,8 +260,8 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
                 //
 
                 for (ActionLabels actionLabel:  query.get(0).getLabelActions()) {
-                    logger.debug("Executando rotina de label: {}", actionLabel.getName());
-                    actionLabel.execute(query.get(0).getLabelElements(), transducerStack);
+                    logger.debug("Executando rotina de label pos transicao: {}", actionLabel.getName());
+                    actionLabel.execute(query.get(0).getPostLabelElements(), transducerStack);
                 }
                 //
                 //checkAndDoActionState(state, transducerStack); // acao semantica no estado - comentar para retirar 2018.09.14
@@ -287,7 +292,7 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
                 // Executa acao semantica pos-retorno de submaquina - 2018.09.17
                 for (ActionLabels actionLabel: nlpState.getTransition().getLabelActions()) {
                     logger.debug("Executando rotina de label: {}", actionLabel.getName());
-                    actionLabel.execute(nlpState.getTransition().getLabelElements(), transducerStack);
+                    actionLabel.execute(nlpState.getTransition().getPostLabelElements(), transducerStack);
                 }
                 //checkAndDoActionState(state, transducerStack); // acao semantica do estado
             } else {

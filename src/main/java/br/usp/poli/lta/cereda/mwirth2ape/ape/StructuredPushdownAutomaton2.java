@@ -21,13 +21,11 @@ package br.usp.poli.lta.cereda.mwirth2ape.ape;
 
 import br.usp.poli.lta.cereda.execute.NLP.NLPSPAStackElement;
 import br.usp.poli.lta.cereda.mwirth2ape.ape.conversion.State;
-import br.usp.poli.lta.cereda.mwirth2ape.labeling.LabelElement;
 import br.usp.poli.lta.cereda.mwirth2ape.lexer.Lexer;
 import br.usp.poli.lta.cereda.mwirth2ape.model.Token;
 import br.usp.poli.lta.cereda.mwirth2ape.structure.Stack;
 import br.usp.poli.lta.cereda.mwirth2ape.tuple.Pair;
 import br.usp.poli.lta.cereda.mwirth2ape.tuple.Quadruple;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -542,7 +540,7 @@ public class StructuredPushdownAutomaton2 extends StructuredPushdownAutomaton {
                     }
                     for (ActionLabels actionLabel:  query.get(0).getLabelActions()) {
                         logger.debug("Executando rotina de label: {}", actionLabel.getName());
-                        actionLabel.execute(query.get(0).getLabelElements(), transducerStack);
+                        actionLabel.execute(query.get(0).getPostLabelElements(), transducerStack);
                     }
                 } else {
                     logger.debug("O estado corrente {} não é de aceitação na "

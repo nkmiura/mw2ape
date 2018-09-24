@@ -2,7 +2,6 @@ package br.usp.poli.lta.cereda.mwirth2ape.labeling;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sun.security.ssl.Debug;
 
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -81,7 +80,7 @@ public class LabelGrammar {
                     if (!tempProduction.all.get(i).getType().equals("label")) {  // para cada token da expression
                         if ((i+1) < tempProduction.all.size()) {  // verifica se ultrapassa limite
                             if (tempProduction.all.get(i+1).getType().equals("label")) { // verifica se o próximo token é label
-                                tempProduction.all.get(i).setNextLabels(tempProduction.all.get(i+1).getLabels());
+                                tempProduction.all.get(i).setPostLabels(tempProduction.all.get(i+1).getLabels());
                                 //tempProduction.all.get(i).setPreviousLabels(tempProduction.all.get(i-1).getLabels());
                                 i++; // pula o próximo token, pois é label
                             }

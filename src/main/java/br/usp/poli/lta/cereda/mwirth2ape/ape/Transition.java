@@ -140,8 +140,12 @@ public class Transition {
         return labelActions;
     }
 
-    public LinkedList<LabelElement> getLabelElements() {  // Retorna labels associados a direita
-        return token.getProductionToken().getNextLabels();
+    public LinkedList<LabelElement> getPostLabelElements() {  // Retorna labels associados a direita
+        return token.getProductionToken().getPostLabels();
+    }
+
+    public LinkedList<LabelElement> getPreLabelElements() {  // Retorna labels associados a direita
+        return token.getProductionToken().getPreLabels();
     }
 
     @Override

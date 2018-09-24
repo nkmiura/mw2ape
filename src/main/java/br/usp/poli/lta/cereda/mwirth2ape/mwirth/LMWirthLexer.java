@@ -57,7 +57,7 @@ public class LMWirthLexer extends MWirthLexer {
                         LabelElement newLabelElement1 = new LabelElement();
                         newLabelElement1.setValue("[");
                         newLabels1.add(newLabelElement1);
-                        newProductionToken2.setNextLabels(newLabels1);
+                        newProductionToken2.setPostLabels(newLabels1);
                         this.productionTokens.add(newProductionToken2);
                         // Se tiver mais de uma produção, abre parênteses
                         if (tempNterm.productions.size() > 1) {
@@ -66,16 +66,16 @@ public class LMWirthLexer extends MWirthLexer {
 
                             tempProduction.expression.getLast().setValue(")");
                             tempProduction.expression.getLast().setType(")");
-                            tempProduction.expression.getLast().getNextLabels().removeLast();
+                            tempProduction.expression.getLast().getPostLabels().removeLast();
 
                             // Edição de labels
                             Integer expressionSize = tempProduction.expression.size();
-                            if (tempProduction.expression.get(expressionSize-2).getNextLabels() == null) {
+                            if (tempProduction.expression.get(expressionSize-2).getPostLabels() == null) {
                                 LinkedList<LabelElement> newLabels = new LinkedList<>();
-                                tempProduction.expression.get(expressionSize-2).setNextLabels(newLabels);
+                                tempProduction.expression.get(expressionSize-2).setPostLabels(newLabels);
                             }
-                            tempProduction.expression.get(expressionSize-2).getNextLabels().addAll(tempProduction.expression.getLast().getNextLabels());
-                            tempProduction.expression.getLast().getNextLabels().clear();
+                            tempProduction.expression.get(expressionSize-2).getPostLabels().addAll(tempProduction.expression.getLast().getPostLabels());
+                            tempProduction.expression.getLast().getPostLabels().clear();
 
                             // tokens da descricao da primeira producao
                             for (ProductionToken tempProductionToken : tempProduction.expression) {
@@ -99,16 +99,16 @@ public class LMWirthLexer extends MWirthLexer {
 
                         tempProduction.expression.getLast().setValue(")");
                         tempProduction.expression.getLast().setType(")");
-                        tempProduction.expression.getLast().getNextLabels().removeLast();
+                        tempProduction.expression.getLast().getPostLabels().removeLast();
 
                         // Edição de labels
                         Integer expressionSize = tempProduction.expression.size();
-                        if (tempProduction.expression.get(expressionSize-2).getNextLabels() == null) {
+                        if (tempProduction.expression.get(expressionSize-2).getPostLabels() == null) {
                             LinkedList<LabelElement> newLabels = new LinkedList<>();
-                            tempProduction.expression.get(expressionSize-2).setNextLabels(newLabels);
+                            tempProduction.expression.get(expressionSize-2).setPostLabels(newLabels);
                         }
-                        tempProduction.expression.get(expressionSize-2).getNextLabels().addAll(tempProduction.expression.getLast().getNextLabels());
-                        tempProduction.expression.getLast().getNextLabels().clear();
+                        tempProduction.expression.get(expressionSize-2).getPostLabels().addAll(tempProduction.expression.getLast().getPostLabels());
+                        tempProduction.expression.getLast().getPostLabels().clear();
 
                         // tokens da descricao da primeira producao
                         for (ProductionToken tempProductionToken : tempProduction.expression) {
@@ -125,7 +125,7 @@ public class LMWirthLexer extends MWirthLexer {
                             LabelElement newLabelElement = new LabelElement();
                             newLabelElement.setValue("]");
                             newLabels.add(newLabelElement);
-                            newProductionToken4.setNextLabels(newLabels);
+                            newProductionToken4.setPostLabels(newLabels);
                             this.productionTokens.add(newProductionToken4);
                         }
                     }

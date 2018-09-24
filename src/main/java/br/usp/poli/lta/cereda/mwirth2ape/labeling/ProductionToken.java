@@ -7,7 +7,8 @@ public class ProductionToken extends Token {
 
     private NTerm nterm;
     private LinkedList<LabelElement> labels;
-    private LinkedList<LabelElement> nextLabels;
+    private LinkedList<LabelElement> preLabels;
+    private LinkedList<LabelElement> postLabels;
 
     public ProductionToken(Token token) {
         setType(token.getType());
@@ -55,44 +56,80 @@ public class ProductionToken extends Token {
         this.labels.push(newLabelElement);
     }
 
-    public void setNextLabels(LinkedList<LabelElement> nextLabels) {
-        this.nextLabels = nextLabels;
+    /////
+    public LinkedList<LabelElement> getPostLabels() {
+        return postLabels;
     }
 
-    public LinkedList<LabelElement> getNextLabels() {
-        return nextLabels;
+    public void setPostLabels(LinkedList<LabelElement> newPostLabels) {
+        if (newPostLabels != null) {
+            if (this.postLabels == null) {
+                this.postLabels = new LinkedList<>();
+            }
+            this.postLabels = newPostLabels;
+        }
     }
 
-    public void pushNextLabels(LinkedList<LabelElement> newNextLabels) {
-        newNextLabels.addAll(this.nextLabels);
-        this.nextLabels = newNextLabels;
+    public void pushPostLabels(LinkedList<LabelElement> newPostLabels) {
+        if (newPostLabels != null) {
+            if (this.postLabels == null) {
+                this.postLabels = new LinkedList<>();
+            }
+            newPostLabels.addAll(this.postLabels);
+            this.postLabels = newPostLabels;
+        }
     }
 
-    public void addNextLabels(LinkedList<LabelElement> newNextLabels) {
-        this.nextLabels.addAll(newNextLabels);
+    public void addPostLabels(LinkedList<LabelElement> newPostLabels) {
+        if (newPostLabels != null) {
+            if (this.postLabels == null) {
+                this.postLabels = new LinkedList<>();
+            }
+            this.preLabels.addAll(newPostLabels);
+        }
+    }
+
+    /////
+
+    public LinkedList<LabelElement> getPreLabels() {
+        return preLabels;
+    }
+
+    public void setPreLabels(LinkedList<LabelElement> newPreLabels) {
+        if (newPreLabels != null) {
+            if (this.preLabels == null) {
+                this.preLabels = new LinkedList<>();
+            }
+            this.preLabels = newPreLabels;
+        }
+    }
+
+    public void pushPreLabels(LinkedList<LabelElement> newPreLabels) {
+        if (newPreLabels != null) {
+            if (this.preLabels == null) {
+                this.preLabels = new LinkedList<>();
+            }
+            newPreLabels.addAll(this.preLabels);
+            this.preLabels = newPreLabels;
+        }
+    }
+
+    public void addPreLabels(LinkedList<LabelElement> newPreLabels) {
+        if (newPreLabels != null) {
+            if (this.preLabels == null) {
+                this.preLabels = new LinkedList<>();
+            }
+            this.preLabels.addAll(newPreLabels);
+        }
     }
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        if (getType().equals("label")) {
-            sb.append("{" + getType() + ", ");
-            if (this.labels == null) {
-                sb.append("}");
-            }
-            else {
-                sb.append(this.labels.toString() + "}");
-            }
-        }
-        else {
-            sb.append("{" + getType() + ", " + getValue() + ", ");
-            if (this.nterm != null) {
-                sb.append(this.nterm.getValue() + ", ");
-            } else { sb.append(", "); }
-            if (this.getNextLabels() != null) {
-                sb.append("next labels: " + this.getNextLabels().toString() + "}");
-            } else { sb.append("next labels: }"); }
-        }
-        return sb.toString();
+        return "ProductionToken{" +
+                "nterm=" + nterm +
+                ", labels=" + labels +
+                ", preLabels=" + preLabels +
+                ", postLabels=" + postLabels +
+                '}';
     }
 }
