@@ -66,7 +66,7 @@ public class LMWirthLexer extends MWirthLexer {
 
                             tempProduction.expression.getLast().setValue(")");
                             tempProduction.expression.getLast().setType(")");
-                            tempProduction.expression.getLast().getPostLabels().removeLast();
+                            //tempProduction.expression.getLast().getPostLabels().removeLast(); // Precisa remover?
 
                             // Edição de labels
                             Integer expressionSize = tempProduction.expression.size();

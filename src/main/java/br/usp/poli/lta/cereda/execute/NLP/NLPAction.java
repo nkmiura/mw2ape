@@ -154,6 +154,8 @@ public class NLPAction {
 
         // public abstract void execute(LinkedList<LabelElement> labels, Stack<String> transducerStack);
         // Acao semantica associado ao estado (maquina de Moore) para gerar saída e manipular pilha de acordo com rotulos
+        /*
+
         this.semanticActionState = new ActionState ("semanticActionState") {
             @Override
             public void execute(LinkedList<LabelElement> labels, Stack<String> transducerStack) {
@@ -211,5 +213,7 @@ public class NLPAction {
                 }
             }
         };
+
+        */
     }
 }

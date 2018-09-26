@@ -88,7 +88,7 @@ public class StructuredPushdownAutomaton2 extends StructuredPushdownAutomaton {
         tree.push(new ArrayList());
         tree.top().add(submachine);
 
-        checkAndDoActionState(state, transducerStack);
+        //checkAndDoActionState(state, transducerStack);
 
         while (lexer.hasNext()) {
             symbol = lexer.getNext();
@@ -127,7 +127,7 @@ public class StructuredPushdownAutomaton2 extends StructuredPushdownAutomaton {
                                     + "retorno da submáquina: {}", branch);
                         }
                         tree.top().add(branch);
-                        checkAndDoActionState(state, transducerStack); // acao semantica do estado
+                        //checkAndDoActionState(state, transducerStack); // acao semantica do estado
                     } else {
                         logger.debug("Não há transições válidas e o estado "
                                 + "corrente não é de aceitação. Não é "
@@ -178,7 +178,7 @@ public class StructuredPushdownAutomaton2 extends StructuredPushdownAutomaton {
                         logger.debug("Executando ação posterior: {}", action);
                         action.execute(symbol);
                     }
-                    checkAndDoActionState(state, transducerStack); // acao semantica no estado
+                    //checkAndDoActionState(state, transducerStack); // acao semantica no estado
                 } else {
 // newton
                     logger.debug("Existem {} transições válidas. Iniciando "
@@ -432,7 +432,7 @@ public class StructuredPushdownAutomaton2 extends StructuredPushdownAutomaton {
                         logger.debug("Executando ação posterior: {}", action);
                         action.execute(symbol);
                     }
-                    checkAndDoActionState(state, transducerStack); // acao semantica no estado
+                    //checkAndDoActionState(state, transducerStack); // acao semantica no estado
                 }
             }
         }
@@ -456,12 +456,12 @@ public class StructuredPushdownAutomaton2 extends StructuredPushdownAutomaton {
                     branch = operations.get(current).execute(reference, branch);
                 }
                 tree.top().add(branch);
-                checkAndDoActionState(state, transducerStack); // acao semantica do estado
+                //checkAndDoActionState(state, transducerStack); // acao semantica do estado
             } else {
                 Integer newState = checkAndDoEmptyTransition(state);
                 if (newState != -1) {
                     state = newState;
-                    checkAndDoActionState(state, transducerStack); // acao semantica do estado
+                    //checkAndDoActionState(state, transducerStack); // acao semantica do estado
                 }
                 else {
                     return false;
@@ -475,7 +475,7 @@ public class StructuredPushdownAutomaton2 extends StructuredPushdownAutomaton {
                 Integer newState = checkAndDoEmptyTransition(state);
                 if (newState != -1) {
                     state = newState;
-                    checkAndDoActionState(state, transducerStack); // acao semantica do estado
+                    //checkAndDoActionState(state, transducerStack); // acao semantica do estado
                 }
                 else {
                     done = true;
@@ -530,6 +530,10 @@ public class StructuredPushdownAutomaton2 extends StructuredPushdownAutomaton {
                 if (query.get(0).getToken().getType().equals("ε")) {
                     logger.debug("A transição é uma chamada em vazio.");
                     newState = query.get(0).getTarget();
+                    for (ActionLabels actionLabel:  query.get(0).getLabelActions()) {
+                        logger.debug("Executando rotina pre de label: {}", actionLabel.getName());
+                        actionLabel.execute(query.get(0).getPreLabelElements(), transducerStack);
+                    }
                     for (Action action : query.get(0).getPreActions()) {
                         logger.debug("Executando ação anterior: {}", action);
                         action.execute(symbol);
@@ -539,7 +543,7 @@ public class StructuredPushdownAutomaton2 extends StructuredPushdownAutomaton {
                         action.execute(symbol);
                     }
                     for (ActionLabels actionLabel:  query.get(0).getLabelActions()) {
-                        logger.debug("Executando rotina de label: {}", actionLabel.getName());
+                        logger.debug("Executando rotina pos de label: {}", actionLabel.getName());
                         actionLabel.execute(query.get(0).getPostLabelElements(), transducerStack);
                     }
                 } else {
@@ -552,6 +556,7 @@ public class StructuredPushdownAutomaton2 extends StructuredPushdownAutomaton {
         return newState;
     }
 
+    /*
     protected void checkAndDoActionState(Integer state, Stack<String> transducerStack) {
         if (this.states.get(state).getActionList() != null) {
             for (ActionState actionState : this.states.get(state).getActionList()) {
@@ -563,6 +568,7 @@ public class StructuredPushdownAutomaton2 extends StructuredPushdownAutomaton {
             }
         }
     }
+    */
 
     protected <T> Stack<T> copy(Stack<T> original) {
         Stack<T> copy = new Stack<>();

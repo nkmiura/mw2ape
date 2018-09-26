@@ -291,7 +291,7 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
                 // processar label
                 // Executa acao semantica pos-retorno de submaquina - 2018.09.17
                 for (ActionLabels actionLabel: nlpState.getTransition().getLabelActions()) {
-                    logger.debug("Executando rotina de label: {}", actionLabel.getName());
+                    logger.debug("Executando rotina de label no retorno de submaquina: {}", actionLabel.getName());
                     actionLabel.execute(nlpState.getTransition().getPostLabelElements(), transducerStack);
                 }
                 //checkAndDoActionState(state, transducerStack); // acao semantica do estado
