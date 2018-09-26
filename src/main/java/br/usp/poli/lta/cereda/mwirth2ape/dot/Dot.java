@@ -1,25 +1,27 @@
 /**
-* ------------------------------------------------------
-*    Laboratório de Linguagens e Técnicas Adaptativas
-*       Escola Politécnica, Universidade São Paulo
-* ------------------------------------------------------
-* 
-* This program is free software: you can redistribute it
-* and/or modify  it under the  terms of the  GNU General
-* Public  License  as  published by  the  Free  Software
-* Foundation, either  version 3  of the License,  or (at
-* your option) any later version.
-* 
-* This program is  distributed in the hope  that it will
-* be useful, but WITHOUT  ANY WARRANTY; without even the
-* implied warranty  of MERCHANTABILITY or FITNESS  FOR A
-* PARTICULAR PURPOSE. See the GNU General Public License
-* for more details.
-* 
-**/
+ * ------------------------------------------------------
+ *    Laboratório de Linguagens e Técnicas Adaptativas
+ *       Escola Politécnica, Universidade São Paulo
+ * ------------------------------------------------------
+ *
+ * This program is free software: you can redistribute it
+ * and/or modify  it under the  terms of the  GNU General
+ * Public  License  as  published by  the  Free  Software
+ * Foundation, either  version 3  of the License,  or (at
+ * your option) any later version.
+ *
+ * This program is  distributed in the hope  that it will
+ * be useful, but WITHOUT  ANY WARRANTY; without even the
+ * implied warranty  of MERCHANTABILITY or FITNESS  FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
+ *
+ **/
 package br.usp.poli.lta.cereda.mwirth2ape.dot;
 
 import br.usp.poli.lta.cereda.mwirth2ape.ape.conversion.Sketch;
+import br.usp.poli.lta.cereda.mwirth2ape.labeling.LabelElement;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -41,7 +43,7 @@ public class Dot {
     }
 
     public void generate(String name) {
-      
+
         StringBuilder sb;
         Set<String> states;
         Set<String> machines = new HashSet<>();
@@ -106,6 +108,32 @@ public class Dot {
         String pattern = "%s%d -> %s%d [ label = \"%s\"%s ];";
         String symbol;
         String complement = "";
+        String preLabels = new String();
+        String postLabels = new String();
+
+        if (transition.getToken() != null) {
+            if (transition.getToken().getProductionToken() != null) {
+                if (transition.getToken().getProductionToken().getPreLabels() != null) {
+                    for (LabelElement tempLabel : transition.getToken().getProductionToken().getPreLabels()) {
+                        if (preLabels.isEmpty()) {
+                            preLabels = preLabels.concat(tempLabel.getValue());
+                        } else {
+                            preLabels = preLabels.concat(",").concat(tempLabel.getValue());
+                        }
+                    }
+                }
+                if (transition.getToken().getProductionToken().getPostLabels() != null) {
+                    for (LabelElement tempLabel : transition.getToken().getProductionToken().getPostLabels()) {
+                        if (postLabels.isEmpty()) {
+                            postLabels = postLabels.concat(tempLabel.getValue());
+                        } else {
+                            postLabels = postLabels.concat(",").concat(tempLabel.getValue());
+                        }
+                    }
+                }
+            }
+        }
+
         if (transition.epsilon()) {
             symbol = "ɛ";
         } else if (transition.call()) {
@@ -114,6 +142,9 @@ public class Dot {
         } else {
             symbol = transition.getToken().getValue();
         }
+
+        symbol = preLabels.concat(";").concat(symbol).concat(";").concat(postLabels);
+
         return String.format(
                 pattern,
                 transition.getName(),

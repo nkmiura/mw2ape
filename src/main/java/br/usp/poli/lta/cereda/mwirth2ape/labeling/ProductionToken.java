@@ -85,7 +85,7 @@ public class ProductionToken extends Token {
             if (this.postLabels == null) {
                 this.postLabels = new LinkedList<>();
             }
-            this.preLabels.addAll(newPostLabels);
+            this.postLabels.addAll(newPostLabels);
         }
     }
 
