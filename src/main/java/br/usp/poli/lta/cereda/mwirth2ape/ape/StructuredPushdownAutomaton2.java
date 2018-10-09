@@ -458,7 +458,7 @@ public class StructuredPushdownAutomaton2 extends StructuredPushdownAutomaton {
                 tree.top().add(branch);
                 //checkAndDoActionState(state, transducerStack); // acao semantica do estado
             } else {
-                Integer newState = checkAndDoEmptyTransition(state);
+                Integer newState = checkAndDoEmptyTransition(state, transducerStack);
                 if (newState != -1) {
                     state = newState;
                     //checkAndDoActionState(state, transducerStack); // acao semantica do estado
@@ -472,7 +472,7 @@ public class StructuredPushdownAutomaton2 extends StructuredPushdownAutomaton {
         if (stack.isEmpty()) {
             boolean done = false;
             while (!done) {
-                Integer newState = checkAndDoEmptyTransition(state);
+                Integer newState = checkAndDoEmptyTransition(state, transducerStack);
                 if (newState != -1) {
                     state = newState;
                     //checkAndDoActionState(state, transducerStack); // acao semantica do estado
@@ -519,7 +519,7 @@ public class StructuredPushdownAutomaton2 extends StructuredPushdownAutomaton {
         return result;
     }
 
-    protected Integer checkAndDoEmptyTransition (Integer state) {
+    protected Integer checkAndDoEmptyTransition (Integer state, Stack <String> transducerStack) {
         Integer newState = -1;
         Token symbol = new Token();
         List<Transition> query = query(state, symbol);
@@ -531,7 +531,7 @@ public class StructuredPushdownAutomaton2 extends StructuredPushdownAutomaton {
                     logger.debug("A transição é uma chamada em vazio.");
                     newState = query.get(0).getTarget();
                     for (ActionLabels actionLabel:  query.get(0).getLabelActions()) {
-                        logger.debug("Executando rotina pre de label: {}", actionLabel.getName());
+                        logger.debug("Executando rotina de label pre: {}.", actionLabel.getName());
                         actionLabel.execute(query.get(0).getPreLabelElements(), transducerStack);
                     }
                     for (Action action : query.get(0).getPreActions()) {
@@ -543,7 +543,7 @@ public class StructuredPushdownAutomaton2 extends StructuredPushdownAutomaton {
                         action.execute(symbol);
                     }
                     for (ActionLabels actionLabel:  query.get(0).getLabelActions()) {
-                        logger.debug("Executando rotina pos de label: {}", actionLabel.getName());
+                        logger.debug("Executando rotina de label pos: {}.", actionLabel.getName());
                         actionLabel.execute(query.get(0).getPostLabelElements(), transducerStack);
                     }
                 } else {

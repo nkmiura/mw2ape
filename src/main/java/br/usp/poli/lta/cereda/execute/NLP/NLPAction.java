@@ -22,21 +22,17 @@ public class NLPAction {
     private NLPOutputList nlpOutputList;
     private HashSet<String> dictionaryTerm;
     private br.usp.poli.lta.cereda.execute.NLP.NLPTransducerStackList NLPTransducerStackListList;
-//    private Stack<String> transducerStack;
 
     public Action semanticActionTermTransition;
     public Action semanticActionNtermTransition;
     public Action semanticActionEmptyTransition;
     public ActionLabels semanticActionLabels;
     public ActionState semanticActionState;
-    //public Action
 
     public NLPAction(NLPOutputList nlpOutputList, HashSet<String> dictionaryTerm,
                      br.usp.poli.lta.cereda.execute.NLP.NLPTransducerStackList nlpTransducerStackList) {
         this.nlpOutputList = nlpOutputList;
         this.dictionaryTerm = dictionaryTerm;
-//        this.transducerStack = transducerStack.clone();
-
 
         // Acao semantica associado a transicao com terminal
         this.semanticActionTermTransition = new Action("semanticActionTermTransition") {
@@ -96,7 +92,7 @@ public class NLPAction {
 
                 logger.debug("ThreadID {}: Ação semântica: Labels", String.valueOf(threadId));
                 if (labels != null) {
-                    logger.debug("Com labels.");
+                    logger.debug("Com labels: {}", labels.toString());
                     for (LabelElement singleLabelElement : labels) {
                         if (singleLabelElement != null) { // verifica se não retornou elemento de rotulo nulo
                             String labelSymbol = singleLabelElement.getValue();
@@ -151,69 +147,5 @@ public class NLPAction {
                 }
             }
         };
-
-        // public abstract void execute(LinkedList<LabelElement> labels, Stack<String> transducerStack);
-        // Acao semantica associado ao estado (maquina de Moore) para gerar saída e manipular pilha de acordo com rotulos
-        /*
-
-        this.semanticActionState = new ActionState ("semanticActionState") {
-            @Override
-            public void execute(LinkedList<LabelElement> labels, Stack<String> transducerStack) {
-                long threadId = Thread.currentThread().getId();
-                transducerStack = nlpTransducerStackList.getTransducerStackList(threadId);
-
-                logger.debug("ThreadID {}: Ação semântica: Labels", String.valueOf(threadId));
-                for (LabelElement singleLabelElement : labels) {
-                    if (singleLabelElement != null) { // verifica se não retornou elemento de rotulo nulo
-                        String labelSymbol = singleLabelElement.getValue();
-                        Production labelProduction = singleLabelElement.getProduction();
-                        if (labelProduction == null) {
-                            if (labelSymbol.equals("ε")) {
-                                nlpOutputList.insertOutputResult(threadId, "()");
-                                //outputList.addLast("()");
-                            } else if (dictionaryTerm.contains(String.valueOf(labelSymbol))) {
-                                nlpOutputList.insertOutputResult(threadId, "(" + labelSymbol + ")");
-                                //outputList.addLast("(" + labelSymbol + ")");
-                            } else if (labelSymbol.equals("[")) {
-                                nlpOutputList.insertOutputResult(threadId, "[(");
-                                //outputList.addLast("[(");
-                                transducerStack.push("]");
-                            } else if (labelSymbol.equals("]")) {
-                                StringBuilder sb = new StringBuilder();
-                                while (!transducerStack.top().equals("]")) {
-                                    sb.append(transducerStack.pop());
-                                }
-                                transducerStack.pop();
-                                sb.reverse();
-                                sb.append("]");
-                                nlpOutputList.insertOutputResult(threadId, sb.toString());
-                                //outputList.addLast(sb.toString());
-                            }
-                        } else {
-                            if (labelProduction.getRecursion().equals("right")) {
-                                nlpOutputList.insertOutputResult(threadId, labelProduction.getIdentifier() + ")");
-                                //outputList.addLast(labelProduction.getIdentifier() + ")");
-                            } else if (labelProduction.getRecursion().equals("left")) {
-                                String stackElement = ")" + labelProduction.getIdentifier();
-                                transducerStack.push(stackElement);
-                                nlpOutputList.insertOutputResult(threadId, "(");
-                                //outputList.addLast("(");
-                            } else {
-                                StringBuilder sb = new StringBuilder();
-                                while (!transducerStack.top().equals("]")) {
-                                    sb.append(transducerStack.pop());
-                                }
-                                sb.reverse();
-                                sb.append(labelProduction.getIdentifier()).append(")");
-                                nlpOutputList.insertOutputResult(threadId, sb.toString());
-                                //outputList.addLast(sb.toString());
-                            }
-                        }
-                    }
-                }
-            }
-        };
-
-        */
     }
 }

@@ -364,7 +364,8 @@ public class SPAExecute {
 
 
     protected void addSPAState(Integer id, String submachine, Object spa, LinkedList<LabelElement> labels,
-                               ActionState actionState) {
+                               ActionState actionState
+    ) {
         if (spa instanceof StructuredPushdownAutomaton2) {
             if (labels != null) {
                 if (((StructuredPushdownAutomaton2)spa).getState(id) == null) {

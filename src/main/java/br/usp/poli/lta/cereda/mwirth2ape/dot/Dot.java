@@ -159,7 +159,7 @@ public class Dot {
     private String createState(String name, int value) {
         String pattern = "node [shape = %s, color=black, fontcolor=black,"
                 + " label=\"%d\" ]; %s%d;";
-        String type = value == 1 ? "doublecircle" : "circle";
+        String type = value == 2 ? "doublecircle" : "circle";  // Estado 2 é por especificação estado de aceitação
         return String.format(
                 pattern,
                 type,

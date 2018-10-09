@@ -30,7 +30,7 @@ import java.util.*;
 
 /**
  * @author Paulo Roberto Massa Cereda, Newton Kiyotaka Miura
- * @version 1.2
+ * @version 1.3
  * @since 1.1
  */
 public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2  {
@@ -48,10 +48,6 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
     private NLPTransducerStackList nlpTransducerStackList;
     private NLPOutputResult tempNLPOutputResult;
     private Stack<String> tempNLPTransducerStack;
-    private ActionLabels actionLabelsSubmachineInit;
-    LinkedList<LabelElement> initialLabelElements;
-    LabelElement initialLabelElement;
-
     // Stack com estado retorno e transicao associada
     //private Stack<NLPSPAStackElement> nlpStack; // declarado em StructuredPushdownAutomaton2
 
@@ -61,12 +57,6 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
         this.lexer = lexer;
         this.nlpOutputList = nlpOutputList;
         this.nlpTransducerStackList = nlpTransducerStackList;
-
-        this.actionLabelsSubmachineInit = nlpAction.semanticActionLabels;
-        this.initialLabelElements = new LinkedList<>();
-        this.initialLabelElement = new LabelElement();
-        this.initialLabelElement.setValue("[");
-        this.initialLabelElements.add(initialLabelElement);
     }
 
     public StructuredPushdownAutomatonNLP (StructuredPushdownAutomatonNLP originalSPA, Transition transition)
@@ -89,10 +79,6 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
         this.tempNLPOutputResult = new NLPOutputResult();
         this.tempNLPOutputResult.setOutputList(this.nlpOutputList.getOutputResult(Thread.currentThread().getId()));
         this.tempNLPTransducerStack = originalSPA.nlpTransducerStackList.getTransducerStackList(Thread.currentThread().getId()).clone();
-
-        this.actionLabelsSubmachineInit = originalSPA.actionLabelsSubmachineInit;
-        this.initialLabelElements = originalSPA.initialLabelElements;
-        // A lista de resultado é clonada no NLPSpaThread
     }
 
     public NLPOutputResult getTempNLPOutputResult() {
@@ -121,8 +107,6 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
             tree.push(new ArrayList());
             tree.top().add(submachine);
 
-            actionLabelsSubmachineInit.execute(initialLabelElements, transducerStack);
-            //checkAndDoActionState(state, transducerStack);
         }
 
         while (lexer.hasNext() || isCloneLocal) {
@@ -215,7 +199,7 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
                     action.execute(symbol);
                 }
                 for (ActionLabels actionLabel:  query.get(0).getLabelActions()) {
-                    logger.debug("Executando rotina de label pre transicao: {}", actionLabel.getName());
+                    logger.debug("Executando rotina de label pre: {}", actionLabel.getName());
                     actionLabel.execute(query.get(0).getPreLabelElements(), transducerStack);
                 }
                 if (query.get(0).isSubmachineCall()) {
@@ -236,7 +220,7 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
                     tree.push(new ArrayList());
                     tree.top().add(query.get(0).getSubmachine());
 
-                    actionLabelsSubmachineInit.execute(initialLabelElements, transducerStack); // label de inicio de submaquina 2018.09.17
+                    //actionLabelsSubmachineInit.execute(initialLabelElements, transducerStack); // label de inicio de submaquina 2018.09.17
 
                 } else {
                     state = query.get(0).getTarget();
@@ -252,19 +236,16 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
                                         + "corrente {} ao analisador léxico.",
                                 symbol);
                     }
-                }
-                for (Action action : query.get(0).getPostActions()) {
-                    logger.debug("Executando ação posterior: {}", action.getName());
-                    action.execute(symbol);
-                }
-                //
+                    for (Action action : query.get(0).getPostActions()) {
+                        logger.debug("Executando ação posterior: {}", action.getName());
+                        action.execute(symbol);
+                    }
+                    for (ActionLabels actionLabel:  query.get(0).getLabelActions()) {
 
-                for (ActionLabels actionLabel:  query.get(0).getLabelActions()) {
-                    logger.debug("Executando rotina de label pos transicao: {}", actionLabel.getName());
-                    actionLabel.execute(query.get(0).getPostLabelElements(), transducerStack);
+                        logger.debug("Executando rotina de label pos: {}", actionLabel.getName());
+                        actionLabel.execute(query.get(0).getPostLabelElements(), transducerStack);
+                    }
                 }
-                //
-                //checkAndDoActionState(state, transducerStack); // acao semantica no estado - comentar para retirar 2018.09.14
             }
         }
 
@@ -273,8 +254,7 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
 
         while (!stack.isEmpty()) {
             if (submachines.get(machines.top()).getSecond().contains(state)) {
-                logger.debug("O estado corrente {} é de aceitação na "
-                        + "submáquina corrente, retornando.", state);
+                logger.debug("O estado corrente {} é de aceitação na submáquina corrente, retornando.", state);
                 int reference = state;
                 state = stack.pop();
                 nlpState = nlpStack.pop(); // 2018.09.17
@@ -290,14 +270,18 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
                 tree.top().add(branch);
                 // processar label
                 // Executa acao semantica pos-retorno de submaquina - 2018.09.17
+                for (Action action : nlpState.getTransition().getPostActions()) {
+                    logger.debug("Executando ação posterior no retorno de submaquina: {}", action.getName());
+                    action.execute(symbol);
+                }
                 for (ActionLabels actionLabel: nlpState.getTransition().getLabelActions()) {
-                    logger.debug("Executando rotina de label no retorno de submaquina: {}", actionLabel.getName());
+                    logger.debug("Executando rotina de label pos no retorno de submaquina: {}", actionLabel.getName());
                     actionLabel.execute(nlpState.getTransition().getPostLabelElements(), transducerStack);
                 }
                 //checkAndDoActionState(state, transducerStack); // acao semantica do estado
             } else {
                 //
-                Integer newState = checkAndDoEmptyTransition(state);
+                Integer newState = checkAndDoEmptyTransition(state,transducerStack);
                 if (newState != -1) {
                     state = newState;
                     //checkAndDoActionState(state, transducerStack); // acao semantica do estado
@@ -311,7 +295,7 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
         if (stack.isEmpty()) {
             boolean done = false;
             while (!done) {
-                Integer newState = checkAndDoEmptyTransition(state);
+                Integer newState = checkAndDoEmptyTransition(state,transducerStack);
                 if (newState != -1) {
                     state = newState;
                     //checkAndDoActionState(state, transducerStack); // acao semantica do estado
@@ -327,8 +311,7 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
                 top = operations.get(submachine).execute(state, top);
                 tree.push(top);
             }
-            logger.debug("Resultado do reconhecimento: cadeia {}",
-                    (result ? "aceita" : "rejeitada"));
+            logger.debug("Resultado do reconhecimento: cadeia {}", (result ? "aceita" : "rejeitada"));
             logger.debug(this.nlpOutputList.getOutputResult(Thread.currentThread().getId()).toString());
             return result;
         } else {

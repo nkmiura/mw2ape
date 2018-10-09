@@ -94,7 +94,7 @@ public class SPAExecuteNLP extends SPAExecute {
         for (String machine : machineSketchesMap.keySet()) {
             List<Sketch> tempSketches = machineSketchesMap.get(machine); // Get transitions for a machine
             // set submachine name with start, end
-            spa.addSubmachine(machine, stateCounter,  getSet(stateCounter + 1));
+            spa.addSubmachine(machine, stateCounter,  getSet(stateCounter + 2));  // Estado final 2 por especificação
             // get states
             for (Sketch tempSketch: tempSketches) {
                 Transition newTransition;
