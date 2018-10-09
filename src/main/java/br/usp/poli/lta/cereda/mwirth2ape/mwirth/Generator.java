@@ -19,6 +19,7 @@
 **/
 package br.usp.poli.lta.cereda.mwirth2ape.mwirth;
 
+import br.usp.poli.lta.cereda.execute.SPAGetStruct;
 import br.usp.poli.lta.cereda.mwirth2ape.ape.Action;
 import br.usp.poli.lta.cereda.mwirth2ape.ape.StructuredPushdownAutomaton;
 import br.usp.poli.lta.cereda.mwirth2ape.ape.Transition;
@@ -29,6 +30,8 @@ import br.usp.poli.lta.cereda.mwirth2ape.structure.Stack;
 import br.usp.poli.lta.cereda.mwirth2ape.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import sun.awt.image.ImageWatched;
+
 import java.util.*;
 
 /**
@@ -577,6 +580,7 @@ public class Generator {
                 break;
             case 2:
                 reduceDeterministicEmptyTransitions();
+                simplifyCommonPrefix();
                 break;
             default:
                 break;
@@ -738,6 +742,124 @@ public class Generator {
         }
     }
 
+
+    private void simplifyCommonPrefix()
+    {
+        logger.debug("Colocando transições em evidência.");
+
+        SPAGetStruct spaStruct = new SPAGetStruct(this.transitions);
+        Map<String, List<Sketch>> machineSketchesMap = spaStruct.getMachinesFromTransitions(); // map list of Sketch (transitions) to a machine
+        //Map<String, Integer> machineMaxStateIdMap = spaStruct.getMaxStateIdFromMachineMap(machineSketchesMap);
+
+        for (String machine : machineSketchesMap.keySet()) {
+            List<Sketch> tempSketches = machineSketchesMap.get(machine); // Get transitions for a machine
+            simplifyBranch(machine,0,tempSketches);
+        }
+        logger.debug("Finalizada simplificação.");
+    }
+
+    private void simplifyBranch(String machine, Integer source, List<Sketch> listSketches)
+    {
+        List<Sketch> branchSketches = new ArrayList<Sketch>();
+
+        while (true)
+        {
+            branchSketches.clear();
+
+            for (Sketch tempSketch: listSketches) { // monta lista de transições com origem em source
+                if (tempSketch.getSource() == source)
+                {
+                    branchSketches.add(tempSketch);
+                }
+            }
+
+            Boolean simplificationDone = false;
+
+            if (branchSketches.size() == 0) { // se lista é vazia, retorna
+                return;
+            }
+
+            else {
+                for (Sketch oneBranch: branchSketches) { // para cada elemento da lista
+                    for (Sketch candidateBranch: branchSketches) { // compara com a propria lista
+                        if ((oneBranch.getToken().equals(candidateBranch.getToken())) && (!oneBranch.equals(candidateBranch))) {
+                            Boolean preLabelsMatch = false;
+                            Boolean postLabelsMatch = false;
+                            // Verifica labels pre
+                            if (oneBranch.getToken().getProductionToken().getPreLabels() == null) {
+                                if (candidateBranch.getToken().getProductionToken().getPreLabels() == null) {
+                                    preLabelsMatch = true;
+                                }
+                            } else {
+                                if (candidateBranch.getToken().getProductionToken().getPreLabels() != null) {
+                                    if (oneBranch.getToken().getProductionToken().getPreLabels().equals(candidateBranch.getToken().getProductionToken().getPreLabels())) {
+                                        preLabelsMatch = true;
+                                    }
+                                }
+                            }
+                            if (preLabelsMatch) {
+                                // Se label pre forem iguais, verifica label pos
+                                if (oneBranch.getToken().getProductionToken().getPostLabels() == null) {
+                                    if (candidateBranch.getToken().getProductionToken().getPostLabels() == null) {
+                                        postLabelsMatch = true;
+                                    }
+                                } else {
+                                    if (candidateBranch.getToken().getProductionToken().getPostLabels() != null) {
+                                        if (oneBranch.getToken().getProductionToken().getPostLabels().equals(candidateBranch.getToken().getProductionToken().getPostLabels())) {
+                                            postLabelsMatch = true;
+                                        }
+                                        postLabelsMatch = compareLabels(oneBranch.getToken().getProductionToken().getPostLabels(), candidateBranch.getToken().getProductionToken().getPostLabels());
+                                    }
+                                }
+                                if (postLabelsMatch) {
+                                    logger.debug(" ## Encontrei transição eliminavel {}", candidateBranch.toString());
+                                    // Ajusta os demais
+                                    Integer originalTargetState = candidateBranch.getTarget();
+                                    for (Sketch tempAdjustSketch: this.transitions) { // monta lista de transições com origem em source
+                                        if ((tempAdjustSketch.getName().equals(machine)) && (tempAdjustSketch.getSource() == originalTargetState))
+                                        {
+                                            tempAdjustSketch.setSource(oneBranch.getTarget());
+                                            logger.debug(" ### Adjusted source from {}: {}", originalTargetState, tempAdjustSketch);
+                                        }
+                                    }
+                                    listSketches.remove(candidateBranch);
+                                    branchSketches.remove(candidateBranch);
+                                    this.transitions.remove(candidateBranch);
+                                    //this.mapMachineStatesLabels.get(machine).remove(originalTargetState);
+                                    simplificationDone = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    if (simplificationDone) break;
+                }
+            }
+            if (!simplificationDone) {
+                for (Sketch tempBranch : branchSketches) {
+                    simplifyBranch(machine, tempBranch.getTarget(), listSketches);
+                }
+                break;
+            }
+        }
+    }
+
+
+    Boolean compareLabels(LinkedList<LabelElement> labels1, LinkedList<LabelElement> labels2) {
+        Boolean result = false;
+        Boolean partialResult = true;
+        if (labels1.size() == labels2.size()) {
+            for (int i = 0; i < labels1.size(); i++) {
+                LabelElement label1Element = labels1.get(i);
+                LabelElement label2Element = labels2.get(i);
+                if (! label1Element.getValue().equals(label2Element.getValue())) {
+                    partialResult = false;
+                }
+            }
+            result = partialResult;
+        }
+        return result;
+    }
 
     public LabelGrammar getLabelGrammar()
     {

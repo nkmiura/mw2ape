@@ -69,7 +69,7 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
         this.nlpStack = originalSPA.nlpStack.clone(); // 2018.09.17
         this.tree = originalSPA.tree.clone();
         this.transitions = originalSPA.transitions;
-        this.machines = originalSPA.machines;
+        this.machines = originalSPA.machines.clone(); // 2018.10.09
         this.submachines = originalSPA.submachines;
         this.submachine = originalSPA.submachine;
         this.nlpTransducerStackList = originalSPA.nlpTransducerStackList;
