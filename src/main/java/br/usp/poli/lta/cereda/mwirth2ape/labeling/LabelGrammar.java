@@ -37,7 +37,7 @@ public class LabelGrammar {
         return null;
     }
 
-    public boolean fillNTermInProductions()
+    public boolean fillNTermInProductions()  // Monta estrutura de dados baseada na gramatica com labels, identifica o tipo de recursão na definição de não terminais.
     {
         boolean result = true;
         for (NTerm tempNterm : nterms) {

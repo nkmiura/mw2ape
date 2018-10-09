@@ -21,6 +21,8 @@ package br.usp.poli.lta.cereda.mwirth2ape.mwirth;
 
 import br.usp.poli.lta.cereda.mwirth2ape.labeling.*;
 import br.usp.poli.lta.cereda.mwirth2ape.model.Token;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -31,7 +33,25 @@ import java.util.*;
  */
 public class LMWirthLexer extends MWirthLexer {
 
+    private static final Logger logger = LoggerFactory.
+            getLogger(Production.class);
+
     private LinkedList<ProductionToken> productionTokens;
+
+    public void logRecursions (LabelGrammar labelGrammar) {
+        try {
+            logger.debug("\nRecursions:");
+            for (NTerm tempNterm : labelGrammar.nterms) {
+                for (Production tempProduction : tempNterm.productions) {
+                    logger.debug(" Production: {} - Recursion: {}.", tempProduction.getIdentifier(), tempProduction.getRecursion());
+                }
+            }
+        }
+        catch (Exception exception) {
+            System.out.println("An exception was thrown.");
+            System.out.println(exception.toString());
+        }
+    }
 
     public void LGrammarToProductionTokens () {
         this.productionTokens = new LinkedList<>();
@@ -40,6 +60,7 @@ public class LMWirthLexer extends MWirthLexer {
     public void LGrammarToProductionTokens (LabelGrammar labelGrammar) {  // Gera cadeia de entrada composta por estrutura de dados
 
         this.productionTokens = new LinkedList<>();
+        logRecursions(labelGrammar);
 
         try {
             for (NTerm tempNterm : labelGrammar.nterms) {

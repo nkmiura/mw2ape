@@ -33,7 +33,7 @@ import java.util.*;
 
 /**
  * @author Paulo Roberto Massa Cereda
- * @version 1.2
+ * @version 1.3
  * @since 1.0
  */
 public class Generator {
@@ -69,12 +69,10 @@ public class Generator {
         this.current = 0;
         this.counter = 1;
 
-        // Newton
         this.labelGrammar = new LabelGrammar();
     }
 
     public Generator(LMWirthLexer lmWirthLexer, int type) {
-
         this.type = type;
         this.lexer = lmWirthLexer;
         this.helperPairStack = new Stack<>();
@@ -84,12 +82,12 @@ public class Generator {
         this.mapMachineStatesLabels = new HashMap<>();
     }
 
-    // Newton
     public void registerExpressionToken(Token token) {
         ProductionToken newProductionToken = new ProductionToken(token);
         currentProduction.addExpressionToken(newProductionToken);
         currentProduction.addAllToken(newProductionToken);
     }
+
     public void registerLabelToken(String value) {
         ProductionToken newProductionToken = new ProductionToken("label","label");
         if (value != null) {
@@ -125,10 +123,8 @@ public class Generator {
                         break;
                     case 2:
                         helperPairStack.clear();
-
                         current = 0;
                         counter = 1;
-
                         machine = token.getValue();
                         token.setType("ε");
                         token.setValue("ε");
@@ -181,8 +177,6 @@ public class Generator {
                     case 2:
                         transition = new Sketch(machine, current, token, counter);
                         transitions.add(transition);
-                        putStateLabels(counter,token.getProductionToken().getPostLabels());
-                        //currentStatesLabels.put(counter,token.getProductionToken().getPostLabels());
                         current = counter;
                         counter++;
                         break;
@@ -216,8 +210,6 @@ public class Generator {
                     case 2:
                         transition = new Sketch(machine, current, token, counter);
                         transitions.add(transition);
-                        putStateLabels(counter,token.getProductionToken().getPostLabels());
-                        //currentStatesLabels.put(counter,token.getProductionToken().getPostLabels());
                         current = counter;
                         counter++;
                         break;
@@ -251,8 +243,6 @@ public class Generator {
                     case 2:
                         transition = new Sketch(machine, current, token, counter);
                         transitions.add(transition);
-                        putStateLabels(counter,token.getProductionToken().getPostLabels());
-                        //currentStatesLabels.put(counter,token.getProductionToken().getPostLabels());
                         current = counter;
                         counter++;
                         break;
@@ -281,8 +271,6 @@ public class Generator {
                         break;
                     case 2:
                         helperPairStack.push(new Pair<>(current, counter));
-                        putStateLabels(current,token.getProductionToken().getPostLabels());
-                        //currentStatesLabels.put(current,token.getProductionToken().getPostLabels());
                         counter++;
                         break;
                     default:
@@ -310,8 +298,6 @@ public class Generator {
                         break;
                     case 2:
                         helperPairStack.push(new Pair<>(current, counter));
-                        putStateLabels(current,token.getProductionToken().getPostLabels());
-                        //currentStatesLabels.put(current,token.getProductionToken().getPostLabels());
                         counter++;
                         break;
                     default:
@@ -346,8 +332,6 @@ public class Generator {
                         Sketch transition2 = new Sketch(machine, current, token,
                                 helperPairStack.top().getSecond());
                         transitions.add(transition2);
-                        putStateLabels(helperPairStack.top().getSecond(),token.getProductionToken().getPostLabels());
-                        //currentStatesLabels.put(helperPairStack.top().getSecond(),token.getProductionToken().getPostLabels());
                         current = helperPairStack.top().getSecond();
                         helperPairStack.pop();
                         break;
@@ -389,8 +373,6 @@ public class Generator {
                         Sketch transition2 = new Sketch(machine, current,
                                 token, helperPairStack.top().getSecond());
                         transitions.add(transition2);
-                        putStateLabels(helperPairStack.top().getSecond(),token.getProductionToken().getPostLabels());
-                        //currentStatesLabels.put(helperPairStack.top().getSecond(),token.getProductionToken().getPostLabels());
                         current = helperPairStack.top().getSecond();
                         helperPairStack.pop();
                         break;
@@ -591,7 +573,6 @@ public class Generator {
                 if (! labelGrammar.fillNTermInProductions()) {
                     logger.debug("Error! Grammar incomplete. Not all nterms are defined.");
                 }
-
                 //logger.debug("# Newton: " + labelGrammar.toString());
                 break;
             case 2:
@@ -603,12 +584,9 @@ public class Generator {
     }
 
 
-
     private void reduceDeterministicEmptyTransitions ()
     {
-
         logger.debug("Executando eliminação de transições determinísticas em vazio.");
-        //Boolean done = false;
 
         List<Sketch> emptyTransitionList = new ArrayList<>();
 
@@ -761,26 +739,12 @@ public class Generator {
     }
 
 
-
     public LabelGrammar getLabelGrammar()
     {
         return this.labelGrammar;
     }
 
-    private void putStateLabels (Integer state, LinkedList<LabelElement> labels)
-    {
-        //currentStatesLabels.put(helperPairStack.top().getSecond(),token.getProductionToken().getPostLabels());
-        if (this.currentStatesLabels.get(state) == null) {
-            this.currentStatesLabels.put(state, labels);
-            logger.debug("Estado {}. Rotulo {} adicionado.", state, labels);
-        }
-        else {
-            logger.debug("Estado {}. Rotulo {} não adicionado. Rotulo pre-existente: {}.",
-                    state, labels, this.currentStatesLabels.get(state).toString());
-        }
 
-    }
-    
     private <T> Set<T> getSet(T... elements) {
         Set<T> result = new HashSet<>();
         result.addAll(Arrays.asList(elements));
