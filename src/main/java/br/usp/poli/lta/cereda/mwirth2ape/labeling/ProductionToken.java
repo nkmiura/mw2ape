@@ -1,6 +1,8 @@
 package br.usp.poli.lta.cereda.mwirth2ape.labeling;
 
 import br.usp.poli.lta.cereda.mwirth2ape.model.Token;
+import sun.awt.image.ImageWatched;
+
 import java.util.LinkedList;
 
 public class ProductionToken extends Token {
@@ -13,11 +15,15 @@ public class ProductionToken extends Token {
     public ProductionToken(Token token) {
         setType(token.getType());
         setValue(token.getValue());
+        this.preLabels = new LinkedList<>();
+        this.postLabels = new LinkedList<>();
     }
 
     public ProductionToken(String type, String value) {
         setType(type);
         setValue(value);
+        this.preLabels = new LinkedList<>();
+        this.postLabels = new LinkedList<>();
     }
 
     public NTerm getNterm() {
@@ -75,8 +81,9 @@ public class ProductionToken extends Token {
             if (this.postLabels == null) {
                 this.postLabels = new LinkedList<>();
             }
-            newPostLabels.addAll(this.postLabels);
-            this.postLabels = newPostLabels;
+            LinkedList<LabelElement> addPostLabels = (LinkedList<LabelElement>) newPostLabels.clone();
+            addPostLabels.addAll(this.postLabels);
+            this.postLabels = addPostLabels;
         }
     }
 
@@ -85,7 +92,8 @@ public class ProductionToken extends Token {
             if (this.postLabels == null) {
                 this.postLabels = new LinkedList<>();
             }
-            this.postLabels.addAll(newPostLabels);
+            LinkedList<LabelElement> addPostLabels = (LinkedList<LabelElement>) newPostLabels.clone();
+            this.postLabels.addAll(addPostLabels);
         }
     }
 
@@ -109,8 +117,9 @@ public class ProductionToken extends Token {
             if (this.preLabels == null) {
                 this.preLabels = new LinkedList<>();
             }
-            newPreLabels.addAll(this.preLabels);
-            this.preLabels = newPreLabels;
+            LinkedList<LabelElement> addPreLabels = (LinkedList<LabelElement>) newPreLabels.clone();
+            addPreLabels.addAll(this.preLabels);
+            this.preLabels = addPreLabels;
         }
     }
 
@@ -119,7 +128,8 @@ public class ProductionToken extends Token {
             if (this.preLabels == null) {
                 this.preLabels = new LinkedList<>();
             }
-            this.preLabels.addAll(newPreLabels);
+            LinkedList<LabelElement> addPreLabels = (LinkedList<LabelElement>) newPreLabels.clone();
+            this.preLabels.addAll(addPreLabels);
         }
     }
 

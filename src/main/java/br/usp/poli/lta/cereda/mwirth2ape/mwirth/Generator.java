@@ -28,6 +28,7 @@ import br.usp.poli.lta.cereda.mwirth2ape.labeling.*;
 import br.usp.poli.lta.cereda.mwirth2ape.model.Token;
 import br.usp.poli.lta.cereda.mwirth2ape.structure.Stack;
 import br.usp.poli.lta.cereda.mwirth2ape.tuple.Pair;
+import jdk.nashorn.internal.runtime.NumberToString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sun.awt.image.ImageWatched;
@@ -604,16 +605,21 @@ public class Generator {
             if (emptyTransitionList.isEmpty()) {
                 logger.debug("Não existem transicoes em vazio."); break; }
                 else {
-                    logger.debug("# Nova lista de transicoes em vazio: {} elementos.", emptyTransitionList.size());
+                    logger.debug("\n# Nova lista de transicoes em vazio: {} elementos.", emptyTransitionList.size());
             }
 
             Boolean emptyTransitionEliminated = false;
+            for (Iterator<Sketch> iterator = emptyTransitionList.iterator(); iterator.hasNext(); ) {
 
-            for (Sketch tempEmptyTransition : emptyTransitionList) {  // Processa cada transição em vazio
+                Sketch tempEmptyTransition = iterator.next();
+
+            //for (Sketch tempEmptyTransition : emptyTransitionList) {  // Processa cada transição em vazio
                 Integer source = tempEmptyTransition.getSource();
                 Integer target = tempEmptyTransition.getTarget();
                 String submachine = tempEmptyTransition.getName();
-                logger.debug("Verificando transição em vazio: {}.",tempEmptyTransition);
+                logger.debug("Verificando transição em vazio: {}, pre {} e pos {}.",tempEmptyTransition,
+                        tempEmptyTransition.getToken().getProductionToken().getPreLabels(),
+                        tempEmptyTransition.getToken().getProductionToken().getPostLabels());
 
                 List<Sketch> sourceInTransitions = new ArrayList<>();
                 for (Sketch tempSourceInTransition: transitions) { // verifica se há multiplas transiçoes entrando do estado source
@@ -660,82 +666,116 @@ public class Generator {
                     logger.debug(" Transicao nao sera removida. Configuracao impossivel Source Out: {}, Target In: {}.",
                             sourceOutQty, targetInQty);
                 }
-                /*
-                else if ((tempEmptyTransition.getToken().getProductionToken().getPreLabels() != null) ||
-                        (tempEmptyTransition.getToken().getProductionToken().getPostLabels() != null)) {
-                    logger.debug(" Transicao tem label.");
-                } */
+                else if (   (((sourceInQty == 0) && (sourceOutQty >= 1) && (targetInQty == 1) && (targetOutQty >= 1)) ||
+                            ((sourceInQty >= 1) && (sourceOutQty >= 2) && (targetInQty == 1) && (targetOutQty >= 1))) &&
+                            (target != 2))
+                {
+                    logger.debug(" Elimina target e transicao em vazio, transicoes posteriores se iniciam no estado source.");
+                    this.mapMachineStatesLabels.get(submachine).remove(target);
+                    transitions.remove(tempEmptyTransition);
+                    //emptyTransitionList.remove(tempEmptyTransition);
+                    //iterator.remove();
+
+                    // Ajusta source das demais transicoes
+                    for (Sketch tempAdjustTransition: transitions) {
+                        if (tempAdjustTransition.getName().equals(submachine) &&
+                                (tempAdjustTransition.getSource() == target)) {
+                            if ((tempEmptyTransition.getToken().getProductionToken().getPreLabels() == null) &&
+                                    (tempEmptyTransition.getToken().getProductionToken().getPostLabels() == null)) {
+                                // Nao tem label na transicao
+                                logger.debug("  sem label na transicao em vazio");
+                                logger.debug("  Situação após ajuste: source {} target {} value {} pre {} pos {} ",
+                                        String.valueOf(source),
+                                        String.valueOf(tempAdjustTransition.getTarget()),
+                                        tempAdjustTransition.getToken().getValue(),
+                                        tempAdjustTransition.getToken().getProductionToken().getPreLabels(),
+                                        tempAdjustTransition.getToken().getProductionToken().getPostLabels());
+                            }
+                            else {
+                                // Tem label na transicao
+                                logger.debug("  transicao em vazio pre {} e pos {} como prefixo da trans posterior: source {} target {} value {} pre {} e pos {}",
+                                        tempEmptyTransition.getToken().getProductionToken().getPreLabels(),
+                                        tempEmptyTransition.getToken().getProductionToken().getPostLabels(),
+                                        String.valueOf(tempAdjustTransition.getSource()),
+                                        String.valueOf(tempAdjustTransition.getTarget()),
+                                        tempAdjustTransition.getToken().getValue(),
+                                        tempAdjustTransition.getToken().getProductionToken().getPreLabels(),
+                                        tempAdjustTransition.getToken().getProductionToken().getPostLabels());
+                                tempAdjustTransition.getToken().getProductionToken().pushPreLabels(
+                                        tempEmptyTransition.getToken().getProductionToken().getPostLabels());
+                                tempAdjustTransition.getToken().getProductionToken().pushPreLabels(
+                                        tempEmptyTransition.getToken().getProductionToken().getPreLabels());
+                                logger.debug("  Situação após ajuste: source {} target {} value {} pre {} pos {} ",
+                                        String.valueOf(source),
+                                        String.valueOf(tempAdjustTransition.getTarget()),
+                                        tempAdjustTransition.getToken().getValue(),
+                                        tempAdjustTransition.getToken().getProductionToken().getPreLabels(),
+                                        tempAdjustTransition.getToken().getProductionToken().getPostLabels());
+                            }
+                            tempAdjustTransition.setSource(source);
+                        }
+                    }
+                    emptyTransitionEliminated = true;
+                    break;
+                }
+                else if (   ((sourceInQty == 1) && (sourceOutQty == 1) && (targetInQty >= 1)) ||
+                            ((sourceInQty >= 2) && (sourceOutQty == 1) &&
+                                    ((targetInQty == 1)) ||
+                                     ((targetInQty >= 2) && (targetOutQty >= 1)) ) &&
+                                    (source != 0))
+                {
+                    logger.debug(" Elimina source e transicao em vazio, transicoes anteriores sao finalizados no estado target");
+                    this.mapMachineStatesLabels.get(submachine).remove(source);
+                    transitions.remove(tempEmptyTransition);
+                    //emptyTransitionList.remove(tempEmptyTransition);
+                    //iterator.remove();
+
+                    // Ajusta source das demais transicoes
+                    for (Sketch tempAdjustTransition: transitions) {
+                        if (tempAdjustTransition.getName().equals(submachine) &&
+                                (tempAdjustTransition.getTarget() == source)) {
+                            if ((tempEmptyTransition.getToken().getProductionToken().getPreLabels() == null) &&
+                                    (tempEmptyTransition.getToken().getProductionToken().getPostLabels() == null)) {
+                                // Nao tem label na transicao
+                                logger.debug("  sem label na transicao em vazio");
+                                logger.debug("  Situação após ajuste: source {} target {} value {} pre {} pos {} ",
+                                        String.valueOf(tempAdjustTransition.getSource()),
+                                        String.valueOf(target),
+                                        tempAdjustTransition.getToken().getValue(),
+                                        tempAdjustTransition.getToken().getProductionToken().getPreLabels(),
+                                        tempAdjustTransition.getToken().getProductionToken().getPostLabels());
+                            }
+                            else {
+                                // Tem label na transicao
+                                logger.debug("  transicao em vazio pre {} e pos {} como sufixo da trans anterior: source {} target {} value {} pre {} e pos {}.",
+                                        tempEmptyTransition.getToken().getProductionToken().getPreLabels(),
+                                        tempEmptyTransition.getToken().getProductionToken().getPostLabels(),
+                                        String.valueOf(tempAdjustTransition.getSource()),
+                                        String.valueOf(tempAdjustTransition.getTarget()),
+                                        tempAdjustTransition.getToken().getValue(),
+                                        tempAdjustTransition.getToken().getProductionToken().getPreLabels(),
+                                        tempAdjustTransition.getToken().getProductionToken().getPostLabels());
+                                tempAdjustTransition.getToken().getProductionToken().addPostLabels(
+                                        tempEmptyTransition.getToken().getProductionToken().getPreLabels());
+                                tempAdjustTransition.getToken().getProductionToken().addPostLabels(
+                                        tempEmptyTransition.getToken().getProductionToken().getPostLabels());
+                                logger.debug("  Situação após ajuste: source {} target {} value {} pre {} pos {} ",
+                                        String.valueOf(tempAdjustTransition.getSource()),
+                                        String.valueOf(target),
+                                        tempAdjustTransition.getToken().getValue(),
+                                        tempAdjustTransition.getToken().getProductionToken().getPreLabels(),
+                                        tempAdjustTransition.getToken().getProductionToken().getPostLabels());
+                            }
+                            tempAdjustTransition.setTarget(target);
+                        }
+                    }
+                    emptyTransitionEliminated = true;
+                    break;
+                }
                 else {
-                    if (    ((sourceInQty == 0) && (sourceOutQty >= 1) && (targetInQty == 1) && (targetOutQty >= 1)) ||
-                            ((sourceInQty >= 1) && (sourceOutQty >= 2) && (targetInQty == 1) && (targetOutQty >= 1)) )
-                    {
-                        logger.debug(" Elimina target e transicao em vazio, transicoes posteriores se iniciam no estado source.");
-                        this.mapMachineStatesLabels.get(submachine).remove(target);
-                        transitions.remove(tempEmptyTransition);
-                        emptyTransitionList.remove(tempEmptyTransition);
-
-                        // Ajusta source das demais transicoes
-                        for (Sketch tempAdjustTransition: transitions) {
-                            if (tempAdjustTransition.getName().equals(submachine) &&
-                                    (tempAdjustTransition.getSource() == target)) {
-                                if ((tempEmptyTransition.getToken().getProductionToken().getPreLabels() == null) &&
-                                        (tempEmptyTransition.getToken().getProductionToken().getPostLabels() == null)) {
-                                    // Nao tem label na transicao
-                                    logger.debug("  sem label na transicao em vazio");
-                                }
-                                else {
-                                    // Tem label na transicao
-                                    logger.debug("  labels da transicao em vazio {} e {} como prefixo da trans posterior: {}",
-                                            tempEmptyTransition.getToken().getProductionToken().getPreLabels(),
-                                            tempEmptyTransition.getToken().getProductionToken().getPostLabels(),
-                                            tempAdjustTransition.getToken().getProductionToken().getPreLabels());
-                                    tempAdjustTransition.getToken().getProductionToken().pushPreLabels(
-                                            tempEmptyTransition.getToken().getProductionToken().getPostLabels());
-                                    tempAdjustTransition.getToken().getProductionToken().pushPreLabels(
-                                            tempEmptyTransition.getToken().getProductionToken().getPreLabels());
-                                }
-                                tempAdjustTransition.setSource(source);
-                            }
-                        }
-                        emptyTransitionEliminated = true;
-                        break;
-                    }
-                    else if (    ((sourceInQty == 1) && (sourceOutQty == 1) && (targetInQty >= 1)) ||
-                                ((sourceInQty >= 2) && (sourceOutQty == 1) &&
-                                        ((targetInQty == 1)) ||
-                                         ((targetInQty >= 2) && (targetOutQty >= 1)) ) )
-                    {
-                        logger.debug(" Elimina source e transicao em vazio, transicoes anteriores sao finalizados no estado target");
-                        this.mapMachineStatesLabels.get(submachine).remove(source);
-                        transitions.remove(tempEmptyTransition);
-                        emptyTransitionList.remove(tempEmptyTransition);
-
-                        // Ajusta source das demais transicoes
-                        for (Sketch tempAdjustTransition: transitions) {
-                            if (tempAdjustTransition.getName().equals(submachine) &&
-                                    (tempAdjustTransition.getTarget() == source)) {
-                                if ((tempEmptyTransition.getToken().getProductionToken().getPreLabels() == null) &&
-                                        (tempEmptyTransition.getToken().getProductionToken().getPostLabels() == null)) {
-                                    // Nao tem label na transicao
-                                    logger.debug("  sem label na transicao em vazio");
-                                }
-                                else {
-                                    // Tem label na transicao
-                                    logger.debug("  labels da transicao em vazio {} e {} como sufixo da trans anterior: {}",
-                                            tempEmptyTransition.getToken().getProductionToken().getPreLabels(),
-                                            tempEmptyTransition.getToken().getProductionToken().getPostLabels(),
-                                            tempAdjustTransition.getToken().getProductionToken().getPostLabels());
-                                    tempAdjustTransition.getToken().getProductionToken().addPostLabels(
-                                            tempEmptyTransition.getToken().getProductionToken().getPreLabels());
-                                    tempAdjustTransition.getToken().getProductionToken().addPostLabels(
-                                            tempEmptyTransition.getToken().getProductionToken().getPostLabels());
-                                }
-                                tempAdjustTransition.setTarget(target);
-                            }
-                        }
-                        emptyTransitionEliminated = true;
-                        break;
-                    }
+                    logger.debug(" Transição em vazio não eliminada, retirado da lista de transições em vazio em análise.");
+                    //emptyTransitionList.remove(tempEmptyTransition);
+                    //iterator.remove();
                 }
             }
             if (!emptyTransitionEliminated) { break; }
@@ -776,6 +816,7 @@ public class Generator {
             Boolean simplificationDone = false;
 
             if (branchSketches.size() == 0) { // se lista é vazia, retorna
+                //break;
                 return;
             }
 
@@ -792,9 +833,7 @@ public class Generator {
                                 }
                             } else {
                                 if (candidateBranch.getToken().getProductionToken().getPreLabels() != null) {
-                                    if (oneBranch.getToken().getProductionToken().getPreLabels().equals(candidateBranch.getToken().getProductionToken().getPreLabels())) {
-                                        preLabelsMatch = true;
-                                    }
+                                    preLabelsMatch = compareLabels(oneBranch.getToken().getProductionToken().getPreLabels(), candidateBranch.getToken().getProductionToken().getPreLabels());
                                 }
                             }
                             if (preLabelsMatch) {
@@ -805,9 +844,6 @@ public class Generator {
                                     }
                                 } else {
                                     if (candidateBranch.getToken().getProductionToken().getPostLabels() != null) {
-                                        if (oneBranch.getToken().getProductionToken().getPostLabels().equals(candidateBranch.getToken().getProductionToken().getPostLabels())) {
-                                            postLabelsMatch = true;
-                                        }
                                         postLabelsMatch = compareLabels(oneBranch.getToken().getProductionToken().getPostLabels(), candidateBranch.getToken().getProductionToken().getPostLabels());
                                     }
                                 }
