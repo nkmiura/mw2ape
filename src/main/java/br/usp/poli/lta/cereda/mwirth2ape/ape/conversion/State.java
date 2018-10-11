@@ -10,20 +10,20 @@ import java.util.List;
 public class State {
     private Integer id;
     private String submachine;
-    private LinkedList<LabelElement> labelElements;
-    private final List<ActionState> actionList;
+    //private LinkedList<LabelElement> labelElements;
+    //private final List<ActionState> actionList;
 
-    public State(Integer id, String submachine, LinkedList<LabelElement> labelElements) {
+    public State(Integer id, String submachine) {
         this.id = id;
         this.submachine = submachine;
-        this.labelElements = labelElements;
-        this.actionList = new ArrayList<>();
+        //this.labelElements = labelElements;
+        //this.actionList = new ArrayList<>();
     }
-
+/*
     public void addActionState(ActionState action) {
         actionList.add(action);
     }
-
+*/
     public String getSubmachine() {
         return submachine;
     }
@@ -31,7 +31,7 @@ public class State {
     public void setSubmachine(String submachine) {
         this.submachine = submachine;
     }
-
+/*
     public LinkedList<LabelElement> getLabelElements() {
         return labelElements;
     }
@@ -44,17 +44,18 @@ public class State {
     public List<ActionState> getActionList() {
         return actionList;
     }
-
+*/
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Estado ").append(this.id.toString());
+/*
         if (this.labelElements != null) {
             sb.append(", Labels: {").append(this.labelElements.toString()).append("}");
         }
         else {
             sb.append(", Labels: {}");
         }
-        return sb.toString();
+*/        return sb.toString();
     }
 }

@@ -26,7 +26,8 @@ public class SPAExecute {
     protected List<Sketch> transitions;
     protected HashSet<Transition> spaTransitions;
     protected int stateCounter;
-    protected HashMap<String, HashMap<Integer, LinkedList<LabelElement>>> mapMachineStates;
+    //protected HashMap<String, HashMap<Integer, LinkedList<LabelElement>>> mapMachineStates; // 2018.10.11
+    protected HashMap<String, LinkedList<Integer>> mapMachineStates; // 2018.10.11
     protected LinkedList<String> outputList;
     protected HashSet<String> dictionaryTerm;
 
@@ -39,7 +40,7 @@ public class SPAExecute {
         this.lmwg = lmwg;
         this.transducerStack = new Stack<>();
         this.transitions = lmwg.getTransitions();
-        this.mapMachineStates = lmwg.getMapMachineStatesLabels();
+        //this.mapMachineStates = lmwg.getMapMachineStates();
         this.spaTransitions = new HashSet<>();
         this.stateCounter = 0;
         this.dictionaryTerm = dictionaryTerm;
@@ -52,7 +53,7 @@ public class SPAExecute {
         this.lmwg = lmwg;
         this.transducerStack = new Stack<>();
         this.transitions = lmwg.getTransitions();
-        this.mapMachineStates = lmwg.getMapMachineStatesLabels();
+        this.mapMachineStates = lmwg.getMapMachineStates();
         this.spaTransitions = new HashSet<>();
         this.stateCounter = 0;
         this.dictionaryTerm = dictionaryTerm;
@@ -325,10 +326,8 @@ public class SPAExecute {
                 Integer tempSource = tempSketch.getSource() + stateCounter;
                 Integer tempTarget = tempSketch.getTarget() + stateCounter;
 
-                addSPAState(tempSource, machine, spa, this.mapMachineStates.get(machine).get(tempSketch.getSource()),
-                        semanticActionState);
-                addSPAState(tempTarget, machine, spa, this.mapMachineStates.get(machine).get(tempSketch.getTarget()),
-                        semanticActionState);
+                addSPAState(tempSource, machine, spa);
+                addSPAState(tempTarget, machine, spa);
 
                 //State tempState = new State (tempSketch.getSource(), machine, this.mapMachineStates.get(machine).get(tempSketch.getSource()));
 
@@ -363,20 +362,10 @@ public class SPAExecute {
     }
 
 
-    protected void addSPAState(Integer id, String submachine, Object spa, LinkedList<LabelElement> labels,
-                               ActionState actionState
-    ) {
+    protected void addSPAState(Integer id, String submachine, Object spa) {
         if (spa instanceof StructuredPushdownAutomaton2) {
-            if (labels != null) {
-                if (((StructuredPushdownAutomaton2)spa).getState(id) == null) {
-                    State newState = new State(id, submachine, labels);
-                    newState.addActionState(actionState);
-                    ((StructuredPushdownAutomaton2)spa).addState(id, newState);
-                }
-            } else {
-                State newState = new State(id, submachine, null);
+                State newState = new State(id, submachine);
                 ((StructuredPushdownAutomaton2)spa).addState(id, newState);
-            }
         }
     }
 

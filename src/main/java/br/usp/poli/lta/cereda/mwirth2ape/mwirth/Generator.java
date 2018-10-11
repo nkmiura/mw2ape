@@ -28,10 +28,8 @@ import br.usp.poli.lta.cereda.mwirth2ape.labeling.*;
 import br.usp.poli.lta.cereda.mwirth2ape.model.Token;
 import br.usp.poli.lta.cereda.mwirth2ape.structure.Stack;
 import br.usp.poli.lta.cereda.mwirth2ape.tuple.Pair;
-import jdk.nashorn.internal.runtime.NumberToString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sun.awt.image.ImageWatched;
 
 import java.util.*;
 
@@ -61,18 +59,18 @@ public class Generator {
     private NTerm currentNterm;
     private Production currentProduction;
     // Generate APE with labels
-    private HashMap<String, HashMap<Integer, LinkedList<LabelElement>>> mapMachineStatesLabels;
-    private HashMap<Integer, LinkedList<LabelElement>> currentStatesLabels;
+    //private HashMap<String, HashMap<Integer, LinkedList<LabelElement>>> mapMachineStates;
+    //private HashMap<String, LinkedList<Integer>> mapMachineStates; // 2018.10.11 *
+    //private HashMap<Integer, LinkedList<LabelElement>> currentStatesLabels;   // 2018.10.11
+    //private LinkedList<Integer> currentStates; // 2018.10.11 *
 
     public Generator(MWirthLexer mWirthLexer, int type) {
-
         this.type = type;
         this.lexer = mWirthLexer;
         this.helperPairStack = new Stack<>();
         this.transitions = new ArrayList<>();
         this.current = 0;
         this.counter = 1;
-
         this.labelGrammar = new LabelGrammar();
     }
 
@@ -83,7 +81,7 @@ public class Generator {
         this.transitions = new ArrayList<>();
         this.current = 0;
         this.counter = 0;
-        this.mapMachineStatesLabels = new HashMap<>();
+        //this.mapMachineStates = new HashMap<>(); // 2018.10.11 *
     }
 
     public void registerExpressionToken(Token token) {
@@ -147,8 +145,8 @@ public class Generator {
                         current = counter;
                         counter++;
 
-                        currentStatesLabels = new HashMap<>();
-                        mapMachineStatesLabels.put(machine, currentStatesLabels);
+                        //currentStates = new LinkedList<>();    // 2018.10.11
+                        //mapMachineStates.put(machine, currentStates);    // 2018.10.11
                         if (main == null) {
                             main = machine;
                         }
@@ -610,10 +608,9 @@ public class Generator {
 
             Boolean emptyTransitionEliminated = false;
             for (Iterator<Sketch> iterator = emptyTransitionList.iterator(); iterator.hasNext(); ) {
-
+                // Processa cada transição em vazio
                 Sketch tempEmptyTransition = iterator.next();
 
-            //for (Sketch tempEmptyTransition : emptyTransitionList) {  // Processa cada transição em vazio
                 Integer source = tempEmptyTransition.getSource();
                 Integer target = tempEmptyTransition.getTarget();
                 String submachine = tempEmptyTransition.getName();
@@ -661,7 +658,6 @@ public class Generator {
                         String.valueOf(sourceInQty),String.valueOf(sourceOutQty),
                         String.valueOf(targetInQty),String.valueOf(targetOutQty));
 
-
                 if ((sourceOutQty == 0) || (targetInQty == 0)) {
                     logger.debug(" Transicao nao sera removida. Configuracao impossivel Source Out: {}, Target In: {}.",
                             sourceOutQty, targetInQty);
@@ -671,7 +667,7 @@ public class Generator {
                             (target != 2))
                 {
                     logger.debug(" Elimina target e transicao em vazio, transicoes posteriores se iniciam no estado source.");
-                    this.mapMachineStatesLabels.get(submachine).remove(target);
+                    // this.mapMachineStates.get(submachine).remove(target); // 2018.10.11 *
                     transitions.remove(tempEmptyTransition);
                     //emptyTransitionList.remove(tempEmptyTransition);
                     //iterator.remove();
@@ -725,7 +721,7 @@ public class Generator {
                                     (source != 0))
                 {
                     logger.debug(" Elimina source e transicao em vazio, transicoes anteriores sao finalizados no estado target");
-                    this.mapMachineStatesLabels.get(submachine).remove(source);
+                    //this.mapMachineStates.get(submachine).remove(source);  // 2018.10.11 *
                     transitions.remove(tempEmptyTransition);
                     //emptyTransitionList.remove(tempEmptyTransition);
                     //iterator.remove();
@@ -861,7 +857,7 @@ public class Generator {
                                     listSketches.remove(candidateBranch);
                                     branchSketches.remove(candidateBranch);
                                     this.transitions.remove(candidateBranch);
-                                    //this.mapMachineStatesLabels.get(machine).remove(originalTargetState);
+                                    //this.mapMachineStates.get(machine).remove(originalTargetState);
                                     simplificationDone = true;
                                     break;
                                 }
@@ -912,11 +908,11 @@ public class Generator {
     public List<Sketch> getTransitions() {
         return transitions;
     }
-
-    public HashMap<String, HashMap<Integer, LinkedList<LabelElement>>> getMapMachineStatesLabels() {
-        return mapMachineStatesLabels;
+/*
+    public HashMap<String, LinkedList<Integer>> getMapMachineStates() {
+        return mapMachineStates;
     }
-
+    */
     public String getMain() {
         return main;
     }

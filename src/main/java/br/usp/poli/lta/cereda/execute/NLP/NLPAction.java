@@ -21,13 +21,13 @@ public class NLPAction {
 
     private NLPOutputList nlpOutputList;
     private HashSet<String> dictionaryTerm;
-    private br.usp.poli.lta.cereda.execute.NLP.NLPTransducerStackList NLPTransducerStackListList;
+    //private br.usp.poli.lta.cereda.execute.NLP.NLPTransducerStackList NLPTransducerStackListList;
 
     public Action semanticActionTermTransition;
     public Action semanticActionNtermTransition;
     public Action semanticActionEmptyTransition;
     public ActionLabels semanticActionLabels;
-    public ActionState semanticActionState;
+    //public ActionState semanticActionState;
 
     public NLPAction(NLPOutputList nlpOutputList, HashSet<String> dictionaryTerm,
                      br.usp.poli.lta.cereda.execute.NLP.NLPTransducerStackList nlpTransducerStackList) {

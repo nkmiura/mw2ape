@@ -3,8 +3,6 @@ package br.usp.poli.lta.cereda.execute;
 import br.usp.poli.lta.cereda.execute.NLP.*;
 import br.usp.poli.lta.cereda.mwirth2ape.ape.*;
 import br.usp.poli.lta.cereda.mwirth2ape.ape.conversion.Sketch;
-import br.usp.poli.lta.cereda.mwirth2ape.labeling.LabelElement;
-import br.usp.poli.lta.cereda.mwirth2ape.labeling.Production;
 import br.usp.poli.lta.cereda.mwirth2ape.model.Token;
 import br.usp.poli.lta.cereda.mwirth2ape.mwirth.Generator;
 import br.usp.poli.lta.cereda.mwirth2ape.structure.Stack;
@@ -28,7 +26,7 @@ public class SPAExecuteNLP extends SPAExecute {
         this.lmwg = lmwg;
         this.transducerStack = new Stack<>();
         this.transitions = lmwg.getTransitions();
-        this.mapMachineStates = lmwg.getMapMachineStatesLabels();
+        //this.mapMachineStates = lmwg.getMapMachineStates();
         this.spaTransitions = new HashSet<>();
         this.stateCounter = 0;
         this.dictionaryTerm = dictionaryTerm;
@@ -102,10 +100,8 @@ public class SPAExecuteNLP extends SPAExecute {
                 Integer tempSource = tempSketch.getSource() + stateCounter;
                 Integer tempTarget = tempSketch.getTarget() + stateCounter;
 
-                addSPAState(tempSource, machine, spa, this.mapMachineStates.get(machine).get(tempSketch.getSource()),
-                        nlpAction.semanticActionState);
-                addSPAState(tempTarget, machine, spa, this.mapMachineStates.get(machine).get(tempSketch.getTarget()),
-                        nlpAction.semanticActionState);
+                addSPAState(tempSource, machine, spa);
+                addSPAState(tempTarget, machine, spa);
 
                 //State tempState = new State (tempSketch.getSource(), machine, this.mapMachineStates.get(machine).get(tempSketch.getSource()));
 
