@@ -107,13 +107,20 @@ public class NLPAction {
                                 } else if (labelSymbol.equals("[")) {
                                     nlpOutputList.insertOutputResult(threadId, "[(");
                                     //outputList.addLast("[(");
-                                    transducerStack.push("]");
                                 } else if (labelSymbol.equals("]")) {
                                     StringBuilder sb = new StringBuilder();
-                                    while (!transducerStack.top().equals("]")) {
-                                        sb.append(transducerStack.pop());
+                                    //while (!transducerStack.top().equals("]")) {
+                                    //    sb.append(transducerStack.pop());
+                                    //}
+                                    while (!transducerStack.isEmpty()) {
+                                        if (!transducerStack.top().equals("]")) {
+                                            sb.append(transducerStack.pop());
+                                        } else {
+                                            transducerStack.pop();
+                                            break;
+                                        }
                                     }
-                                    transducerStack.pop();
+                                    //transducerStack.pop();
                                     sb.reverse();
                                     sb.append("]");
                                     nlpOutputList.insertOutputResult(threadId, sb.toString());
@@ -130,8 +137,15 @@ public class NLPAction {
                                     //outputList.addLast("(");
                                 } else {
                                     StringBuilder sb = new StringBuilder();
-                                    while (!transducerStack.top().equals("]")) {
-                                        sb.append(transducerStack.pop());
+                                    //while (!transducerStack.top().equals("]")) {
+                                    //    sb.append(transducerStack.pop());
+                                    //}
+                                    while (!transducerStack.isEmpty()) {
+                                        if (!transducerStack.top().equals("]")) {
+                                            sb.append(transducerStack.pop());
+                                        } else {
+                                            break;
+                                        }
                                     }
                                     sb.reverse();
                                     sb.append(labelProduction.getIdentifier()).append(")");

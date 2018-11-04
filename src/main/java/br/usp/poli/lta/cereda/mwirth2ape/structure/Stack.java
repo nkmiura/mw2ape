@@ -53,7 +53,11 @@ public class Stack<T> {
     }
 
     public T top() {
-        return list.get(list.size() - 1);
+        if (list.size() > 0) {
+            return list.get(list.size() - 1);
+        } else {
+            return null;
+        }
     }
 
     public T bottom() {

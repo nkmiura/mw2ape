@@ -24,6 +24,7 @@ public class SPAGetStruct {
             }
             return sketch;
         }).forEach((sketch) -> {
+
             map.get(sketch.getName()).add(sketch);
         });
         return map;

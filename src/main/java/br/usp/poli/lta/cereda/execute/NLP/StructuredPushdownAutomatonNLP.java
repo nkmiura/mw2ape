@@ -48,6 +48,7 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
     private NLPTransducerStackList nlpTransducerStackList;
     private NLPOutputResult tempNLPOutputResult;
     private Stack<String> tempNLPTransducerStack;
+    private int maxStackDepth = 100;
     // Stack com estado retorno e transicao associada
     //private Stack<NLPSPAStackElement> nlpStack; // declarado em StructuredPushdownAutomaton2
 
@@ -157,7 +158,6 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
                             logger.debug("Executando rotina de label: {}", actionLabel.getName());
                             actionLabel.execute(nlpState.getTransition().getPostLabelElements(), transducerStack);
                         }
-                        //checkAndDoActionState(state, transducerStack); // acao semantica do estado
                     } else {
                         logger.debug("Não há transições válidas e o estado "
                                 + "corrente não é de aceitação. Não é "
@@ -202,25 +202,36 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
                     logger.debug("Executando rotina de label pre: {}", actionLabel.getName());
                     actionLabel.execute(query.get(0).getPreLabelElements(), transducerStack);
                 }
+
                 if (query.get(0).isSubmachineCall()) {
+
+
                     machines.push(query.get(0).getSubmachine());
-                    stack.push(query.get(0).getTarget());
-                    NLPSPAStackElement newNLPStackElement = new NLPSPAStackElement(query.get(0).getTarget(),query.get(0)); // 2018.09.17
-                    nlpStack.push(newNLPStackElement);
+                    if (getRecursionCount(machines, query.get(0).getSubmachine()) < this.maxStackDepth) { // verifica tamanho da pilha. Se menor que o limiar continua.
+                        stack.push(query.get(0).getTarget());
+                        NLPSPAStackElement newNLPStackElement = new NLPSPAStackElement(query.get(0).getTarget(), query.get(0)); // 2018.09.17
+                        nlpStack.push(newNLPStackElement);
 
-                    state = query.get(0).getLookahead();
-                    lexer.push(symbol);
-                    logger.debug("A transição é uma chamada à "
-                                    + "submáquina '{}', empilhando o estado de "
-                                    + "retorno {} na pilha, desviando a execução "
-                                    + "para o estado {} e devolvendo o token "
-                                    + "corrente {} ao analisador léxico.",
-                            query.get(0).getSubmachine(),
-                            query.get(0).getTarget(), state, symbol);
-                    tree.push(new ArrayList());
-                    tree.top().add(query.get(0).getSubmachine());
+                        state = query.get(0).getLookahead();
+                        lexer.push(symbol);
+                        logger.debug("A transição é uma chamada à "
+                                        + "submáquina '{}', empilhando o estado de "
+                                        + "retorno {} na pilha, desviando a execução "
+                                        + "para o estado {} e devolvendo o token "
+                                        + "corrente {} ao analisador léxico.",
+                                query.get(0).getSubmachine(),
+                                query.get(0).getTarget(), state, symbol);
+                        tree.push(new ArrayList());
+                        tree.top().add(query.get(0).getSubmachine());
 
-                    //actionLabelsSubmachineInit.execute(initialLabelElements, transducerStack); // label de inicio de submaquina 2018.09.17
+                        //actionLabelsSubmachineInit.execute(initialLabelElements, transducerStack); // label de inicio de submaquina 2018.09.17
+                    } else { // Pilha pasou do limiar. Aborta.
+                        logger.debug("Limiar de chamada de submáquina {} atingido. Chamada à "
+                                        + "submáquina '{}'", this.maxStackDepth,
+                                query.get(0).getSubmachine());
+                        return false;
+                        //break;
+                    }
 
                 } else {
                     state = query.get(0).getTarget();
@@ -270,21 +281,19 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
                 tree.top().add(branch);
                 // processar label
                 // Executa acao semantica pos-retorno de submaquina - 2018.09.17
-                for (Action action : nlpState.getTransition().getPostActions()) {
-                    logger.debug("Executando ação posterior no retorno de submaquina: {}", action.getName());
-                    action.execute(symbol);
-                }
                 for (ActionLabels actionLabel: nlpState.getTransition().getLabelActions()) {
                     logger.debug("Executando rotina de label pos no retorno de submaquina: {}", actionLabel.getName());
                     actionLabel.execute(nlpState.getTransition().getPostLabelElements(), transducerStack);
                 }
-                //checkAndDoActionState(state, transducerStack); // acao semantica do estado
+                for (Action action : nlpState.getTransition().getPostActions()) {
+                    logger.debug("Executando ação posterior no retorno de submaquina: {}", action.getName());
+                    action.execute(symbol);
+                }
             } else {
                 //
                 Integer newState = checkAndDoEmptyTransition(state,transducerStack);
                 if (newState != -1) {
                     state = newState;
-                    //checkAndDoActionState(state, transducerStack); // acao semantica do estado
                 }
                 else {
                     return false;
@@ -298,7 +307,6 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
                 Integer newState = checkAndDoEmptyTransition(state,transducerStack);
                 if (newState != -1) {
                     state = newState;
-                    //checkAndDoActionState(state, transducerStack); // acao semantica do estado
                 }
                 else {
                     done = true;
@@ -313,6 +321,8 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
             }
             logger.debug("Resultado do reconhecimento: cadeia {}", (result ? "aceita" : "rejeitada"));
             logger.debug(this.nlpOutputList.getOutputResult(Thread.currentThread().getId()).toString());
+            // Inserir print de resultado positivo aqui.
+
             return result;
         } else {
             logger.debug("A pilha não está vazia e o estado corrente não "
@@ -321,6 +331,29 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
         }
     }
 
+    int getRecursionCount(Stack <String> machinesStack, String machineName)
+    {
+        int recursionCount = 0;
+        ListIterator<String>  iter = machinesStack.getList().listIterator(machinesStack.size());
+        if (!machinesStack.isEmpty()) {
+            if (iter.equals(machineName)) {
+                recursionCount++;
+            }
+        }
+        while (iter.hasPrevious()) {
+            if (iter.previous().equals(machineName)) {
+                recursionCount++;
+            }
+        }
+        return recursionCount;
+    }
+
+    void printNLPOutput (LinkedList<String> outputList)
+    {
+        NLPTreeNode<String> root = new NLPTreeNode<>("root");
+
+
+    }
 
     @Override
     protected List<Transition> query(int state, Token symbol) {

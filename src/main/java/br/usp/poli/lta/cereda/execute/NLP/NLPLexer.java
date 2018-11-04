@@ -174,7 +174,7 @@ public class NLPLexer extends Lexer {
         input = input.replaceAll("Numa ", "Em+ uma ");
         input = input.replaceAll("Numas ", "Em+ umas ");
         input = input.replaceAll(" àquela ", " a_  aquela ");
-
+        input = input.replaceAll(" àquele ", " a_  aquele ");
 
    }
 }
