@@ -99,14 +99,13 @@ public class NLPAction {
                             Production labelProduction = singleLabelElement.getProduction();
                             if (labelProduction == null) {
                                 if (labelSymbol.equals("ε")) {
-                                    nlpOutputList.insertOutputResult(threadId, "()");
-                                    //outputList.addLast("()");
+                                    nlpOutputList.insertOutputResult(threadId, "()"); // plain
+                                    //nlpOutputList.insertOutputResult(threadId, "\n\"term\": {\"value\": \"()\",");
                                 } else if (dictionaryTerm.contains(String.valueOf(labelSymbol))) {
-                                    nlpOutputList.insertOutputResult(threadId, "(" + labelSymbol + ")");
-                                    //outputList.addLast("(" + labelSymbol + ")");
+                                    nlpOutputList.insertOutputResult(threadId, "(" + labelSymbol + ")"); // plain
+                                    //nlpOutputList.insertOutputResult(threadId, "type: \"" + labelSymbol + "\"}");
                                 } else if (labelSymbol.equals("[")) {
                                     nlpOutputList.insertOutputResult(threadId, "[(");
-                                    //outputList.addLast("[(");
                                 } else if (labelSymbol.equals("]")) {
                                     StringBuilder sb = new StringBuilder();
                                     //while (!transducerStack.top().equals("]")) {

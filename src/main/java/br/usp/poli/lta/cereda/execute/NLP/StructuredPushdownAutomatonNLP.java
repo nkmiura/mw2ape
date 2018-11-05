@@ -20,12 +20,14 @@
 package br.usp.poli.lta.cereda.execute.NLP;
 
 import br.usp.poli.lta.cereda.mwirth2ape.ape.*;
-import br.usp.poli.lta.cereda.mwirth2ape.labeling.LabelElement;
 import br.usp.poli.lta.cereda.mwirth2ape.model.Token;
 import br.usp.poli.lta.cereda.mwirth2ape.structure.Stack;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import java.util.*;
 
 /**
@@ -322,7 +324,7 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
             logger.debug("Resultado do reconhecimento: cadeia {}", (result ? "aceita" : "rejeitada"));
             logger.debug(this.nlpOutputList.getOutputResult(Thread.currentThread().getId()).toString());
             // Inserir print de resultado positivo aqui.
-
+            printNLPOutput (this.nlpOutputList.getOutputResult(Thread.currentThread().getId()), Thread.currentThread().getId(), Thread.currentThread().getName());
             return result;
         } else {
             logger.debug("A pilha não está vazia e o estado corrente não "
@@ -348,12 +350,120 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
         return recursionCount;
     }
 
-    void printNLPOutput (LinkedList<String> outputList)
+    void printNLPOutput (LinkedList<String> outputList, long threadID, String threadName)
     {
         NLPTreeNode<String> root = new NLPTreeNode<>("root");
 
+        StringBuilder sbJson = new StringBuilder();
+        StringBuilder sbLatex = new StringBuilder();
 
+        String lastChar = "";
+
+        for (String currentString: outputList) {
+            String newString = "";
+            if (currentString.matches("\\[\\(")) {
+                newString="{\"nterm\":{\"children\":[";
+                if (lastChar.equals("}")) {
+                    newString = "," + newString;
+                }
+                logger.debug(" currentString: {}: match [( - out: {}",currentString,newString);
+            } else if (currentString.matches("\\(\\)")) {
+                newString="{\"name\":()";
+                logger.debug(" currentString: {}: match () - out: {}",currentString,newString);
+            } else if (currentString.matches("\\\".*\\\"")) {
+                newString="{\"term\":{\"content\":" + currentString;
+                if (lastChar.equals("}")) {
+                    newString = "," + newString;
+                }
+                logger.debug(" currentString: {}: match term value - out: {}",currentString,newString);
+            } else if (currentString.matches("\\(.*\\)")) {
+                newString=",\"name\":\""+ currentString.substring(1,currentString.length()-1) + "\"}}";
+                logger.debug(" currentString: {}: match (term) - out: {}",currentString,newString);
+            } else if (currentString.matches(".*\\)")) {
+                newString="],\"name\":\""+ currentString.substring(0,currentString.length()-1)+"\"}";
+                logger.debug(" currentString: {}: match nterm - out: {}",currentString,newString);
+            } else if (currentString.matches("\\).*")) {
+                newString="],\"name\":\""+ currentString.substring(1) + "\"}";
+                logger.debug(" currentString: {}: match )nterm - out: {}",currentString,newString);
+            } else if (currentString.matches("\\)")) {
+                newString="}";
+                logger.debug(" currentString: {}: match ) - out: {}",currentString,newString);
+            } else if (currentString.matches("\\(")) {
+                newString="{";
+                logger.debug(" currentString: {}: match ( - out: {}",currentString,newString);
+            } else if (currentString.matches("\\]")) {
+                newString="}";
+                logger.debug(" currentString: {}: match ] - out: {}",currentString,newString);
+            } else {
+                logger.debug(" currentString: {}: unknown match",currentString);
+            }
+            sbJson.append(newString);
+            lastChar = sbJson.substring(sbJson.length()-1);
+        }
+
+
+        logger.debug("###################################################################");
+        logger.debug("\n Output JSON (ThreadId {} ThreadName {}): \n{}\n",threadID,threadName,sbJson);
+        logger.debug("###################################################################");
+
+
+        JsonParser jsonParser = new JsonParser();
+        JsonElement element = jsonParser.parse(sbJson.toString());
+        sbLatex.append(jsonOuputToLatex(element));
+
+        logger.debug("###################################################################");
+        logger.debug("\n Output Latex (ThreadId {} ThreadName {}): \n{}\n",threadID,threadName,sbLatex);
+        logger.debug("###################################################################");
     }
+
+
+    public String jsonOuputToLatex(JsonElement jsonElement)
+    {
+        StringBuilder sbLatex = new StringBuilder();
+
+        JsonObject obj = jsonElement.getAsJsonObject();
+        Set<Map.Entry<String, JsonElement>> entries = obj.entrySet();//will return members of your object
+        for (Map.Entry<String, JsonElement> entry: entries) {
+            //System.out.println(entry.getKey());
+            logger.debug(" JSON: key{}",entry.getKey());
+            if (entry.getKey().equals("nterm")) {
+                String name = getNameFromJson(entry.getValue().getAsJsonObject());
+                if (!name.equals("")) {
+                    String newString = "[\\nt{" + name.substring(1,name.length()-1) + "}";
+                    sbLatex.append(newString).append(jsonOuputToLatex(entry.getValue())).append("]");
+                }
+            } else if (entry.getKey().equals("term")) {
+                String name = getNameFromJson(entry.getValue().getAsJsonObject());
+                if (!name.equals("")) {
+                    String newString = "[\\nt{" + name.substring(1,name.length()-1) + "}";
+                    sbLatex.append(newString).append(jsonOuputToLatex(entry.getValue())).append("]");
+                }
+            } else if (entry.getKey().equals("content")) {
+                String newString = "[\\nt{``" + entry.getValue().toString().substring(1) + "}]";
+                sbLatex.append(newString);
+            } else if (entry.getKey().equals("children")) {
+                //newString = "[\\nt{term";
+                JsonArray newJsonArray = entry.getValue().getAsJsonArray();
+                for (JsonElement currentJsonElement : newJsonArray) {
+                    String  newString = jsonOuputToLatex(currentJsonElement);
+                    sbLatex.append(newString);
+                }
+            }
+        }
+        return sbLatex.toString();
+    }
+
+    String getNameFromJson(JsonObject jsonObject) {
+        String name = "";
+        Set<Map.Entry<String, JsonElement>> currentNtermEntries = jsonObject.entrySet();
+        for (Map.Entry<String, JsonElement> currentNtermEntry: currentNtermEntries) {
+            if (currentNtermEntry.getKey().equals("name")) {
+                name = currentNtermEntry.getValue().toString();
+            }
+        }
+        return name;
+    }
+
 
     @Override
     protected List<Transition> query(int state, Token symbol) {
