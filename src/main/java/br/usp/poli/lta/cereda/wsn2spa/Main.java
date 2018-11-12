@@ -45,6 +45,8 @@ import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
 
 /**
@@ -54,6 +56,8 @@ import org.yaml.snakeyaml.Yaml;
  * @since 1.0
  */
 public class Main {
+    private static final Logger logger = LoggerFactory.
+            getLogger(Main.class);
 
     public static void main(String[] args) {        
         
@@ -125,22 +129,6 @@ public class Main {
         }
 
 
-        /*
-        File inputNLPFile = null;
-        if (!line.getOptionValue("n").isEmpty()) {
-            String inputNLPFileName = line.getOptionValue("n");
-            inputNLPFile = new File(inputNLPFileName);
-            if (!inputNLPFile.exists()) {
-                throw new Exception("The provided input NLP sentence file " +
-                        inputNLPFileName +
-                        " does not exist. Make sure the location is correct and " +
-                        "try again.");
-            }
-        }
-
-
-        File inputNLPDictionaryFile = null;*/
-
         String inputNLPDictionaryFileName = "";
 
 
@@ -184,13 +172,13 @@ public class Main {
                     break;
                 case 2:
                     mwg = new Generator(mwl, 1);
-                    mwg.generateAutomaton();
-                    labelGrammar = mwg.getLabelGrammar();
-                    lmwl = new LMWirthLexer();
-                    lmwl.LGrammarToProductionTokens(labelGrammar); /* Manipular gramática aqui */
-                    System.out.println(lmwl.toString());
-                    lmwg = new Generator(lmwl, 2);
-                    lmwg.generateAutomaton();
+                    mwg.generateAutomaton();  // parsing da gramática para obter labels
+                    labelGrammar = mwg.getLabelGrammar(); // gramática com lebels
+                    lmwl = new LMWirthLexer(); //
+                    lmwl.LGrammarToProductionTokens(labelGrammar); // geração de nova cadeia de entrada com gramática com labels
+                    //System.out.println(lmwl.toString());
+                    lmwg = new Generator(lmwl, 2);  // parsing da gramática com labels para obter estrutura de dados para montagem do autômato final
+                    lmwg.generateAutomaton(); // geração do autômato
                     mwg = lmwg;
                     // Parse input sentence
                     if (inputFile != null) {
@@ -204,6 +192,14 @@ public class Main {
                             if (line.hasOption("d")) {
                                 if (!line.getOptionValue("d").isEmpty()) {
                                     inputNLPDictionaryFileName = line.getOptionValue("d");
+                                    System.out.println("Processamento de entrada NLP: arquivo " +  inputFile.getName());
+                                    System.out.println("Gramática NLP: arquivo " +  file.getName());
+                                    System.out.println("Dicionário NLP: arquivo " + inputNLPDictionaryFileName);
+                                    logger.info("#####################################################################################################");
+                                    logger.info("# Processamento de entrada NLP: arquivo " +  inputFile.getName());
+                                    logger.info("# Gramática NLP: arquivo " +  file.getName());
+                                    logger.info("# Processamento de entrada NLP: arquivo " +  inputFile.getName());
+                                    logger.info("#####################################################################################################\n");
                                     NLPLexer nlpLexer = new NLPLexer(inputText, inputNLPDictionaryFileName, labelGrammar.getTermsList());
                                     SPAExecuteNLP spaExecute = new SPAExecuteNLP(nlpLexer, lmwg, labelGrammar.getTermsList());
                                     spaExecute.parseInput();

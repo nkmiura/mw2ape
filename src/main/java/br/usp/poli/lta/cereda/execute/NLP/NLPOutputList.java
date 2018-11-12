@@ -102,6 +102,11 @@ public class NLPOutputList {
         else { return null; }
     }
 
+    public synchronized long getSize()
+    {
+        return this.outputResults.size();
+    }
+
     public synchronized boolean setOutputResult (long threadID, NLPOutputResult nlpOutputResult) {
         if (this.outputResults.containsKey(threadID)) {
             this.outputResults.put(threadID, nlpOutputResult);

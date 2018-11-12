@@ -51,11 +51,11 @@ public class NLPSpaThread implements Runnable {
             this.nlpOutputList.incrementOutputList(this.threadId, Thread.currentThread());
             this.nlpTransducerStackList.incrementTransducerStackList(this.threadId);
         }
-        logger.info("Iniciando reconhecimento com thread id: " + String.valueOf(this.threadId) +
-                " - name: " + this.threadName);
+        logger.info("ThreadId {} ThreadName {} Thread Qty {} Thread run - iniciando reconhecimento.",
+                String.valueOf(this.threadId), this.threadName, this.nlpOutputList.getSize());
         this.nlpOutputList.setParseResult(this.threadId,this.spaNLP.parse(this.isClone));
 
-        logger.info("Finalizando reconhecimento com thread: " + String.valueOf(this.threadId) +
-                " - name: " + this.threadName + " - resultado: " +  String.valueOf(this.nlpOutputList.getParseResult(this.threadId)));
+        logger.info("ThreadId {} ThreadName {} Thread Qty {} Thread run - finalizando reconhecimento - resultado {} ", String.valueOf(this.threadId),
+                this.threadName, this.nlpOutputList.getSize(), String.valueOf(this.nlpOutputList.getParseResult(this.threadId)));
     }
 }

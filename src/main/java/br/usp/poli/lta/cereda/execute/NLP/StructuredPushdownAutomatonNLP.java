@@ -99,7 +99,7 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
     public boolean parse(boolean isClone) {
         boolean isCloneLocal = isClone;
 
-        logger.debug("Iniciando o processo de reconhecimento. Thread: " + Thread.currentThread().getName());
+        logger.info("ThreadId {} Iniciando o processo de reconhecimento.", Thread.currentThread().getId());
         if (isCloneLocal) { // É clone
             symbol = lexer.getNext();
             //tempNLPOutputResult.clear();
@@ -134,7 +134,7 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
             if (query.isEmpty()) {
 
                 if (stack.isEmpty()) {
-                    logger.info("ThreadId {} Não há transições válidas e a pilha está vazia. A cadeia não é válida.",
+                    logger.debug("ThreadId {} Não há transições válidas e a pilha está vazia. A cadeia não é válida.",
                             Thread.currentThread().getId());
                     return false;
                 } else {
@@ -145,7 +145,7 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
                         nlpState = nlpStack.pop(); // 2018.09.17
 
                         lexer.push(symbol);
-                        logger.info("ThreadId {} Não há transições válidas e o estado corrente é de aceitação. A pilha contém "
+                        logger.debug("ThreadId {} Não há transições válidas e o estado corrente é de aceitação. A pilha contém "
                                 + "elementos, retornando para o estado indicado no topo da pilha ({}) e "
                                 + "devolvendo o token corrente ({}) ao analisador léxico.", Thread.currentThread().getId(), state, symbol);
                         List branch = tree.pop();
@@ -339,9 +339,9 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
             logger.debug(sbOutput.toString());
 
             // Inserir print de resultado positivo aqui.
-            logger.info("\n###################################################################");
-            logger.info("\n Output Plain (ThreadId {} ThreadName {}): \n{}\n",Thread.currentThread().getId(),Thread.currentThread().getName(),sbOutput);
-            logger.info("###################################################################\n");
+            //logger.info("\n###################################################################");
+            logger.info("\n#! ThreadId {} ThreadName {} Output Plain: \n{}\n",Thread.currentThread().getId(),Thread.currentThread().getName(),sbOutput);
+            //logger.info("###################################################################\n");
             printNLPOutput (this.nlpOutputList.getOutputResult(Thread.currentThread().getId()), Thread.currentThread().getId(), Thread.currentThread().getName());
             return result;
         } else {
@@ -421,18 +421,18 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
         }
 
 
-        logger.debug("###################################################################");
-        logger.debug("\n Output JSON (ThreadId {} ThreadName {}): \n{}\n",threadID,threadName,sbJson);
-        logger.debug("###################################################################");
+        //logger.info("###################################################################");
+        logger.info("\n#! ThreadId {} ThreadName {} Output JSON : \n{}\n",threadID,threadName,sbJson);
+        //logger.info("###################################################################");
 
 
         JsonParser jsonParser = new JsonParser();
         JsonElement element = jsonParser.parse(sbJson.toString());
         sbLatex.append(jsonOuputToLatex(element));
 
-        logger.debug("###################################################################");
-        logger.debug("\n Output Latex (ThreadId {} ThreadName {}): \n{}\n",threadID,threadName,sbLatex);
-        logger.debug("###################################################################");
+        //logger.info("###################################################################");
+        logger.info("\n#! ThreadId {} ThreadName {} Output Latex: \n{}\n",threadID,threadName,sbLatex);
+        //logger.info("###################################################################");
     }
 
 
