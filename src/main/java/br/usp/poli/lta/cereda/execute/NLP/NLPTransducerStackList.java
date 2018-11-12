@@ -18,12 +18,12 @@ public class NLPTransducerStackList {
         return transducerStackList.get(threadID);
     }
 
-    public void incrementTransducerStackList(long threadID) {
+    public synchronized void incrementTransducerStackList(long threadID) {
         Stack <String> newTransducerStack = new Stack<>();
         this.transducerStackList.put(threadID, newTransducerStack);
     }
 
-    public void cloneTransducerStackList(long newThreadID, Stack<String> newTransducerStack) {
+    public synchronized void cloneTransducerStackList(long newThreadID, Stack<String> newTransducerStack) {
         if (!this.transducerStackList.containsKey(newThreadID)) {
             this.transducerStackList.put(newThreadID, newTransducerStack);
             logger.debug("Clonando transducer stack para thread {}.", newThreadID);

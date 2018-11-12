@@ -574,6 +574,7 @@ public class Generator {
             case 1:
                 if (! labelGrammar.fillNTermInProductions()) {
                     logger.debug("Error! Grammar incomplete. Not all nterms are defined.");
+                    throw new Exception("Error! Grammar incomplete. Not all nterms are defined.");
                 }
                 //logger.debug("# Newton: " + labelGrammar.toString());
                 break;
@@ -811,7 +812,7 @@ public class Generator {
 
             Boolean simplificationDone = false;
 
-            if (branchSketches.size() == 0) { // se lista é vazia, retorna
+            if (branchSketches.size() <= 1) { // se lista é vazia, retorna
                 //break;
                 return;
             }
@@ -819,7 +820,8 @@ public class Generator {
             else {
                 for (Sketch oneBranch: branchSketches) { // para cada elemento da lista
                     for (Sketch candidateBranch: branchSketches) { // compara com a propria lista
-                        if ((oneBranch.getToken().equals(candidateBranch.getToken())) && (!oneBranch.equals(candidateBranch))) {
+                        logger.debug(" ## Comparando {} com {}", oneBranch.toString(), candidateBranch.toString());
+                        if ((isBranchesTokensEqual(oneBranch,candidateBranch)) && (!oneBranch.equals(candidateBranch))) {
                             Boolean preLabelsMatch = false;
                             Boolean postLabelsMatch = false;
                             // Verifica labels pre
@@ -876,6 +878,10 @@ public class Generator {
         }
     }
 
+    Boolean isBranchesTokensEqual(Sketch branch1, Sketch branch2)
+    {
+        return branch1.getToken().getValue().equals(branch2.getToken().getValue());
+    }
 
     Boolean compareLabels(LinkedList<LabelElement> labels1, LinkedList<LabelElement> labels2) {
         Boolean result = false;

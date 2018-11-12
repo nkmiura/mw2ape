@@ -87,10 +87,14 @@ public class NLPAction {
         this.semanticActionLabels = new ActionLabels ("semanticActionLabels") {
             @Override
             public void execute(LinkedList<LabelElement> labels, Stack<String> transducerStack) {
-                long threadId = Thread.currentThread().getId();
-                transducerStack = nlpTransducerStackList.getTransducerStackList(threadId);
+            //public void execute(LinkedList<LabelElement> labels) {
+                long threadId = Thread.currentThread().getId(); // 2018.11.09
+                //transducerStack = nlpTransducerStackList.getTransducerStackList(threadId); // 2018.11.09
 
-                logger.debug("ThreadID {}: Ação semântica: Labels", String.valueOf(threadId));
+                // logger.debug("ThreadID {}: Ação semântica: Labels", String.valueOf(threadId)); // 2018.11.11
+                logger.debug(" ###ThreadID {} # Ação semântica labels: {} # Stack before: {}", String.valueOf(threadId),
+                        labels.toString(), transducerStack.toString());
+
                 if (labels != null) {
                     logger.debug("Com labels: {}", labels.toString());
                     for (LabelElement singleLabelElement : labels) {
@@ -100,45 +104,51 @@ public class NLPAction {
                             if (labelProduction == null) {
                                 if (labelSymbol.equals("ε")) {
                                     nlpOutputList.insertOutputResult(threadId, "()"); // plain
-                                    //nlpOutputList.insertOutputResult(threadId, "\n\"term\": {\"value\": \"()\",");
                                 } else if (dictionaryTerm.contains(String.valueOf(labelSymbol))) {
                                     nlpOutputList.insertOutputResult(threadId, "(" + labelSymbol + ")"); // plain
-                                    //nlpOutputList.insertOutputResult(threadId, "type: \"" + labelSymbol + "\"}");
                                 } else if (labelSymbol.equals("[")) {
+                                    String stackElement = "]";
+                                    transducerStack.push(stackElement);
                                     nlpOutputList.insertOutputResult(threadId, "[(");
+                                    //nlpOutputList.insertOutputResult(threadId, "(");
                                 } else if (labelSymbol.equals("]")) {
                                     StringBuilder sb = new StringBuilder();
-                                    //while (!transducerStack.top().equals("]")) {
-                                    //    sb.append(transducerStack.pop());
-                                    //}
                                     while (!transducerStack.isEmpty()) {
                                         if (!transducerStack.top().equals("]")) {
                                             sb.append(transducerStack.pop());
                                         } else {
                                             transducerStack.pop();
+                                            //logger.debug("## Error label action: empty stack before ]");
                                             break;
                                         }
                                     }
-                                    //transducerStack.pop();
+                                    /*
+                                    if (transducerStack.top() != null) {
+                                        while (!transducerStack.top().equals("]")) {
+                                            sb.append(transducerStack.pop());
+                                            if (transducerStack.top() == null) {
+                                                logger.debug("## Error label action: empty stack before ]");
+
+                                                break;
+                                            }
+                                        }
+                                    } */
                                     sb.reverse();
-                                    sb.append("]");
+                                    sb.append("]"); // Newton 2018.11.08
                                     nlpOutputList.insertOutputResult(threadId, sb.toString());
-                                    //outputList.addLast(sb.toString());
                                 }
                             } else {
                                 if (labelProduction.getRecursion().equals("right")) {
                                     nlpOutputList.insertOutputResult(threadId, labelProduction.getIdentifier() + ")");
                                     //outputList.addLast(labelProduction.getIdentifier() + ")");
                                 } else if (labelProduction.getRecursion().equals("left")) {
-                                    String stackElement = ")" + labelProduction.getIdentifier();
-                                    transducerStack.push(stackElement);
+                                    String stackElement1 = ")";
+                                    transducerStack.push(stackElement1);
+                                    String stackElement2 = labelProduction.getIdentifier();
+                                    transducerStack.push(stackElement2);
                                     nlpOutputList.insertOutputResult(threadId, "(");
-                                    //outputList.addLast("(");
                                 } else {
                                     StringBuilder sb = new StringBuilder();
-                                    //while (!transducerStack.top().equals("]")) {
-                                    //    sb.append(transducerStack.pop());
-                                    //}
                                     while (!transducerStack.isEmpty()) {
                                         if (!transducerStack.top().equals("]")) {
                                             sb.append(transducerStack.pop());
@@ -154,10 +164,13 @@ public class NLPAction {
                             }
                         }
                     }
+
                 }
                 else {
                     logger.debug("Sem labels.");
                 }
+                logger.debug(" ###ThreadID {} # Ação semântica labels: {} # Stack after: {}", String.valueOf(threadId),
+                        labels.toString(), transducerStack.toString());
             }
         };
     }

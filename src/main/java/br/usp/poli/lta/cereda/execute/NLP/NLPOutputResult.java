@@ -9,15 +9,16 @@ public class NLPOutputResult {
 
     public NLPOutputResult () {
         outputList = new LinkedList<>();
-        parseResult = false;
+        parseResult = new Boolean(false);
+        thread = new Thread();
     }
 
     public LinkedList<String> getOutputList() {
         return outputList;
     }
 
-    public void setOutputList(LinkedList<String> outputList) {
-        this.outputList = outputList;
+    public synchronized void setOutputList(LinkedList<String> outputList) {
+        this.outputList = (LinkedList) outputList.clone();
     }
 
     public Boolean getParseResult() {
@@ -28,13 +29,15 @@ public class NLPOutputResult {
         this.parseResult = parseResult;
     }
 
+
     public Thread getThread() {
         return thread;
     }
 
-    public void setThread(Thread thread) {
+    public synchronized void setThread(Thread thread) {
         this.thread = thread;
     }
+
 
     @Override
     public String toString() {

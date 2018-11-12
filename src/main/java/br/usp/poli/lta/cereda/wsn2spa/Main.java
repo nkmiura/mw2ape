@@ -19,7 +19,6 @@
 **/
 package br.usp.poli.lta.cereda.wsn2spa;
 
-import br.usp.poli.lta.cereda.execute.NLP.NLPDictionary;
 import br.usp.poli.lta.cereda.execute.NLP.NLPLexer;
 import br.usp.poli.lta.cereda.execute.SPAExecute;
 import br.usp.poli.lta.cereda.execute.SPAExecuteNLP;

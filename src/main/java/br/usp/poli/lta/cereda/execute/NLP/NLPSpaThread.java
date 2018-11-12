@@ -20,10 +20,7 @@ public class NLPSpaThread implements Runnable {
     private StructuredPushdownAutomatonNLP spaNLP;
     private NLPOutputList nlpOutputList;
     private boolean isClone;
-    //private Stack<String> transducerStack;
     private NLPTransducerStackList nlpTransducerStackList;
-
-
 
     public NLPSpaThread(StructuredPushdownAutomatonNLP spaNLP, NLPOutputList nlpOutputList,
                         NLPTransducerStackList nlpTransducerStackList, long parentThreadId)
@@ -39,9 +36,8 @@ public class NLPSpaThread implements Runnable {
         }
     }
 
-
     @Override
-    public void run() {
+    public synchronized void run() {
         this.threadId = Thread.currentThread().getId();
         this.threadName = Thread.currentThread().getName();
 
@@ -49,19 +45,17 @@ public class NLPSpaThread implements Runnable {
                 " - name: " + this.threadName + " - clone: " + String.valueOf(isClone));
         if (this.isClone) {
             this.nlpOutputList.cloneOutputResult(this.threadId, this.spaNLP.getTempNLPOutputResult());
-
-
             this.nlpTransducerStackList.cloneTransducerStackList(this.threadId, this.spaNLP.getTempNLPTransducerStack());
 
         } else {
             this.nlpOutputList.incrementOutputList(this.threadId, Thread.currentThread());
             this.nlpTransducerStackList.incrementTransducerStackList(this.threadId);
         }
-        logger.debug("Iniciando reconhecimento com thread id: " + String.valueOf(this.threadId) +
+        logger.info("Iniciando reconhecimento com thread id: " + String.valueOf(this.threadId) +
                 " - name: " + this.threadName);
         this.nlpOutputList.setParseResult(this.threadId,this.spaNLP.parse(this.isClone));
 
-        logger.debug("Finalizando reconhecimento com thread: " + String.valueOf(this.threadId) +
-                " - name: " + this.threadName);
+        logger.info("Finalizando reconhecimento com thread: " + String.valueOf(this.threadId) +
+                " - name: " + this.threadName + " - resultado: " +  String.valueOf(this.nlpOutputList.getParseResult(this.threadId)));
     }
 }

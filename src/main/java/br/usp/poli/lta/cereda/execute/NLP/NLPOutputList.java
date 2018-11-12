@@ -49,39 +49,60 @@ public class NLPOutputList {
     }
 
     public synchronized void cloneOutputResult (long newThreadID, NLPOutputResult nlpOutputResult) {
-        if (!this.outputResults.containsKey(newThreadID)) {
+        if (!this.outputResults.containsKey(newThreadID)) { // a lista ainda não contem dados para a thread
+            logger.debug("Clonando resultados para ThreadID {} # Dados: {}", newThreadID, String.valueOf(nlpOutputResult.getOutputList()));
             NLPOutputResult newOutputResult = new NLPOutputResult();
             LinkedList<String> newOutputList = new LinkedList<>();
-            newOutputList.addAll(nlpOutputResult.getOutputList());
-            newOutputResult.setOutputList(newOutputList);
+
+            /*
+            for (String listElement: nlpOutputResult.getOutputList()) {
+                String newListElement = listElement;
+                newOutputList.push(newListElement);
+            } */
+
+            Thread thread = Thread.currentThread();
+            //newOutputList = (LinkedList) (nlpOutputResult.getOutputList()).clone();
+            //newOutputList.addAll(nlpOutputResult.getOutputList());
+
+            newOutputResult.setOutputList(nlpOutputResult.getOutputList());
+            newOutputResult.setThread(thread);
+            newOutputResult.setParseResult(false);
             this.outputResults.put(newThreadID, newOutputResult);
-            logger.debug("Clonando resultados para thread {}.", newThreadID);
+            logger.debug("Resultados clonados para ThreadId {} - Output list: {}", newThreadID,nlpOutputResult.getOutputList());
+
         } else {
-            logger.debug("Resultados não existentes para o thread {}.",
-                    String.valueOf(nlpOutputResult));
+            logger.debug("Erro na clonagem de resultados. Já existem dados para a Thread Id {}.", newThreadID,
+                    String.valueOf(nlpOutputResult.getOutputList()));
         }
     }
 
-    public void setOutputResults(HashMap<Long, NLPOutputResult> outputResults) {
+    public synchronized void setOutputResults(HashMap<Long, NLPOutputResult> outputResults) {
         this.outputResults = outputResults;
     }
 
     public synchronized boolean insertOutputResult (long threadId, String partialResult) {
         if (this.outputResults.containsKey(threadId)) {
-            this.outputResults.get(threadId).outputList.addLast(partialResult);
+            // Filtrar colchetes
+            //if (partialResult.equals("]")) {
+            //}
+            logger.debug(" ### Insert output: ThreadId {} # Before: {} # String add: {}", threadId,
+                    outputResults.get(threadId).getOutputList(), partialResult);
+            this.outputResults.get(threadId).getOutputList().addLast(partialResult);
+            logger.debug(" ### Insert output: ThreadId {} # Ater: {}", threadId,
+                    outputResults.get(threadId).getOutputList());
             return true;
         }
         else { return false; }
     }
 
-    public LinkedList<String> getOutputResult (long threadID) {
+    public synchronized LinkedList<String> getOutputResult (long threadID) {
         if (this.outputResults.containsKey(threadID)) {
-            return this.outputResults.get(threadID).outputList;
+            return this.outputResults.get(threadID).getOutputList();
         }
         else { return null; }
     }
 
-    public boolean setOutputResult (long threadID, NLPOutputResult nlpOutputResult) {
+    public synchronized boolean setOutputResult (long threadID, NLPOutputResult nlpOutputResult) {
         if (this.outputResults.containsKey(threadID)) {
             this.outputResults.put(threadID, nlpOutputResult);
             return true;
@@ -97,7 +118,7 @@ public class NLPOutputList {
         else { return false; }
     }
 
-    public boolean getParseResult(long threadId) {
+    public synchronized boolean getParseResult(long threadId) {
         if (this.outputResults.containsKey(threadId)) {
             return this.outputResults.get(threadId).parseResult.booleanValue();
 
