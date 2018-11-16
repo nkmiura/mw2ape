@@ -190,8 +190,14 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
                                 new StructuredPushdownAutomatonNLP(this, query.get(i));
                         NLPSpaThread NLPSpaThread = new NLPSpaThread(newSpa, this.nlpOutputList,
                                 this.nlpTransducerStackList, Thread.currentThread().getId());
-                        Thread newThread = new Thread(NLPSpaThread);
-                        newThread.start();
+                        //try {
+                            Thread newThread = new Thread(NLPSpaThread);
+                            newThread.start();
+                        //}
+                        //catch (Exception e) {
+                        //    logger.debug("Error in thread run. " + e.getMessage());
+                        //    break;
+                        //}
                         //}
                         //queryIndex++;
                     }
@@ -330,18 +336,7 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
                 tree.push(top);
             }
             logger.info("ThreadId {} Resultado do reconhecimento: cadeia {}", Thread.currentThread().getId(), (result ? "aceita" : "rejeitada"));
-            // Simple print
-            StringBuilder sbOutput = new StringBuilder();
-            for (String element: this.nlpOutputList.getOutputResult(Thread.currentThread().getId())) {
-                sbOutput.append(element);
-            }
-            //
-            logger.debug(sbOutput.toString());
 
-            // Inserir print de resultado positivo aqui.
-            //logger.info("\n###################################################################");
-            logger.info("\n#! ThreadId {} ThreadName {} Output Plain: \n{}\n",Thread.currentThread().getId(),Thread.currentThread().getName(),sbOutput);
-            //logger.info("###################################################################\n");
             printNLPOutput (this.nlpOutputList.getOutputResult(Thread.currentThread().getId()), Thread.currentThread().getId(), Thread.currentThread().getName());
             return result;
         } else {
@@ -372,10 +367,21 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
     {
         NLPTreeNode<String> root = new NLPTreeNode<>("root");
 
+        StringBuilder sbPlain = new StringBuilder();
         StringBuilder sbJson = new StringBuilder();
         StringBuilder sbLatex = new StringBuilder();
-
         String lastChar = "";
+
+
+        // Simple print
+        for (String currentString: outputList) {
+            sbPlain.append(currentString);
+        }
+        // Inserir print de resultado positivo aqui.
+        //logger.info("\n###################################################################");
+        logger.info("\n#! ThreadId {} ThreadName {} Output Plain: \n{}\n",threadID,threadName,sbPlain);
+        System.out.println("\n#! ThreadId "+threadID+" Output Plain: "+sbPlain+"\n");
+        //logger.info("###################################################################\n");
 
         for (String currentString: outputList) {
             String newString = "";
@@ -386,15 +392,15 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
                     newString = "," + newString;
                 }
                 logger.debug(" currentString: {}: match [( - out: {}",currentString,newString);
-            } else if (currentString.matches("\\(\\)")) {
-                newString="{\"name\":()";
-                logger.debug(" currentString: {}: match () - out: {}",currentString,newString);
             } else if (currentString.matches("\\\".*\\\"")) {
                 newString="{\"term\":{\"content\":" + currentString;
                 if (lastChar.equals("}")) {
                     newString = "," + newString;
                 }
                 logger.debug(" currentString: {}: match term value - out: {}",currentString,newString);
+            } else if (currentString.matches("\\(ε\\)")) {
+                newString="{\"empty\":\"\"}";
+                logger.debug(" currentString: {}: match (term) - out: {}",currentString,newString);
             } else if (currentString.matches("\\(.*\\)")) {
                 newString=",\"name\":\""+ currentString.substring(1,currentString.length()-1) + "\"}}";
                 logger.debug(" currentString: {}: match (term) - out: {}",currentString,newString);
@@ -423,6 +429,7 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
 
         //logger.info("###################################################################");
         logger.info("\n#! ThreadId {} ThreadName {} Output JSON : \n{}\n",threadID,threadName,sbJson);
+        System.out.println("\n#! ThreadId "+threadID+" Output JSON: "+sbJson+"\n");
         //logger.info("###################################################################");
 
 
@@ -432,6 +439,7 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
 
         //logger.info("###################################################################");
         logger.info("\n#! ThreadId {} ThreadName {} Output Latex: \n{}\n",threadID,threadName,sbLatex);
+        System.out.println("\n#! ThreadId "+threadID+" Output Latex: "+sbLatex+"\n");
         //logger.info("###################################################################");
     }
 
@@ -459,6 +467,9 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
                 }
             } else if (entry.getKey().equals("content")) {
                 String newString = "[\\nt{``" + entry.getValue().toString().substring(1) + "}]";
+                sbLatex.append(newString);
+            } else if (entry.getKey().equals("empty")) {
+                String newString = "[\\nt{\\epsilon}]";
                 sbLatex.append(newString);
             } else if (entry.getKey().equals("children")) {
                 //newString = "[\\nt{term";

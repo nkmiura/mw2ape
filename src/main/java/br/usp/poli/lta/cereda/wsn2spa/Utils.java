@@ -44,11 +44,18 @@ public class Utils {
 
     public static void printBanner() {
         StringBuilder sb = new StringBuilder();
+        /*
         sb.append("                ___               ").append('\n');
         sb.append("__ __ ______ _ |_  )____ __  __ _ ").append('\n');
         sb.append("\\ V  V (_-< ' \\ / /(_-< '_ \\/ _` |").append('\n');
         sb.append(" \\_/\\_//__/_||_/___/__/ .__/\\__,_|").append('\n');
-        sb.append("                      |_|         ").append('\n');
+        sb.append("                      |_|         ").append('\n');  */
+
+        sb.append("##################################").append('\n');
+        sb.append("#                                #").append('\n');
+        sb.append("#           mw2spa NLP           #").append('\n');
+        sb.append("#                                #").append('\n');
+        sb.append("##################################").append('\n');
         System.out.println(sb.toString());
     }
 
@@ -121,8 +128,8 @@ public class Utils {
 
     public static void printHelp() {
         HelpFormatter formatter = new HelpFormatter();
-        formatter.printHelp("wsn2spa -o <pattern> -y"
-                + " <pattern> [ -c ] [ -m ] [-g ]", getOptions());
+        formatter.printHelp("mw2spaNLP -o <pattern> -y"
+                + " <pattern> -n -t 2 -i <pattern>", getOptions());
         System.exit(0);
     }
 

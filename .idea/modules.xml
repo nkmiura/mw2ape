@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/mw2ape.iml" filepath="$PROJECT_DIR$/.idea/mw2ape.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/mw2apeNLP.iml" filepath="$PROJECT_DIR$/.idea/mw2apeNLP.iml" />
     </modules>
   </component>
 </project>

@@ -6,11 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="mw2ape" />
+        <module name="mw2apeNLP" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="mw2ape" target="1.8" />
+      <module name="mw2apeNLP" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

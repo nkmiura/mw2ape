@@ -103,7 +103,7 @@ public class NLPAction {
                             Production labelProduction = singleLabelElement.getProduction();
                             if (labelProduction == null) {
                                 if (labelSymbol.equals("ε")) {
-                                    nlpOutputList.insertOutputResult(threadId, "()"); // plain
+                                    nlpOutputList.insertOutputResult(threadId, "(ε)"); // plain
                                 } else if (dictionaryTerm.contains(String.valueOf(labelSymbol))) {
                                     nlpOutputList.insertOutputResult(threadId, "(" + labelSymbol + ")"); // plain
                                 } else if (labelSymbol.equals("[")) {
