@@ -386,40 +386,40 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
         for (String currentString: outputList) {
             String newString = "";
             //if (currentString.matches("\\[\\(")) {
-            if (currentString.matches("\\[\\(")) {
+            if (currentString.matches("\\[\\(")) {  // Inicio de producao
                 newString="{\"nterm\":{\"children\":[";
-                if (lastChar.equals("}")) {
+                if (lastChar.equals("}")) {  // Se o último caractere de saída foi fechamento é adicionado o separador ","
                     newString = "," + newString;
                 }
                 logger.debug(" currentString: {}: match [( - out: {}",currentString,newString);
-            } else if (currentString.matches("\\\".*\\\"")) {
+            } else if (currentString.matches("\\\".*\\\"")) { // Conteúdo do Terminal - palavra em linguagem natural
                 newString="{\"term\":{\"content\":" + currentString;
-                if (lastChar.equals("}")) {
+                if (lastChar.equals("}")) { // Se o último caractere de saída foi fechamento é adicionado o separador ","
                     newString = "," + newString;
                 }
                 logger.debug(" currentString: {}: match term value - out: {}",currentString,newString);
-            } else if (currentString.matches("\\(ε\\)")) {
+            } else if (currentString.matches("\\(ε\\)")) { // vazio
                 newString="{\"empty\":\"\"}";
                 logger.debug(" currentString: {}: match (term) - out: {}",currentString,newString);
-            } else if (currentString.matches("\\(.*\\)")) {
+            } else if (currentString.matches("\\(.*\\)")) { // Terminal
                 newString=",\"name\":\""+ currentString.substring(1,currentString.length()-1) + "\"}}";
                 logger.debug(" currentString: {}: match (term) - out: {}",currentString,newString);
-            } else if (currentString.matches(".*\\)")) {
+            } else if (currentString.matches(".*\\)")) { // Não terminal
                 newString="],\"name\":\""+ currentString.substring(0,currentString.length()-1)+"\"}";
                 logger.debug(" currentString: {}: match nterm - out: {}",currentString,newString);
-            } else if (currentString.matches("\\).*")) {
+            } else if (currentString.matches("\\).*")) { // Não terminal
                 newString="],\"name\":\""+ currentString.substring(1) + "\"}";
                 logger.debug(" currentString: {}: match )nterm - out: {}",currentString,newString);
-            } else if (currentString.matches("\\)")) {
+            } else if (currentString.matches("\\)")) { // Fim elemento (terminal ou não terminal)
                 newString="}";
                 logger.debug(" currentString: {}: match ) - out: {}",currentString,newString);
-            } else if (currentString.matches("\\(")) {
+            } else if (currentString.matches("\\(")) { // Início
                 newString="{";
                 logger.debug(" currentString: {}: match ( - out: {}",currentString,newString);
-            } else if (currentString.matches("\\]")) {
+            } else if (currentString.matches("\\]")) { // Fim de lista
                 newString="}";
                 logger.debug(" currentString: {}: match ] - out: {}",currentString,newString);
-            } else {
+            } else { // Erro
                 logger.debug(" currentString: {}: unknown match",currentString);
             }
             sbJson.append(newString);

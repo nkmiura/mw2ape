@@ -122,17 +122,6 @@ public class NLPAction {
                                             break;
                                         }
                                     }
-                                    /*
-                                    if (transducerStack.top() != null) {
-                                        while (!transducerStack.top().equals("]")) {
-                                            sb.append(transducerStack.pop());
-                                            if (transducerStack.top() == null) {
-                                                logger.debug("## Error label action: empty stack before ]");
-
-                                                break;
-                                            }
-                                        }
-                                    } */
                                     sb.reverse();
                                     sb.append("]"); // Newton 2018.11.08
                                     nlpOutputList.insertOutputResult(threadId, sb.toString());
