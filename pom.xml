@@ -71,7 +71,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>br.usp.poli.lta.cereda.wsn2spa.Main</mainClass>
+                            <mainClass>br.usp.poli.lta.nlpdep.wsn2spa.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

@@ -1,0 +1,201 @@
+{
+ "depPatterns": [
+  {
+    "_comment": "Sintagma adjetivo 1",
+    "value": "SAdj_1",
+    "mainConstituent": 1,
+    "headDirection": "left",
+    "depPatternConstituents": [
+      {
+        "id": 1,
+        "value": "adj",
+        "type": "term",
+        "head": 0,
+        "depRel": "advcl",
+        "leftDeps": [
+          "cop",
+          "mark"
+         ],
+        "rightDeps": []
+      }
+    ]
+  },
+  {
+    "_comment": "Frase 1",
+    "value": "F_3",
+    "mainConstituent": 1,
+    "headDirection": "",
+    "depPatternConstituents": [
+      {
+        "id": 1,
+        "value": "PS_1",
+        "type": "nterm",
+        "head": 0,
+        "depRel": "root",
+        "leftDeps": [],
+        "rightDeps": []
+      }
+    ]
+  },
+   {
+     "_comment": "Periodo Simples 1",
+     "value": "PS_1",
+     "mainConstituent": 1,
+     "headDirection": "",
+     "depPatternConstituents": [
+       {
+         "id": 1,
+         "value": "OA_3",
+         "type": "nterm",
+         "head": 0,
+         "depRel": "root",
+         "leftDeps": [],
+         "rightDeps": []
+       }
+     ]
+   },
+   {
+     "_comment": "Oracao Absoluta 4",
+     "value": "OA_4",
+     "mainConstituent": 2,
+     "headDirection": "",
+     "depPatternConstituents": [
+       {
+         "id": 1,
+         "value": "SS_9",
+         "type": "nterm",
+         "head": 2,
+         "depRel": "",
+         "leftDeps": [],
+         "rightDeps": []
+       },
+       {
+         "id": 2,
+         "value": "SV_5",
+         "type": "nterm",
+         "head": 0,
+         "depRel": "root",
+         "leftDeps": [
+           "nsubj",
+           "mark"
+         ],
+         "rightDeps": [
+           "punct"
+         ]
+       },
+       {
+         "id": 3,
+         "value": "punct",
+         "type": "punct",
+         "head": 2,
+         "depRel": "punct",
+         "leftDeps": [],
+         "rightDeps": []
+       }
+     ]
+   },
+   {
+     "_comment": "Sintagma Substantivo 9",
+     "value": "SS_9",
+     "mainConstituent": 2,
+     "headDirection": "right",
+     "depPatternConstituents": [
+       {
+         "id": 1,
+         "value": "PrA_5",
+         "type": "nterm",
+         "head": 2,
+         "depRel": "det",
+         "leftDeps": [],
+         "rightDeps": []
+       },
+       {
+         "id": 2,
+         "value": "n",
+         "type": "term",
+         "head": 0,
+         "depRel": "nsubj",
+         "leftDeps": [],
+         "rightDeps": []
+       }
+     ]
+   },
+   {
+     "_comment": "Sintagma Substantivo 9",
+     "value": "SS_9",
+     "mainConstituent": 2,
+     "headDirection": "left",
+     "depPatternConstituents": [
+       {
+         "id": 1,
+         "value": "PrA_1",
+         "type": "nterm",
+         "head": 2,
+         "depRel": "det",
+         "leftDeps": [],
+         "rightDeps": []
+       },
+       {
+         "id": 2,
+         "value": "n",
+         "type": "term",
+         "head": 0,
+         "depRel": "obj",
+         "leftDeps": [],
+         "rightDeps": []
+       }
+     ]
+   },
+   {
+     "_comment": "Sintagma Verbal 5",
+     "value": "SV_5",
+     "mainConstituent": 1,
+     "headDirection": "",
+     "depPatternConstituents": [
+       {
+         "id": 1,
+         "value": "vtd",
+         "type": "term",
+         "head": 0,
+         "depRel": "root",
+         "leftDeps": [],
+         "rightDeps": []
+       }
+     ]
+   },
+   {
+     "_comment": "Pronome Adjetivo 5",
+     "value": "PrA_5",
+     "mainConstituent": 1,
+     "headDirection": "right",
+     "depPatternConstituents": [
+       {
+         "id": 1,
+         "value": "pind",
+         "type": "term",
+         "head": 0,
+         "depRel": "det",
+         "leftDeps": [],
+         "rightDeps": []
+       }
+     ]
+   },
+   {
+     "_comment": "Pronome Adjetivo 1",
+     "value": "PrA_1",
+     "mainConstituent": 1,
+     "headDirection": "right",
+     "depPatternConstituents": [
+       {
+         "id": 1,
+         "value": "artd",
+         "type": "term",
+         "head": 0,
+         "depRel": "det",
+         "leftDeps": [],
+         "rightDeps": []
+       }
+     ]
+   }
+ ]
+}
