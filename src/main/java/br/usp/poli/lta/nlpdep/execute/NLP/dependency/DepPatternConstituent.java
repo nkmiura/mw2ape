@@ -84,4 +84,17 @@ public class DepPatternConstituent {
         this.rightDeps = rightDeps;
     }
 
+
+    @Override
+    public String toString() {
+        return "DepPatternConstituent{" +
+                "id=" + id +
+                ", value='" + value + '\'' +
+                ", type='" + type + '\'' +
+                ", head=" + head +
+                ", depRel='" + depRel + '\'' +
+                ", leftDeps=" + leftDeps +
+                ", rightDeps=" + rightDeps +
+                '}';
+    }
 }

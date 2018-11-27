@@ -1,6 +1,9 @@
 package br.usp.poli.lta.nlpdep.mwirth2ape.labeling;
 
 import java.util.LinkedList;
+
+import br.usp.poli.lta.nlpdep.execute.NLP.dependency.DepPattern;
+import br.usp.poli.lta.nlpdep.execute.NLP.dependency.DepPatternList;
 import br.usp.poli.lta.nlpdep.mwirth2ape.model.Token;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +18,8 @@ public class Production {
     public LinkedList<ProductionToken> expression;
     public LinkedList<ProductionToken> labels;
     public LinkedList<ProductionToken> all;
+    private DepPatternList depPatternList;
+
 
     public Production(int index) {
         this.index = index;
@@ -23,6 +28,7 @@ public class Production {
         this.expression = new LinkedList<>();
         this.labels = new LinkedList<>();
         this.all = new LinkedList<>();
+        this.depPatternList = new DepPatternList();
     }
 
     public void setIdentifier(String value) {
@@ -58,6 +64,19 @@ public class Production {
     public void addAllToken(ProductionToken allToken) {
         this.all.add(allToken);
     }
+
+    public DepPatternList getDepPatternList() {
+        return depPatternList;
+    }
+
+    public void setDepPatternList(DepPatternList depPatternList) {
+        this.depPatternList = depPatternList;
+    }
+
+    public void addToDepPatternList(DepPattern depPattern) {
+        this.depPatternList.addDepPattern(depPattern);
+    }
+
 
     @Override
     public String toString() {

@@ -62,4 +62,15 @@ public class DepPattern {
         this.depPatternConstituents = depPatternConstituents;
     }
 
+
+    @Override
+    public String toString() {
+        return "DepPattern{" +
+                "comment='" + comment + '\'' +
+                ", value='" + value + '\'' +
+                ", mainConstituent=" + mainConstituent +
+                ", headDirection='" + headDirection + '\'' +
+                ", depPatternConstituents=" + depPatternConstituents +
+                '}';
+    }
 }

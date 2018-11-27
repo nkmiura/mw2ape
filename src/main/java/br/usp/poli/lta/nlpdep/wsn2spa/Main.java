@@ -20,6 +20,8 @@
 package br.usp.poli.lta.nlpdep.wsn2spa;
 
 import br.usp.poli.lta.nlpdep.execute.NLP.NLPLexer;
+import br.usp.poli.lta.nlpdep.execute.NLP.dependency.DepPattern;
+import br.usp.poli.lta.nlpdep.execute.NLP.dependency.DepPatternList;
 import br.usp.poli.lta.nlpdep.execute.SPAExecute;
 import br.usp.poli.lta.nlpdep.execute.SPAExecuteNLP;
 import br.usp.poli.lta.nlpdep.execute.SimpleLexer;
@@ -33,13 +35,16 @@ import br.usp.poli.lta.nlpdep.mwirth2ape.exporter.Spec;
 import br.usp.poli.lta.nlpdep.mwirth2ape.exporter.Writer;
 import br.usp.poli.lta.nlpdep.mwirth2ape.mwirth.Generator;
 import br.usp.poli.lta.nlpdep.mwirth2ape.mwirth.MWirthLexer;
-import java.io.File;
-import java.io.IOException;
+
+import java.io.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+
+import com.google.gson.Gson;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -51,8 +56,8 @@ import org.yaml.snakeyaml.Yaml;
 
 /**
  * 
- * @author Paulo Roberto Massa Cereda
- * @version 1.2
+ * @author Paulo Roberto Massa Cereda & Newton Kiyotaka Miura
+ * @version 1.3
  * @since 1.0
  */
 public class Main {
@@ -159,6 +164,7 @@ public class Main {
         LabelGrammar labelGrammar;  // Grammar with labels
         LMWirthLexer lmwl; // Lexer for grammar format with labels
         Generator lmwg = null; // SPA generator for grammar format with labels
+        DepPatternList depPatternList = new DepPatternList(); // Dependency pattern list to be loaded rom JSON file
 
         try {
             switch (type) {
@@ -204,9 +210,11 @@ public class Main {
                                     if (line.hasOption("p")) {
                                         if (!line.getOptionValue("p").isEmpty()) {
                                             inputNLPDependencyPatternsFileName = line.getOptionValue("p");
-                                            //if () {
-                                            //}
                                             logger.info("# Padrões de dependências: arquivo " +  inputNLPDependencyPatternsFileName);
+                                            depPatternList = depPatternList.loadDepPatternsFromJson(inputNLPDependencyPatternsFileName);
+                                            if (depPatternList.getDepPatterns() != null) {
+                                                depPatternList.insertDepPatternsToNterms(labelGrammar);
+                                            }
                                         }
                                     }
                                     logger.info("#####################################################################################################\n");
@@ -306,5 +314,8 @@ public class Main {
         
         System.out.println("Done.");
     }
+
+
+
 
 }

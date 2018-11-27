@@ -579,6 +579,7 @@ public class Generator {
                 //logger.debug("# Newton: " + labelGrammar.toString());
                 break;
             case 2:
+
                 reduceDeterministicEmptyTransitions();
                 simplifyCommonPrefix();
                 break;
