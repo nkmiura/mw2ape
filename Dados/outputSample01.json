@@ -1,0 +1,92 @@
+{
+  "nterm": {
+    "children": [
+      {
+        "nterm": {
+          "children": [
+            {
+              "nterm": {
+                "children": [
+                  {
+                    "nterm": {
+                      "children": [
+                        {
+                          "nterm": {
+                            "children": [
+                              {
+                                "term": {
+                                  "content": "Nenhum",
+                                  "name": "pind"
+                                }
+                              }
+                            ],
+                            "name": "PrA_1"
+                          }
+                        },
+                        {
+                          "term": {
+                            "content": "aluno",
+                            "name": "n"
+                          }
+                        }
+                      ],
+                      "name": "SS_1"
+                    }
+                  },
+                  {
+                    "nterm": {
+                      "children": [
+                        {
+                          "term": {
+                            "content": "conhece",
+                            "name": "vtd"
+                          }
+                        },
+                        {
+                          "nterm": {
+                            "children": [
+                              {
+                                "nterm": {
+                                  "children": [
+                                    {
+                                      "term": {
+                                        "content": "o",
+                                        "name": "artd"
+                                      }
+                                    }
+                                  ],
+                                  "name": "PrA_2"
+                                }
+                              },
+                              {
+                                "term": {
+                                  "content": "livro",
+                                  "name": "n"
+                                }
+                              }
+                            ],
+                            "name": "SS_1"
+                          }
+                        }
+                      ],
+                      "name": "SV_1"
+                    }
+                  },
+                  {
+                    "term": {
+                      "content": ".",
+                      "name": "punct"
+                    }
+                  }
+                ],
+                "name": "OA_1"
+              }
+            }
+          ],
+          "name": "PS_1"
+        }
+      }
+    ],
+    "name": "F_1"
+  }
+}

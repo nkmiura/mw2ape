@@ -1,4 +1,4 @@
-package br.usp.poli.lta.nlpdep.execute.NLP;
+package br.usp.poli.lta.nlpdep.execute.NLP.output;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -82,14 +82,13 @@ public class NLPOutputList {
 
     public synchronized boolean insertOutputResult (long threadId, String partialResult) {
         if (this.outputResults.containsKey(threadId)) {
-            // Filtrar colchetes
-            //if (partialResult.equals("]")) {
-            //}
-            logger.debug(" ### Insert output: ThreadId {} # Before: {} # String add: {}", threadId,
-                    outputResults.get(threadId).getOutputList(), partialResult);
+            //logger.debug(" ### Insert output: ThreadId {} # Before: {} # String add: {}", threadId,
+            //        outputResults.get(threadId).getOutputList(), partialResult);
+            logger.debug(" ### Insert output: ThreadId {} # String to add: {}", threadId, partialResult);
             this.outputResults.get(threadId).getOutputList().addLast(partialResult);
-            logger.debug(" ### Insert output: ThreadId {} # Ater: {}", threadId,
-                    outputResults.get(threadId).getOutputList());
+            //logger.debug(" ### Insert output: ThreadId {} # Ater: {}", threadId,
+            //        outputResults.get(threadId).getOutputList());
+
             return true;
         }
         else { return false; }

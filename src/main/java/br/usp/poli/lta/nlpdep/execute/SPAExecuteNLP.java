@@ -1,6 +1,8 @@
 package br.usp.poli.lta.nlpdep.execute;
 
 import br.usp.poli.lta.nlpdep.execute.NLP.*;
+import br.usp.poli.lta.nlpdep.execute.NLP.dependency.DepStackList;
+import br.usp.poli.lta.nlpdep.execute.NLP.output.NLPOutputList;
 import br.usp.poli.lta.nlpdep.mwirth2ape.ape.*;
 import br.usp.poli.lta.nlpdep.mwirth2ape.ape.conversion.Sketch;
 import br.usp.poli.lta.nlpdep.mwirth2ape.model.Token;
@@ -18,6 +20,7 @@ public class SPAExecuteNLP extends SPAExecute {
     private NLPLexer nlpLexer;
     private NLPOutputList nlpOutputList;
     private NLPTransducerStackList nlpTransducerStackList;
+    private DepStackList depStackList;
     private NLPAction nlpAction;
 
 
@@ -33,7 +36,8 @@ public class SPAExecuteNLP extends SPAExecute {
         this.outputList = new LinkedList<>();
         this.nlpOutputList = new NLPOutputList();
         this.nlpTransducerStackList = new NLPTransducerStackList();
-        this.nlpAction = new NLPAction(this.nlpOutputList, dictionaryTerm, this.nlpTransducerStackList);
+        this.depStackList = new DepStackList();
+        this.nlpAction = new NLPAction(this.nlpOutputList, dictionaryTerm, this.nlpTransducerStackList, this.depStackList);
     }
 
     public void parseInput() throws Exception {
@@ -43,7 +47,7 @@ public class SPAExecuteNLP extends SPAExecute {
         //this.nlpOutputList.incrementOutputList(Thread.currentThread().getId());
         //this.nlpOutputList.setParseResult(Thread.currentThread().getId(),true);
         StructuredPushdownAutomatonNLP spa = new StructuredPushdownAutomatonNLP(this.nlpLexer,
-                this.nlpOutputList, this.nlpTransducerStackList, this.nlpAction);
+                this.nlpOutputList, this.nlpTransducerStackList, this.nlpAction, this.depStackList);
         //Runnable spa = new StructuredPushdownAutomatonNLP(threadIdCounter, this.nlpLexer, this.outputResults);
 
         spa.setSubmachine(this.lmwg.getMain());  // set main machine
@@ -61,7 +65,7 @@ public class SPAExecuteNLP extends SPAExecute {
 
         // Executar automato
         NLPSpaThread NLPSpaThread = new NLPSpaThread(spa, this.nlpOutputList,
-                this.nlpTransducerStackList, -1);
+                this.nlpTransducerStackList, this.depStackList,-1);
         Thread thread = new Thread(NLPSpaThread);
 
         logger.debug("Started parsing.");

@@ -41,9 +41,10 @@ public class DepPatternList {
             depPatternBr = new BufferedReader(new FileReader(inputNLPDependencyPatternsFileName));
             depPatternList = depPatternGson.fromJson(depPatternBr, DepPatternList.class);
             if (depPatternList != null) {
-                for (DepPattern singleDepPattern : depPatternList.getDepPatterns()) {
+                logger.debug("DepPatterns: {} loaded.", depPatternList.depPatterns.size());
+                /* for (DepPattern singleDepPattern : depPatternList.getDepPatterns()) {
                     System.out.println(singleDepPattern.toString());
-                }
+                } */
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -67,9 +68,9 @@ public class DepPatternList {
                 for (NTerm singleNterm: labelGrammar.nterms) {
                     for (Production singleProduction: singleNterm.productions) {
                         if (singleProduction.getIdentifier().equals(singleDepPattern.getValue())) {
-                            singleProduction.getDepPatternList().addDepPattern(singleDepPattern);
+                            singleProduction.getDepPatterns().add(singleDepPattern);
                             logger.debug("# depPattern added to nterm {} - list after insertion: {}",
-                                    singleProduction.getIdentifier(),singleProduction.getDepPatternList().toString());
+                                    singleProduction.getIdentifier(),singleProduction.getDepPatterns().toString());
                         }
                     }
                 }

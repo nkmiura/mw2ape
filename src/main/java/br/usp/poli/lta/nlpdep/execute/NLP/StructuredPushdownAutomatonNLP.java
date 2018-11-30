@@ -19,6 +19,10 @@
 **/
 package br.usp.poli.lta.nlpdep.execute.NLP;
 
+import br.usp.poli.lta.nlpdep.execute.NLP.dependency.DepStackElement;
+import br.usp.poli.lta.nlpdep.execute.NLP.dependency.DepStackList;
+import br.usp.poli.lta.nlpdep.execute.NLP.output.NLPOutputList;
+import br.usp.poli.lta.nlpdep.execute.NLP.output.NLPOutputResult;
 import br.usp.poli.lta.nlpdep.mwirth2ape.ape.*;
 import br.usp.poli.lta.nlpdep.mwirth2ape.model.Token;
 import br.usp.poli.lta.nlpdep.mwirth2ape.structure.Stack;
@@ -49,18 +53,22 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
     private List<Transition> query;
     private NLPTransducerStackList nlpTransducerStackList;
     private NLPOutputResult tempNLPOutputResult;
-    private NLPOutputResult NLPOutputResult;
+    //private NLPOutputResult NLPOutputResult;
     private Stack<String> tempNLPTransducerStack;
-    private int maxStackDepth = 100;
+    private int maxStackDepth = 50;
     // Stack com estado retorno e transicao associada
     //private Stack<NLPSPAStackElement> nlpStack; // declarado em StructuredPushdownAutomaton2
+    private Stack<DepStackElement> depStack;
+    private Stack<DepStackElement> tempDepStack;
+    private DepStackList depStackList;
 
     public StructuredPushdownAutomatonNLP (NLPLexer lexer, NLPOutputList nlpOutputList,
                                            NLPTransducerStackList nlpTransducerStackList,
-                                           NLPAction nlpAction) {
+                                           NLPAction nlpAction, DepStackList depStackList) {
         this.lexer = lexer;
         this.nlpOutputList = nlpOutputList;
         this.nlpTransducerStackList = nlpTransducerStackList;
+        this.depStackList = depStackList;
     }
 
     public StructuredPushdownAutomatonNLP (StructuredPushdownAutomatonNLP originalSPA, Transition transition)
@@ -76,7 +84,7 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
         this.machines = originalSPA.machines.clone(); // 2018.10.09
         this.submachines = originalSPA.submachines;
         this.submachine = originalSPA.submachine;
-        this.nlpTransducerStackList = originalSPA.nlpTransducerStackList;
+        //this.nlpTransducerStackList = originalSPA.nlpTransducerStackList;
         this.transducerStack =  originalSPA.transducerStack.clone(); // 2018.11.11
         this.nlpOutputList = originalSPA.nlpOutputList;
         this.query = new ArrayList<>();
@@ -85,16 +93,20 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
         this.tempNLPOutputResult.setOutputList(nlpOutputList.getOutputResult(Thread.currentThread().getId())); // 2018.11.11
         //this.tempNLPTransducerStack = originalSPA.nlpTransducerStackList.getTransducerStackList(Thread.currentThread().getId()).clone();
         this.tempNLPTransducerStack = nlpTransducerStackList.getTransducerStackList(Thread.currentThread().getId()); // 2018.11.11
-
+        // Dependencies 2018.11.28
+        this.depStack = originalSPA.depStack.clone();
+        this.tempDepStack = depStackList.getDepStackList(Thread.currentThread().getId());
     }
 
-    public NLPOutputResult getTempNLPOutputResult() {
+    public br.usp.poli.lta.nlpdep.execute.NLP.output.NLPOutputResult getTempNLPOutputResult() {
         return tempNLPOutputResult;
     }
 
     public Stack<String> getTempNLPTransducerStack() {
         return tempNLPTransducerStack;
     }
+
+    public Stack<DepStackElement> getTempDepStack() { return tempDepStack; }
 
     public boolean parse(boolean isClone) {
         boolean isCloneLocal = isClone;
@@ -189,7 +201,7 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
                         StructuredPushdownAutomatonNLP newSpa =
                                 new StructuredPushdownAutomatonNLP(this, query.get(i));
                         NLPSpaThread NLPSpaThread = new NLPSpaThread(newSpa, this.nlpOutputList,
-                                this.nlpTransducerStackList, Thread.currentThread().getId());
+                                this.nlpTransducerStackList, this.depStackList, Thread.currentThread().getId());
                         //try {
                             Thread newThread = new Thread(NLPSpaThread);
                             newThread.start();

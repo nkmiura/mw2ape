@@ -1,5 +1,6 @@
 package br.usp.poli.lta.nlpdep.mwirth2ape.labeling;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import br.usp.poli.lta.nlpdep.execute.NLP.dependency.DepPattern;
@@ -18,7 +19,7 @@ public class Production {
     public LinkedList<ProductionToken> expression;
     public LinkedList<ProductionToken> labels;
     public LinkedList<ProductionToken> all;
-    private DepPatternList depPatternList;
+    private ArrayList<DepPattern> depPatterns;
 
 
     public Production(int index) {
@@ -28,7 +29,7 @@ public class Production {
         this.expression = new LinkedList<>();
         this.labels = new LinkedList<>();
         this.all = new LinkedList<>();
-        this.depPatternList = new DepPatternList();
+        this.depPatterns = new ArrayList<>();
     }
 
     public void setIdentifier(String value) {
@@ -65,16 +66,16 @@ public class Production {
         this.all.add(allToken);
     }
 
-    public DepPatternList getDepPatternList() {
-        return depPatternList;
+    public ArrayList<DepPattern> getDepPatterns() {
+        return depPatterns;
     }
 
-    public void setDepPatternList(DepPatternList depPatternList) {
-        this.depPatternList = depPatternList;
+    public void setDepPatterns(ArrayList<DepPattern> depPatterns) {
+        this.depPatterns = depPatterns;
     }
 
-    public void addToDepPatternList(DepPattern depPattern) {
-        this.depPatternList.addDepPattern(depPattern);
+    public void addToDepPatterns(DepPattern depPattern) {
+        this.depPatterns.add(depPattern);
     }
 
 

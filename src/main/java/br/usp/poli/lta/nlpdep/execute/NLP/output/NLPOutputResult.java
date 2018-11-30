@@ -1,9 +1,10 @@
-package br.usp.poli.lta.nlpdep.execute.NLP;
+package br.usp.poli.lta.nlpdep.execute.NLP.output;
 
 import java.util.LinkedList;
 
 public class NLPOutputResult {
     LinkedList<String> outputList;
+    NLPTree outputTree;
     Thread thread;
     Boolean parseResult;
 
@@ -11,6 +12,7 @@ public class NLPOutputResult {
         outputList = new LinkedList<>();
         parseResult = new Boolean(false);
         thread = new Thread();
+        outputTree = new NLPTree();
     }
 
     public LinkedList<String> getOutputList() {
@@ -19,6 +21,14 @@ public class NLPOutputResult {
 
     public synchronized void setOutputList(LinkedList<String> outputList) {
         this.outputList = (LinkedList) outputList.clone();
+    }
+
+    public NLPTree getOutputTree() {
+        return outputTree;
+    }
+
+    public void setOutputTree(NLPTree outputTree) {
+        this.outputTree = outputTree;
     }
 
     public Boolean getParseResult() {

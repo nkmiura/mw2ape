@@ -1,5 +1,7 @@
 package br.usp.poli.lta.nlpdep.execute.NLP;
 
+import br.usp.poli.lta.nlpdep.execute.NLP.dependency.DepStackList;
+import br.usp.poli.lta.nlpdep.execute.NLP.output.NLPOutputList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,13 +23,15 @@ public class NLPSpaThread implements Runnable {
     private NLPOutputList nlpOutputList;
     private boolean isClone;
     private NLPTransducerStackList nlpTransducerStackList;
+    private DepStackList depStackList;
 
     public NLPSpaThread(StructuredPushdownAutomatonNLP spaNLP, NLPOutputList nlpOutputList,
-                        NLPTransducerStackList nlpTransducerStackList, long parentThreadId)
+                        NLPTransducerStackList nlpTransducerStackList, DepStackList depStackList, long parentThreadId)
     {
         this.spaNLP = spaNLP;
         this.nlpOutputList = nlpOutputList;
         this.nlpTransducerStackList = nlpTransducerStackList;
+        this.depStackList = depStackList; // 2018.11.28
         if (parentThreadId >= 0) {
             this.parentThreadId = parentThreadId;
             this.isClone = true;
@@ -46,10 +50,12 @@ public class NLPSpaThread implements Runnable {
         if (this.isClone) {
             this.nlpOutputList.cloneOutputResult(this.threadId, this.spaNLP.getTempNLPOutputResult());
             this.nlpTransducerStackList.cloneTransducerStackList(this.threadId, this.spaNLP.getTempNLPTransducerStack());
+            this.depStackList.cloneDepStackList(this.threadId,this.spaNLP.getTempDepStack());
 
         } else {
             this.nlpOutputList.incrementOutputList(this.threadId, Thread.currentThread());
             this.nlpTransducerStackList.incrementTransducerStackList(this.threadId);
+            this.depStackList.incrementDepStackList(this.threadId);
         }
         logger.info("ThreadId {} ThreadName {} Thread Qty {} Thread run - iniciando reconhecimento.",
                 String.valueOf(this.threadId), this.threadName, this.nlpOutputList.getSize());
