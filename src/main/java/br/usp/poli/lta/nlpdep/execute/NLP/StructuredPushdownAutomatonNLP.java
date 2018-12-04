@@ -69,6 +69,8 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
         this.nlpOutputList = nlpOutputList;
         this.nlpTransducerStackList = nlpTransducerStackList;
         this.depStackList = depStackList;
+        this.depStack = new Stack<>();
+        this.tempDepStack = new Stack<>();
     }
 
     public StructuredPushdownAutomatonNLP (StructuredPushdownAutomatonNLP originalSPA, Transition transition)
@@ -84,7 +86,7 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
         this.machines = originalSPA.machines.clone(); // 2018.10.09
         this.submachines = originalSPA.submachines;
         this.submachine = originalSPA.submachine;
-        //this.nlpTransducerStackList = originalSPA.nlpTransducerStackList;
+        this.nlpTransducerStackList = originalSPA.nlpTransducerStackList;
         this.transducerStack =  originalSPA.transducerStack.clone(); // 2018.11.11
         this.nlpOutputList = originalSPA.nlpOutputList;
         this.query = new ArrayList<>();
@@ -94,7 +96,8 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
         //this.tempNLPTransducerStack = originalSPA.nlpTransducerStackList.getTransducerStackList(Thread.currentThread().getId()).clone();
         this.tempNLPTransducerStack = nlpTransducerStackList.getTransducerStackList(Thread.currentThread().getId()); // 2018.11.11
         // Dependencies 2018.11.28
-        this.depStack = originalSPA.depStack.clone();
+        this.depStackList = originalSPA.depStackList;
+        //this.depStack = originalSPA.depStack.clone();
         this.tempDepStack = depStackList.getDepStackList(Thread.currentThread().getId());
     }
 
@@ -392,7 +395,7 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
         // Inserir print de resultado positivo aqui.
         //logger.info("\n###################################################################");
         logger.info("\n#! ThreadId {} ThreadName {} Output Plain: \n{}\n",threadID,threadName,sbPlain);
-        System.out.println("\n#! ThreadId "+threadID+" Output Plain: "+sbPlain+"\n");
+        System.out.println("\n#! ThreadName "+threadName+" Output Plain: "+sbPlain+"\n");
         //logger.info("###################################################################\n");
 
         for (String currentString: outputList) {
@@ -441,7 +444,7 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
 
         //logger.info("###################################################################");
         logger.info("\n#! ThreadId {} ThreadName {} Output JSON : \n{}\n",threadID,threadName,sbJson);
-        System.out.println("\n#! ThreadId "+threadID+" Output JSON: "+sbJson+"\n");
+        System.out.println("\n#! threadName "+threadName+" Output JSON: "+sbJson+"\n");
         //logger.info("###################################################################");
 
 
@@ -451,7 +454,7 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
 
         //logger.info("###################################################################");
         logger.info("\n#! ThreadId {} ThreadName {} Output Latex: \n{}\n",threadID,threadName,sbLatex);
-        System.out.println("\n#! ThreadId "+threadID+" Output Latex: "+sbLatex+"\n");
+        System.out.println("\n#! threadName "+threadName+" Output Latex: "+sbLatex+"\n");
         //logger.info("###################################################################");
     }
 

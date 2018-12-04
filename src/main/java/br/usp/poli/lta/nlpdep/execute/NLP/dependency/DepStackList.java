@@ -20,8 +20,13 @@ public class DepStackList {
 
     public synchronized void incrementDepStackList(long threadID) {
         Stack <DepStackElement> newDepStack = new Stack<>();
+        //NLPOutputToken3 newRootToken = new NLPOutputToken3("root", "root");
+        //DepStackElementRoot newDepStackElementRoot = new DepStackElementRoot(newRootToken);
+        //newDepStack.push(newDepStackElementRoot);
+
         this.depStackList.put(threadID, newDepStack);
     }
+
 
     public synchronized void cloneDepStackList(long newThreadID, Stack<DepStackElement> newDepStack) {
         if (!this.depStackList.containsKey(newThreadID)) {

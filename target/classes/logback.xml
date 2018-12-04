@@ -13,7 +13,7 @@
 <appender name="FILE" class="ch.qos.logback.core.FileAppender">
     <file>/tmp/${bySecond}-nlp.log</file>
       <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-      <pattern>%msg%n</pattern>
+      <pattern>%t %msg %n</pattern>
     </encoder>
   </appender>
 

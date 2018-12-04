@@ -1,7 +1,7 @@
 package br.usp.poli.lta.nlpdep.execute.NLP;
 
 import br.usp.poli.lta.nlpdep.execute.NLP.dependency.*;
-import br.usp.poli.lta.nlpdep.execute.NLP.output.NLPOutputList;
+import br.usp.poli.lta.nlpdep.execute.NLP.output.*;
 import br.usp.poli.lta.nlpdep.mwirth2ape.ape.ActionLabels;
 import br.usp.poli.lta.nlpdep.mwirth2ape.structure.Stack;
 import br.usp.poli.lta.nlpdep.mwirth2ape.ape.Action;
@@ -45,12 +45,13 @@ public class NLPAction {
                 if (token.getType().equals("term")) {
                     nlpOutputList.insertOutputResult(threadId, "\"" + token.getValue() + "\"");
                     //outputList.addLast("\"" + token.getValue() + "\"");
-                    logger.debug("ThreadID {}: Ação semântica: Terminal consumido: POS tag {}, value \"{}\".",
+                    logger.debug("ThreadID {}Ação semântica: Terminal consumido: POS tag {}, value \"{}\".",
                             String.valueOf(threadId),
                             token.getNlpToken().getNlpWords().get(0).getPosTag(), token.getValue());
                     DepStackElementWord newDepStackElementWord = new DepStackElementWord (token.getValue());
                     newDepStackElementWord.setNlpDictionaryEntry(token.getNlpToken().getNlpWords().get(0).getNlpDictionaryEntry());
-                    logger.debug("### DepStack Push: {}", newDepStackElementWord);
+                    newDepStackElementWord.setIdSentence(token.getNlpToken().getNlpWords().get(0).getSentenceID());
+                    logger.debug("### DepStack Push: {}",  newDepStackElementWord);
                     depStackList.getDepStackList(threadId).push(newDepStackElementWord);
                 }
             }
@@ -100,7 +101,7 @@ public class NLPAction {
                 //transducerStack = nlpTransducerStackList.getTransducerStackList(threadId); // 2018.11.09
 
                 // logger.debug("ThreadID {}: Ação semântica: Labels", String.valueOf(threadId)); // 2018.11.11
-                logger.debug(" ###ThreadID {} # Ação semântica labels: {} # Stack before: {}", String.valueOf(threadId),
+                logger.debug(" #### Ação semântica labels: {} # Stack before: {}", String.valueOf(threadId),
                         labels.toString(), transducerStack.toString());
 
                 if (labels != null) {
@@ -109,15 +110,26 @@ public class NLPAction {
                         if (singleLabelElement != null) { // verifica se não retornou elemento de rotulo nulo
                             String labelSymbol = singleLabelElement.getValue();
                             Production labelProduction = singleLabelElement.getProduction();
+                            logger.debug("### DepStack before: {}", depStack);
                             if (labelProduction == null) {
-                                if (labelSymbol.equals("ε")) {
+                                if (labelSymbol.equals("ε")) { // vazio
                                     nlpOutputList.insertOutputResult(threadId, "(ε)"); // plain
                                     DepStackElementEmpty newDepStackElement = new DepStackElementEmpty();
-                                    logger.debug("### DepStack Push: {}", newDepStackElement);
+                                    logger.debug("### DepStack Push: {}",  newDepStackElement);
                                     depStack.push(newDepStackElement);
-                                } else if (dictionaryTerm.contains(String.valueOf(labelSymbol))) {
+                                } else if (dictionaryTerm.contains(String.valueOf(labelSymbol))) { // term
                                     nlpOutputList.insertOutputResult(threadId, "(" + labelSymbol + ")"); // plain
                                     DepStackElementTerm newDepStackElementTerm = new DepStackElementTerm(labelSymbol);
+                                    DepStackElement newDepStackElementWord = (DepStackElementWord) depStack.pop();
+                                    if (newDepStackElementWord.getClass() != DepStackElementWord.class) {
+                                        logger.info("### DepStack Error: word not found in the top of stack when processing term {}.", newDepStackElementTerm);
+                                        throw new IllegalStateException ("### DepStack Error: word not found in the top of stack when processing term " + newDepStackElementTerm.toString());
+                                    }
+                                    NLPOutputToken nlpOutputTokenTerm = new NLPOutputToken(labelSymbol, "term");
+                                    nlpOutputTokenTerm.setNlpDictionaryEntry(((DepStackElementWord)newDepStackElementWord).getNlpDictionaryEntry());
+                                    nlpOutputTokenTerm.setIdSentence(((DepStackElementWord)newDepStackElementWord).getIdSentence());
+                                    Node<NLPOutputToken> node = new Node<>(nlpOutputTokenTerm);
+                                    newDepStackElementTerm.setNode(node);
                                     logger.debug("### DepStack Push: {}", newDepStackElementTerm);
                                     depStack.push(newDepStackElementTerm);
                                 } else if (labelSymbol.equals("[")) {
@@ -125,7 +137,7 @@ public class NLPAction {
                                     transducerStack.push(stackElement);
                                     nlpOutputList.insertOutputResult(threadId, "[(");
                                     DepStackElement newDepStackElement = new DepStackElement("]","]");
-                                    logger.debug("### DepStack Push: {}", newDepStackElement);
+                                    logger.debug("### DepStack Push: {}",  newDepStackElement);
                                     depStack.push(newDepStackElement);
                                 } else if (labelSymbol.equals("]")) {
                                     StringBuilder sb = new StringBuilder();
@@ -148,22 +160,16 @@ public class NLPAction {
                                     for (String tempString : poppedTransducerStackElements) {
                                         if (tempString.matches(".*\\)\\]")) {
                                             String tempNtermIdentifier = tempString.substring(0,tempString.length()-2);
-                                            logger.debug(" ### Dep parsing: encontrei {} na saída.", tempNtermIdentifier);
+                                            logger.debug(" ### Dep parsing: encontrei {} na saída.",  tempNtermIdentifier);
                                             depParsingNterm(threadId, depStack, labelProduction); // revisar
                                         } else {
-                                            logger.debug(" ### Erro Dep parsing: encontrei {} na saída.",tempString);
+                                            logger.debug(" ### Erro Dep parsing: encontrei {} na saída.", tempString);
                                         }
                                     }
-//                                    DepStackElement newDepStackElement = depStack.pop();
-//                                    if (! newDepStackElement.getType().equals("]")) {
-//                                        logger.debug(" ###ThreadID {} # Erro no processamento de dependências - stack: {} no lugar de ]",
-//                                                threadId, newDepStackElement.getType());
-//                                    }
                                 }
                             } else {
                                 if (labelProduction.getRecursion().equals("right")) {
                                     nlpOutputList.insertOutputResult(threadId, labelProduction.getIdentifier() + ")");
-                                    //outputList.addLast(labelProduction.getIdentifier() + ")");
                                     // Caso Xi) na saída
 
                                     depParsingNterm(threadId, depStack, labelProduction);
@@ -175,7 +181,7 @@ public class NLPAction {
                                     transducerStack.push(stackElement2);
                                     nlpOutputList.insertOutputResult(threadId, "[("); // 2018.11.29
                                     DepStackElement newDepStackElement = new DepStackElement("]","]");
-                                    logger.debug("### DepStack Push: {}", newDepStackElement);
+                                    logger.debug("### DepStack Push: {}",  newDepStackElement);
                                     depStack.push(newDepStackElement);
                                 } else {
                                     StringBuilder sb = new StringBuilder();
@@ -193,7 +199,7 @@ public class NLPAction {
                                     for (String tempString : poppedTransducerStackElements) {
                                         if (tempString.matches(".*\\)\\]")) {
                                             String tempNtermIdentifier = tempString.substring(0,tempString.length()-2);
-                                            logger.debug(" ### Dep parsing: encontrei {} na saída.", tempNtermIdentifier);
+                                            logger.debug(" ### Dep parsing: encontrei {} na saída.",tempNtermIdentifier);
                                             depParsingNterm(threadId, depStack, labelProduction);
                                         } else {
                                             logger.debug(" ### Erro Dep parsing: encontrei {} na saída.",tempString);
@@ -202,51 +208,131 @@ public class NLPAction {
                                     sb.append(labelProduction.getIdentifier()).append(")");
                                     nlpOutputList.insertOutputResult(threadId, sb.toString());
                                     depParsingNterm(threadId, depStack, labelProduction);
-
-                                    //outputList.addLast(sb.toString());
                                 }
                             }
+                            logger.debug("### DepStack after: {}", depStack);
                         }
                     }
 
                 }
                 else {
-                    logger.debug("Sem labels.");
+                    logger.debug("Sem labels.",threadId);
                 }
-                logger.debug(" ###ThreadID {} # Ação semântica labels: {} # Stack after: {}", String.valueOf(threadId),
+                logger.debug(" ### # Ação semântica labels: {} # Stack after: {}", String.valueOf(threadId),
                         labels.toString(), transducerStack.toString());
             }
         };
     }
 
+
+    // Processa não terminal após obtenção do elemento da pilha para parsing de dependencias
     private Boolean depParsingNterm(long threadID, Stack<DepStackElement> depStack, Production labelProduction ) {
         //Boolean result = false;
-        ArrayList<DepStackElement> poppedDepStackElements = new ArrayList<>();
+        // monta lista com com os elementos obtidos da pilha
+        LinkedList<DepStackElement> poppedDepStackElements = new LinkedList<>();
         while (!depStack.isEmpty()) {
             if (!depStack.top().getType().equals("]")) {
                 DepStackElement tempDepStackElement = depStack.pop();
-                logger.debug(" ### Nterm Analysis DepStack Popped: {}", tempDepStackElement);
-                poppedDepStackElements.add(tempDepStackElement);
+                logger.debug(" ### Nterm Analysis DepStack Popped: {}",  tempDepStackElement);
+                poppedDepStackElements.push(tempDepStackElement);
             } else {
                 DepStackElement tempDepStackElement = depStack.pop();
-                logger.debug(" ### Nterm Analysis DepStack Popped: {}", tempDepStackElement);
-                poppedDepStackElements.add(tempDepStackElement);
+                logger.debug(" ### Nterm Analysis DepStack Popped: {}",  tempDepStackElement);
+                //poppedDepStackElements.add(tempDepStackElement);
                 break;
             }
         }
         if (poppedDepStackElements.isEmpty()) {
             return false;
         }
+        logger.debug(" ### DepStackElements Popped ({}) {}",poppedDepStackElements.size(), poppedDepStackElements);
 
-        logger.debug("#### Dep Parsing finished Nterm: {}", labelProduction.getIdentifier());
-        if (depStack.isEmpty()) {
-            logger.debug("#### Finished Dep Parsing.");
-        } else {
-            DepStackElementNterm newDepStackElementNterm = new DepStackElementNterm(labelProduction.getIdentifier());
-            logger.debug("### Nterm Analysis DepStack Push: {}", newDepStackElementNterm);
-            depStack.push(newDepStackElementNterm);
+        // Carrega em depPatternArrayList os padrões de dependência que correspondem à sequência que estava na pilha
+        ArrayList<DepPattern> depPatternArrayList = getDepPatterns(labelProduction, poppedDepStackElements, true);  // parâmetro strict para considerar a instancia da regra de produção de um não terminal
+        if (depPatternArrayList.size() == 0) {
+            logger.debug("##### Dep Parsing did not found any DepPatterns");
+            return false;
         }
+        logger.debug("##### Dep Parsing found DepPatterns: {}", depPatternArrayList);
+
+        /*
+        if (depPatternArrayList.size() == 1) {  // somente 1 padrão encontrado
+            // processa os filhos recuperados da pilha de acordo com o tipo.
+            for (Integer i = 0; i < poppedDepStackElements.size(); i++) {
+                NLPOutputDepConstituent nlpOutputDepConstituent = new NLPOutputDepConstituent();
+                nlpOutputDepConstituent.copyDepPatternConstituent(depPatternArrayList.get(0).getDepPatternConstituents().get(i));
+            }
+        } else { // mais de 1 padrão encontrado
+
+        }  */
+
+        NLPOutputToken newNlpOutputTokenNterm = new NLPOutputToken(labelProduction.getIdentifier(), "nterm");  // nova estrutura de dados associados a nterm
+        newNlpOutputTokenNterm.setDepPatternArrayList(depPatternArrayList); // associa a lista de padroes de dependencia encontrados
+
+        logger.debug("#### Dep Parsing finished Nterm: {}",  labelProduction.getIdentifier());
+
+        if (depStack.isEmpty()) {
+            logger.debug("#### Finished Dep Parsing. root Nterm will be pushed.");
+        }
+
+        // Atribui o nó ao novo elemento de pilha do tipo nterm e empilha
+        DepStackElementNterm newDepStackElementNterm = new DepStackElementNterm(labelProduction.getIdentifier());
+        Node<NLPOutputToken> newNlpOutputTokenNtermNode = new Node<NLPOutputToken>(newNlpOutputTokenNterm);
+        newDepStackElementNterm.setNode(newNlpOutputTokenNtermNode);
+        // adiciona os elementos como nós filhos.
+
+        for (DepStackElement tempDepStackElement: poppedDepStackElements) {
+            if (tempDepStackElement.getClass() == DepStackElementTerm.class) {
+                newNlpOutputTokenNtermNode.addChild(((DepStackElementTerm)tempDepStackElement).getNode());
+            } else if (tempDepStackElement.getClass() == DepStackElementNterm.class) {
+                newNlpOutputTokenNtermNode.addChild(((DepStackElementNterm)tempDepStackElement).getNode());
+            }
+        }
+        logger.debug("### Nterm Analysis DepStack Push: {}",  newDepStackElementNterm);
+        depStack.push(newDepStackElementNterm);
         return true;
+    }
+
+
+
+    // Faz busca de padrões de dependências que coincidam com a sequência de nós filhos de um não terminal
+    private ArrayList<DepPattern> getDepPatterns (Production labelProduction, LinkedList<DepStackElement> depStackElementList, Boolean strict) {
+        ArrayList<DepPattern> depPatternArrayList =  new ArrayList<>();
+
+        for (DepPattern depPattern: labelProduction.getDepPatterns() ) {
+            if (depPattern.getDepPatternConstituents().size() == depStackElementList.size()) {
+                //Integer i = depStackElementArrayList.size() - 1;
+                Boolean match = true;
+                for (Integer i = 0; i < depStackElementList.size(); i++) {
+                    if (strict) {
+                        if (!depStackElementList.get(i).getValue().equals(depStackElementList.get(i).getValue())) {
+                            match = false;
+                            break;
+                        }
+                    } else {
+                        String depPatternConstituentValue = depStackElementList.get(i).getValue();
+                        Integer depPatternlastIdx = depStackElementList.get(i).getValue().lastIndexOf('_');
+                        if (depPatternlastIdx > 0) {
+                            depPatternConstituentValue = depStackElementList.get(i).getValue().substring(0,depPatternlastIdx);
+                        }
+                        String depStackElement = depStackElementList.get(i).getValue();
+                        Integer depStackElementIdx = depStackElementList.get(i).getValue().lastIndexOf('_');
+                        if (depStackElementIdx > 0) {
+                            depStackElement = depStackElementList.get(i).getValue().substring(0,depStackElementIdx);
+                        }
+                        if (!depPatternConstituentValue.equals(depStackElement)) {
+                            match = false;
+                            break;
+                        }
+                    }
+                }
+                if (match) {
+                    depPatternArrayList.add(depPattern);
+                }
+            }
+        }
+
+        return depPatternArrayList;
     }
 
     private Boolean depParsingStep (long threadID, Stack<DepStackElement> depStack, Production labelProduction) {

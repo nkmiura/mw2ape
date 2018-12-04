@@ -1,6 +1,7 @@
 package br.usp.poli.lta.nlpdep.execute.NLP.dependency;
 
 public class DepStackElement {
+
     protected String value;
     protected String type;
 

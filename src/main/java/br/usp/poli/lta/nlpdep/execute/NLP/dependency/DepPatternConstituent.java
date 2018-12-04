@@ -1,5 +1,6 @@
 package br.usp.poli.lta.nlpdep.execute.NLP.dependency;
 // http://www.jsonschema2pojo.org/
+import java.util.ArrayList;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -23,10 +24,10 @@ public class DepPatternConstituent {
     private String depRel;
     @SerializedName("leftDeps")
     @Expose
-    private List<String> leftDeps = null;
+    private List<String> leftDeps = new ArrayList<>();
     @SerializedName("rightDeps")
     @Expose
-    private List<String> rightDeps = null;
+    private List<String> rightDeps = new ArrayList<>();
 
     public Integer getId() {
         return id;
@@ -83,6 +84,8 @@ public class DepPatternConstituent {
     public void setRightDeps(List<String> rightDeps) {
         this.rightDeps = rightDeps;
     }
+
+
 
 
     @Override

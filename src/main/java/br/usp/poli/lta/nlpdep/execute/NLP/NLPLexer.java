@@ -15,6 +15,7 @@ public class NLPLexer extends Lexer {
 
     int state;
     NLPDictionary nlpDictionary;
+    Integer wordCounter = 1;
     private Set<String> termDictionary;
 
     public NLPLexer(String input, NLPDictionary nlpDictionary, Set<String> termDictionary)
@@ -39,6 +40,7 @@ public class NLPLexer extends Lexer {
         newLexer.state = nlpLexer.state;
         newLexer.cursor = nlpLexer.cursor;
         newLexer.buffer = nlpLexer.buffer.clone();
+        newLexer.wordCounter = nlpLexer.wordCounter;
         return newLexer;
     }
 
@@ -88,7 +90,8 @@ public class NLPLexer extends Lexer {
             newToken.setValue(value);
             // Pontuacao
             if (type.equals("punct")) {
-                NLPWord nlpWord = new NLPWord(type, value);
+                NLPWord nlpWord = new NLPWord(type, value, wordCounter);
+                wordCounter++;
                 ArrayList<String> newDictionaryEntry = new ArrayList<>();
                 newDictionaryEntry.add(value);
                 newDictionaryEntry.add("punct");
@@ -108,9 +111,10 @@ public class NLPLexer extends Lexer {
                     NLPToken nlpToken = new NLPToken();
                     for (NLPDictionaryEntry dictionaryEntry: nlpDictionaryEntries) {
                         NLPWord nlpWord = new NLPWord(dictionaryEntry.getPosTag(),
-                                value, dictionaryEntry);
+                                value, dictionaryEntry, wordCounter);
                         nlpToken.addNlpWord(nlpWord);
                     }
+                    wordCounter++;
                     newToken.setNlpToken(nlpToken);
                     newToken.setType("term");
                 }

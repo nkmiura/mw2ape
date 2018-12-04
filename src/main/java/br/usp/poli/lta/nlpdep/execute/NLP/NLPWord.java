@@ -3,6 +3,7 @@ package br.usp.poli.lta.nlpdep.execute.NLP;
 public class NLPWord {
     String posTag;
     String value;
+    Integer sentenceID = 0; // valor que indica que não foi inicializado
     NLPDictionaryEntry nlpDictionaryEntry;
 
     public NLPWord() {
@@ -11,15 +12,16 @@ public class NLPWord {
         this.value = "";
     }
 
-    public NLPWord(String posTag, String value) {
+    public NLPWord(String posTag, String value, Integer sentenceID) {
         this.posTag = posTag;
         this.value = value;
-
+        this.sentenceID = sentenceID;
     }
 
-    public NLPWord(String posTag, String value, NLPDictionaryEntry nlpDictionaryEntry) {
+    public NLPWord(String posTag, String value, NLPDictionaryEntry nlpDictionaryEntry, Integer sentenceID) {
         this.posTag = posTag;
         this.value = value;
+        this.sentenceID = sentenceID;
         this.nlpDictionaryEntry = nlpDictionaryEntry;
     }
 
@@ -45,5 +47,19 @@ public class NLPWord {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public Integer getSentenceID() { return sentenceID; }
+
+    public void setSentenceID(Integer sentenceID) { this.sentenceID = sentenceID; }
+
+    @Override
+    public String toString() {
+        return "NLPWord{" +
+                "sentenceID=" + sentenceID +
+                ", posTag='" + posTag + '\'' +
+                ", value='" + value + '\'' +
+                ", nlpDictionaryEntry=" + nlpDictionaryEntry +
+                '}';
     }
 }

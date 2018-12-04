@@ -26,4 +26,14 @@ public class DepStackElementWord extends DepStackElement {
     public void setNlpDictionaryEntry(NLPDictionaryEntry nlpDictionaryEntry) {
         this.nlpDictionaryEntry = nlpDictionaryEntry;
     }
+
+    @Override
+    public String toString() {
+        return "DepStackElementWord{" +
+                " value='" + value + '\'' +
+                ", type='" + type + '\'' +
+                ", idSentence=" + idSentence +
+                ", " + nlpDictionaryEntry +
+                '}';
+    }
 }
