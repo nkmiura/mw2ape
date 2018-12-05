@@ -19,6 +19,7 @@
 **/
 package br.usp.poli.lta.nlpdep.execute.NLP;
 
+import br.usp.poli.lta.nlpdep.execute.NLP.dependency.DepParseTree;
 import br.usp.poli.lta.nlpdep.execute.NLP.dependency.DepStackElement;
 import br.usp.poli.lta.nlpdep.execute.NLP.dependency.DepStackList;
 import br.usp.poli.lta.nlpdep.execute.NLP.output.NLPOutputList;
@@ -98,7 +99,7 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
         // Dependencies 2018.11.28
         this.depStackList = originalSPA.depStackList;
         //this.depStack = originalSPA.depStack.clone();
-        this.tempDepStack = depStackList.getDepStackList(Thread.currentThread().getId());
+        this.tempDepStack = depStackList.getDepStackFromThreadID(Thread.currentThread().getId());
     }
 
     public br.usp.poli.lta.nlpdep.execute.NLP.output.NLPOutputResult getTempNLPOutputResult() {
@@ -110,6 +111,10 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
     }
 
     public Stack<DepStackElement> getTempDepStack() { return tempDepStack; }
+
+    public DepStackList getDepStackList() {
+        return depStackList;
+    }
 
     public boolean parse(boolean isClone) {
         boolean isCloneLocal = isClone;
@@ -210,7 +215,7 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
                             newThread.start();
                         //}
                         //catch (Exception e) {
-                        //    logger.debug("Error in thread run. " + e.getMessage());
+                        //    logger.debug("Error in thread preorderParse. " + e.getMessage());
                         //    break;
                         //}
                         //}
@@ -350,13 +355,20 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
                 top = operations.get(submachine).execute(state, top);
                 tree.push(top);
             }
-            logger.info("ThreadId {} Resultado do reconhecimento: cadeia {}", Thread.currentThread().getId(), (result ? "aceita" : "rejeitada"));
+            logger.info("Resultado do reconhecimento: cadeia {}", (result ? "aceita" : "rejeitada"));
 
-            printNLPOutput (this.nlpOutputList.getOutputResult(Thread.currentThread().getId()), Thread.currentThread().getId(), Thread.currentThread().getName());
+            if (result) {
+                printNLPOutput(this.nlpOutputList.getOutputResult(Thread.currentThread().getId()), Thread.currentThread().getId(), Thread.currentThread().getName());
+
+                DepParseTree depParseTree = new DepParseTree(this);
+                boolean depResult = depParseTree.parsePreorderFromLeaf();
+                logger.info("Resultado do parsing de dependências: {}", (depResult ? "OK" : "NOK"));
+
+            }
             return result;
         } else {
-            logger.info("ThreadId {} A pilha não está vazia e o estado corrente não "
-                    + "é de aceitação. A cadeia não é válida.", Thread.currentThread().getId());
+            logger.info("A pilha não está vazia e o estado corrente não "
+                    + "é de aceitação. A cadeia não é válida.");
             return false;
         }
     }

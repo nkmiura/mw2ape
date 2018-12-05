@@ -45,7 +45,7 @@ public class NLPSpaThread implements Runnable {
         this.threadId = Thread.currentThread().getId();
         this.threadName = Thread.currentThread().getName();
 
-        logger.debug("Thread run: thread id: " + String.valueOf(this.threadId) +
+        logger.debug("Thread preorderParse: thread id: " + String.valueOf(this.threadId) +
                 " - name: " + this.threadName + " - clone: " + String.valueOf(isClone));
         if (this.isClone) {
             this.nlpOutputList.cloneOutputResult(this.threadId, this.spaNLP.getTempNLPOutputResult());
@@ -56,11 +56,11 @@ public class NLPSpaThread implements Runnable {
             this.nlpTransducerStackList.incrementTransducerStackList(this.threadId);
             this.depStackList.incrementDepStackList(this.threadId);
         }
-        logger.info("ThreadId {} ThreadName {} Thread Qty {} Thread run - iniciando reconhecimento.",
+        logger.info("ThreadId {} ThreadName {} Thread Qty {} Thread preorderParse - iniciando reconhecimento.",
                 String.valueOf(this.threadId), this.threadName, this.nlpOutputList.getSize());
         this.nlpOutputList.setParseResult(this.threadId,this.spaNLP.parse(this.isClone));
 
-        logger.info("ThreadId {} ThreadName {} Thread Qty {} Thread run - finalizando reconhecimento - resultado {} ", String.valueOf(this.threadId),
+        logger.info("ThreadId {} ThreadName {} Thread Qty {} Thread preorderParse - finalizando reconhecimento - resultado {} ", String.valueOf(this.threadId),
                 this.threadName, this.nlpOutputList.getSize(), String.valueOf(this.nlpOutputList.getParseResult(this.threadId)));
     }
 }

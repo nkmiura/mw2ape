@@ -14,7 +14,7 @@ public class DepStackList {
         this.depStackList = new HashMap<>();
     }
 
-    public Stack<DepStackElement> getDepStackList(Long threadID) {
+    public Stack<DepStackElement> getDepStackFromThreadID(Long threadID) {
         return depStackList.get(threadID);
     }
 

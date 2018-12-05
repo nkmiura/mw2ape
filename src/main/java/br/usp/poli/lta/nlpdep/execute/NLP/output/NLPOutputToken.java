@@ -13,6 +13,7 @@ public class NLPOutputToken {
     private String type;
     // propriedades term
     private Integer idSentence;
+    private String nlpWord;
     private NLPDictionaryEntry nlpDictionaryEntry;
     // propriedades nterm
     private Integer mainConstituent;
@@ -56,6 +57,14 @@ public class NLPOutputToken {
         this.idSentence = idSentence;
     }
 
+    public String getNlpWord() {
+        return nlpWord;
+    }
+
+    public void setNlpWord(String nlpWord) {
+        this.nlpWord = nlpWord;
+    }
+
     public NLPDictionaryEntry getNlpDictionaryEntry() {
         return nlpDictionaryEntry;
     }
@@ -86,6 +95,14 @@ public class NLPOutputToken {
 
     public void setHead(Integer head) {
         this.head = head;
+    }
+
+    public String getDepRel() {
+        return depRel;
+    }
+
+    public void setDepRel(String depRel) {
+        this.depRel = depRel;
     }
 
     public ArrayList<DepPattern> getDepPatternArrayList() {

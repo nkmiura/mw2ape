@@ -4,7 +4,7 @@ import java.util.List;
 /**
  *
  * @author w w w. j a v a g i s t s . c o m
- *
+ * https://www.javagists.com/java-tree-data-structure
  */
 public class NLPTreeNode<T> {
 

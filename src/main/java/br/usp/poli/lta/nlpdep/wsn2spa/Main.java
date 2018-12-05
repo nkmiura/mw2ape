@@ -103,7 +103,7 @@ public class Main {
 
         if (!Utils.required(line, "o", "y") || line.getArgs().length != 1) {
             throw new Exception("Note that 'o' and 'y' flags are required"
-                    + " to run this tool, as they generate DOT and YAML"
+                    + " to preorderParse this tool, as they generate DOT and YAML"
                     + " files, respectively. Also, do not forget to include"
                     + " the replacement pattern '%s' in order to generate"
                     + " files corresponding to each submachine in the"
