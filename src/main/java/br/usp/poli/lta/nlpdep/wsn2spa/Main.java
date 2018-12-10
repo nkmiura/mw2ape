@@ -198,10 +198,12 @@ public class Main {
                             if (line.hasOption("d")) {
                                 if (!line.getOptionValue("d").isEmpty()) {
                                     inputNLPDictionaryFileName = line.getOptionValue("d");
+                                    System.out.println("Diretório de trabalho: " + System.getProperty("user.dir"));
                                     System.out.println("Processamento de entrada NLP: arquivo " +  inputFile.getName());
                                     System.out.println("Gramática NLP: arquivo " +  file.getName());
                                     System.out.println("Dicionário NLP: arquivo " + inputNLPDictionaryFileName);
                                     logger.info("#####################################################################################################");
+                                    logger.info("# Diretório de trabalho: " + System.getProperty("user.dir"));
                                     logger.info("# Processamento de entrada NLP: arquivo " +  inputFile.getName());
                                     logger.info("# Gramática NLP: arquivo " +  file.getName());
                                     logger.info("# Processamento de entrada NLP: arquivo " +  inputFile.getName());
@@ -211,6 +213,7 @@ public class Main {
                                         if (!line.getOptionValue("p").isEmpty()) {
                                             inputNLPDependencyPatternsFileName = line.getOptionValue("p");
                                             logger.info("# Padrões de dependências: arquivo " +  inputNLPDependencyPatternsFileName);
+                                            System.out.println("Padrões de dependências: arquivo " +  inputNLPDependencyPatternsFileName);
                                             depPatternList = depPatternList.loadDepPatternsFromJson(inputNLPDependencyPatternsFileName);
                                             if (depPatternList.getDepPatterns() != null) {
                                                 depPatternList.insertDepPatternsToNterms(labelGrammar);

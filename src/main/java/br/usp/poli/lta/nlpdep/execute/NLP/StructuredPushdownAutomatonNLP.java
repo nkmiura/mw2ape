@@ -361,8 +361,13 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
                 printNLPOutput(this.nlpOutputList.getOutputResult(Thread.currentThread().getId()), Thread.currentThread().getId(), Thread.currentThread().getName());
 
                 DepParseTree depParseTree = new DepParseTree(this);
-                boolean depResult = depParseTree.parsePreorderFromLeaf();
+                StringBuilder conlluOutput = new StringBuilder();
+                boolean depResult = depParseTree.parsePreorderFromLeaf(conlluOutput);
                 logger.info("Resultado do parsing de dependências: {}", (depResult ? "OK" : "NOK"));
+                if (depResult) {
+                    logger.info("Conllu output:\n{}",conlluOutput.toString());
+                    System.out.println("Conllu output:\n" + conlluOutput.toString());
+                }
 
             }
             return result;

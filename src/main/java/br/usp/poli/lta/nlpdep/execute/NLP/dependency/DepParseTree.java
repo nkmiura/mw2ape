@@ -19,14 +19,14 @@ public class DepParseTree {
         this.spaNLP = spaNLP;
     }
 
-    public boolean parsePreorderFromLeaf() {
+    public boolean parsePreorderFromLeaf(StringBuilder conlluOutput) {
         boolean result = false;
         long threadId = Thread.currentThread().getId();
 
         Node<NLPOutputToken> rootNode =
                 ((DepStackElementNterm)(this.spaNLP.getDepStackList().getDepStackFromThreadID(threadId).top())).getNode();
 
-        result = parsePreorder(rootNode);
+        result = parsePreorder(rootNode, conlluOutput);
 
         return result;
     }
@@ -38,7 +38,7 @@ public class DepParseTree {
         return result;
     }
 
-    final boolean parsePreorder (Node<NLPOutputToken> node) {
+    final boolean parsePreorder (Node<NLPOutputToken> node, StringBuilder conlluOutput) {
         boolean result = true;
 
         if (node.getData().getType().equals("term")) {
@@ -119,14 +119,21 @@ public class DepParseTree {
             logger.debug("DepParseTree finalizado term {} ({}) idSentence: {} head: {} depRel: {}\n",
                     currentNlpOutputToken.getValue(), currentNlpOutputToken.getNlpWord(),currentNlpOutputToken.getIdSentence(),
                     currentNlpOutputToken.getHead(), currentNlpOutputToken.getDepRel());
+            conlluOutput.append(currentNlpOutputToken.getIdSentence() + "\t" + currentNlpOutputToken.getNlpWord() + "\t" +
+                    currentNlpOutputToken.getNlpDictionaryEntry().getCanonical() + "\t" +
+                    currentNlpOutputToken.getNlpDictionaryEntry().getPosTag() + "\t" +
+                    currentNlpOutputToken.getNlpDictionaryEntry().getAttributes() + "\t" +
+                    currentNlpOutputToken.getHead() + "\t" + currentNlpOutputToken.getDepRel() + "\n");
+
         }
 
         for (Node<NLPOutputToken> currentChild: node.getChildren()) {
-            if (!parsePreorder(currentChild)) {
+            if (!parsePreorder(currentChild, conlluOutput)) {
                 result = false;
                 break;
             }
         }
+
 
         return result;
     }
