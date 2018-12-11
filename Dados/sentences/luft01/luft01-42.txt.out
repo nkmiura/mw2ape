@@ -1,0 +1,19 @@
+##################################
+#                                #
+#           mw2spa NLP           #
+#                                #
+##################################
+
+Processamento de entrada NLP: arquivo luft01-42.txt
+Gramática NLP: arquivo wirth_mod_nlp_luft_all.txt
+Dicionário NLP: arquivo /home/nkmiura/Documentos/TeseExperimentos/dict/LuftDict.yml
+Done.
+
+#! ThreadId 306 Output Plain: [([([([([("A"(artd)PrA_1)]"criança"(n)SS_9)][("voltou"(vtpred)[("gripada"(adj)SAdj_1)]SVN_1)]"."(punct)OA_6)]PS_1)]F_3)]
+
+
+#! ThreadId 306 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"A","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"criança","name":"n"}}],"name":"SS_9"}},{"nterm":{"children":[{"term":{"content":"voltou","name":"vtpred"}},{"nterm":{"children":[{"term":{"content":"gripada","name":"adj"}}],"name":"SAdj_1"}}],"name":"SVN_1"}},{"term":{"content":".","name":"punct"}}],"name":"OA_6"}}],"name":"PS_1"}}],"name":"F_3"}}
+
+
+#! ThreadId 306 Output Latex: [\nt{F_3}[\nt{PS_1}[\nt{OA_6}[\nt{SS_9}[\nt{PrA_1}[\nt{artd}[\nt{``A"}]]][\nt{n}[\nt{``criança"}]]][\nt{SVN_1}[\nt{vtpred}[\nt{``voltou"}]][\nt{SAdj_1}[\nt{adj}[\nt{``gripada"}]]]][\nt{punct}[\nt{``."}]]]]]
+

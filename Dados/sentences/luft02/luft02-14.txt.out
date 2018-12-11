@@ -1,0 +1,46 @@
+##################################
+#                                #
+#           mw2spa NLP           #
+#                                #
+##################################
+
+Processamento de entrada NLP: arquivo luft02-14.txt
+Gramática NLP: arquivo wirth_mod_nlp_luft_all.txt
+Dicionário NLP: arquivo /home/nkmiura/Documentos/TeseExperimentos/dict/LuftDict.yml
+Done.
+
+#! ThreadId 3347 Output Plain: [([([([([("O"(artd)PrA_1)]"poeta"(n)[([([("cuja"(pr)PrA_7)]"obra"(n)SS_9)][([("o"(artd)PrA_1)]"professor"(n)SS_9)]"citou"(vtd)OSAR_5)]SS_10)][("é"(vlig)[("Camões"(np)SS_7)]SN_6)]"."(punct)OP_3)]PCS_1)]F_2)]
+
+
+#! ThreadId 3347 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"O","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"poeta","name":"n"}},{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"cuja","name":"pr"}}],"name":"PrA_7"}},{"term":{"content":"obra","name":"n"}}],"name":"SS_9"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"o","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"professor","name":"n"}}],"name":"SS_9"}},{"term":{"content":"citou","name":"vtd"}}],"name":"OSAR_5"}}],"name":"SS_10"}},{"nterm":{"children":[{"term":{"content":"é","name":"vlig"}},{"nterm":{"children":[{"term":{"content":"Camões","name":"np"}}],"name":"SS_7"}}],"name":"SN_6"}},{"term":{"content":".","name":"punct"}}],"name":"OP_3"}}],"name":"PCS_1"}}],"name":"F_2"}}
+
+
+#! ThreadId 3347 Output Latex: [\nt{F_2}[\nt{PCS_1}[\nt{OP_3}[\nt{SS_10}[\nt{PrA_1}[\nt{artd}[\nt{``O"}]]][\nt{n}[\nt{``poeta"}]][\nt{OSAR_5}[\nt{SS_9}[\nt{PrA_7}[\nt{pr}[\nt{``cuja"}]]][\nt{n}[\nt{``obra"}]]][\nt{SS_9}[\nt{PrA_1}[\nt{artd}[\nt{``o"}]]][\nt{n}[\nt{``professor"}]]][\nt{vtd}[\nt{``citou"}]]]][\nt{SN_6}[\nt{vlig}[\nt{``é"}]][\nt{SS_7}[\nt{np}[\nt{``Camões"}]]]][\nt{punct}[\nt{``."}]]]]]
+
+
+#! ThreadId 4765 Output Plain: [([([([([("O"(artd)PrA_1)]"poeta"(n)[([([("cuja"(pr)PrA_7)]"obra"(n)SS_9)][([([("o"(artd)PrA_1)]"professor"(n)SS_9)]"citou"(vtd)SV_13)]OSAR_6)]SS_10)][("é"(vlig)[("Camões"(np)SS_7)]SN_6)]"."(punct)OP_3)]PCS_1)]F_2)]
+
+
+#! ThreadId 4765 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"O","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"poeta","name":"n"}},{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"cuja","name":"pr"}}],"name":"PrA_7"}},{"term":{"content":"obra","name":"n"}}],"name":"SS_9"}},{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"o","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"professor","name":"n"}}],"name":"SS_9"}},{"term":{"content":"citou","name":"vtd"}}],"name":"SV_13"}}],"name":"OSAR_6"}}],"name":"SS_10"}},{"nterm":{"children":[{"term":{"content":"é","name":"vlig"}},{"nterm":{"children":[{"term":{"content":"Camões","name":"np"}}],"name":"SS_7"}}],"name":"SN_6"}},{"term":{"content":".","name":"punct"}}],"name":"OP_3"}}],"name":"PCS_1"}}],"name":"F_2"}}
+
+
+#! ThreadId 4765 Output Latex: [\nt{F_2}[\nt{PCS_1}[\nt{OP_3}[\nt{SS_10}[\nt{PrA_1}[\nt{artd}[\nt{``O"}]]][\nt{n}[\nt{``poeta"}]][\nt{OSAR_6}[\nt{SS_9}[\nt{PrA_7}[\nt{pr}[\nt{``cuja"}]]][\nt{n}[\nt{``obra"}]]][\nt{SV_13}[\nt{SS_9}[\nt{PrA_1}[\nt{artd}[\nt{``o"}]]][\nt{n}[\nt{``professor"}]]][\nt{vtd}[\nt{``citou"}]]]]][\nt{SN_6}[\nt{vlig}[\nt{``é"}]][\nt{SS_7}[\nt{np}[\nt{``Camões"}]]]][\nt{punct}[\nt{``."}]]]]]
+
+
+#! ThreadId 5201 Output Plain: [([([([([("O"(artd)PrA_1)]"poeta"(n)[([([("cuja"(pr)PrA_7)]"obra"(n)SS_9)][([("o"(artd)PrA_1)]"professor"(n)SS_9)]"citou"(vtd)OSAR_5)]SS_10)][("é"(vlig)[("Camões"(np)SS_7)]SN_6)]"."(punct)OA_3)]PS_1)]F_3)]
+
+
+#! ThreadId 5201 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"O","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"poeta","name":"n"}},{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"cuja","name":"pr"}}],"name":"PrA_7"}},{"term":{"content":"obra","name":"n"}}],"name":"SS_9"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"o","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"professor","name":"n"}}],"name":"SS_9"}},{"term":{"content":"citou","name":"vtd"}}],"name":"OSAR_5"}}],"name":"SS_10"}},{"nterm":{"children":[{"term":{"content":"é","name":"vlig"}},{"nterm":{"children":[{"term":{"content":"Camões","name":"np"}}],"name":"SS_7"}}],"name":"SN_6"}},{"term":{"content":".","name":"punct"}}],"name":"OA_3"}}],"name":"PS_1"}}],"name":"F_3"}}
+
+
+#! ThreadId 5201 Output Latex: [\nt{F_3}[\nt{PS_1}[\nt{OA_3}[\nt{SS_10}[\nt{PrA_1}[\nt{artd}[\nt{``O"}]]][\nt{n}[\nt{``poeta"}]][\nt{OSAR_5}[\nt{SS_9}[\nt{PrA_7}[\nt{pr}[\nt{``cuja"}]]][\nt{n}[\nt{``obra"}]]][\nt{SS_9}[\nt{PrA_1}[\nt{artd}[\nt{``o"}]]][\nt{n}[\nt{``professor"}]]][\nt{vtd}[\nt{``citou"}]]]][\nt{SN_6}[\nt{vlig}[\nt{``é"}]][\nt{SS_7}[\nt{np}[\nt{``Camões"}]]]][\nt{punct}[\nt{``."}]]]]]
+
+
+#! ThreadId 7802 Output Plain: [([([([([("O"(artd)PrA_1)]"poeta"(n)[([([("cuja"(pr)PrA_7)]"obra"(n)SS_9)][([([("o"(artd)PrA_1)]"professor"(n)SS_9)]"citou"(vtd)SV_13)]OSAR_6)]SS_10)][("é"(vlig)[("Camões"(np)SS_7)]SN_6)]"."(punct)OA_3)]PS_1)]F_3)]
+
+
+#! ThreadId 7802 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"O","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"poeta","name":"n"}},{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"cuja","name":"pr"}}],"name":"PrA_7"}},{"term":{"content":"obra","name":"n"}}],"name":"SS_9"}},{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"o","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"professor","name":"n"}}],"name":"SS_9"}},{"term":{"content":"citou","name":"vtd"}}],"name":"SV_13"}}],"name":"OSAR_6"}}],"name":"SS_10"}},{"nterm":{"children":[{"term":{"content":"é","name":"vlig"}},{"nterm":{"children":[{"term":{"content":"Camões","name":"np"}}],"name":"SS_7"}}],"name":"SN_6"}},{"term":{"content":".","name":"punct"}}],"name":"OA_3"}}],"name":"PS_1"}}],"name":"F_3"}}
+
+
+#! ThreadId 7802 Output Latex: [\nt{F_3}[\nt{PS_1}[\nt{OA_3}[\nt{SS_10}[\nt{PrA_1}[\nt{artd}[\nt{``O"}]]][\nt{n}[\nt{``poeta"}]][\nt{OSAR_6}[\nt{SS_9}[\nt{PrA_7}[\nt{pr}[\nt{``cuja"}]]][\nt{n}[\nt{``obra"}]]][\nt{SV_13}[\nt{SS_9}[\nt{PrA_1}[\nt{artd}[\nt{``o"}]]][\nt{n}[\nt{``professor"}]]][\nt{vtd}[\nt{``citou"}]]]]][\nt{SN_6}[\nt{vlig}[\nt{``é"}]][\nt{SS_7}[\nt{np}[\nt{``Camões"}]]]][\nt{punct}[\nt{``."}]]]]]
+

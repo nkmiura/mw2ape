@@ -1,0 +1,55 @@
+##################################
+#                                #
+#           mw2spa NLP           #
+#                                #
+##################################
+
+Processamento de entrada NLP: arquivo luft02-18.txt
+Gramática NLP: arquivo wirth_mod_nlp_luft_all.txt
+Dicionário NLP: arquivo /home/nkmiura/Documentos/TeseExperimentos/dict/LuftDict.yml
+Done.
+
+#! ThreadId 3818 Output Plain: [([([([([("O"(artd)PrA_1)]"pai"(n)SS_9)][("trabalha"(vint)[([("para"(prep)[([("que"(conjsub)[([([("os"(artd)PrA_1)]"filhos"(n)SS_9)][("possam"(vaux)"estudar"(vint)SV_1)]O_3)]OS_1)]SS_8)]SP_3)]SAdv_6)]SV_4)]"."(punct)OP_4)]PCS_1)]F_2)]
+
+
+#! ThreadId 3818 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"O","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"pai","name":"n"}}],"name":"SS_9"}},{"nterm":{"children":[{"term":{"content":"trabalha","name":"vint"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"para","name":"prep"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"que","name":"conjsub"}},{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"os","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"filhos","name":"n"}}],"name":"SS_9"}},{"nterm":{"children":[{"term":{"content":"possam","name":"vaux"}},{"term":{"content":"estudar","name":"vint"}}],"name":"SV_1"}}],"name":"O_3"}}],"name":"OS_1"}}],"name":"SS_8"}}],"name":"SP_3"}}],"name":"SAdv_6"}}],"name":"SV_4"}},{"term":{"content":".","name":"punct"}}],"name":"OP_4"}}],"name":"PCS_1"}}],"name":"F_2"}}
+
+
+#! ThreadId 3818 Output Latex: [\nt{F_2}[\nt{PCS_1}[\nt{OP_4}[\nt{SS_9}[\nt{PrA_1}[\nt{artd}[\nt{``O"}]]][\nt{n}[\nt{``pai"}]]][\nt{SV_4}[\nt{vint}[\nt{``trabalha"}]][\nt{SAdv_6}[\nt{SP_3}[\nt{prep}[\nt{``para"}]][\nt{SS_8}[\nt{OS_1}[\nt{conjsub}[\nt{``que"}]][\nt{O_3}[\nt{SS_9}[\nt{PrA_1}[\nt{artd}[\nt{``os"}]]][\nt{n}[\nt{``filhos"}]]][\nt{SV_1}[\nt{vaux}[\nt{``possam"}]][\nt{vint}[\nt{``estudar"}]]]]]]]]][\nt{punct}[\nt{``."}]]]]]
+
+
+#! ThreadId 6696 Output Plain: [([([([([("O"(artd)PrA_1)]"pai"(n)SS_9)][("trabalha"(vint)SV_3)][([("para"(prep)[([("que"(conjsub)[([([("os"(artd)PrA_1)]"filhos"(n)SS_9)][("possam"(vaux)"estudar"(vint)SV_1)]O_3)]OS_1)]SS_8)]SP_3)]SAdv_6)]"."(punct)OA_5)]PS_1)]F_3)]
+
+
+#! ThreadId 6696 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"O","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"pai","name":"n"}}],"name":"SS_9"}},{"nterm":{"children":[{"term":{"content":"trabalha","name":"vint"}}],"name":"SV_3"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"para","name":"prep"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"que","name":"conjsub"}},{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"os","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"filhos","name":"n"}}],"name":"SS_9"}},{"nterm":{"children":[{"term":{"content":"possam","name":"vaux"}},{"term":{"content":"estudar","name":"vint"}}],"name":"SV_1"}}],"name":"O_3"}}],"name":"OS_1"}}],"name":"SS_8"}}],"name":"SP_3"}}],"name":"SAdv_6"}},{"term":{"content":".","name":"punct"}}],"name":"OA_5"}}],"name":"PS_1"}}],"name":"F_3"}}
+
+
+#! ThreadId 6696 Output Latex: [\nt{F_3}[\nt{PS_1}[\nt{OA_5}[\nt{SS_9}[\nt{PrA_1}[\nt{artd}[\nt{``O"}]]][\nt{n}[\nt{``pai"}]]][\nt{SV_3}[\nt{vint}[\nt{``trabalha"}]]][\nt{SAdv_6}[\nt{SP_3}[\nt{prep}[\nt{``para"}]][\nt{SS_8}[\nt{OS_1}[\nt{conjsub}[\nt{``que"}]][\nt{O_3}[\nt{SS_9}[\nt{PrA_1}[\nt{artd}[\nt{``os"}]]][\nt{n}[\nt{``filhos"}]]][\nt{SV_1}[\nt{vaux}[\nt{``possam"}]][\nt{vint}[\nt{``estudar"}]]]]]]]][\nt{punct}[\nt{``."}]]]]]
+
+
+#! ThreadId 8150 Output Plain: [([([([([("O"(artd)PrA_1)]"pai"(n)SS_9)][("trabalha"(vint)[([("para"(prep)[([("que"(conjsub)[([([("os"(artd)PrA_1)]"filhos"(n)SS_9)][("possam"(vaux)"estudar"(vint)SV_1)]O_3)]OS_1)]SS_8)]SP_3)]SAdv_6)]SV_4)]"."(punct)OA_4)]PS_1)]F_3)]
+
+
+#! ThreadId 8150 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"O","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"pai","name":"n"}}],"name":"SS_9"}},{"nterm":{"children":[{"term":{"content":"trabalha","name":"vint"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"para","name":"prep"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"que","name":"conjsub"}},{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"os","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"filhos","name":"n"}}],"name":"SS_9"}},{"nterm":{"children":[{"term":{"content":"possam","name":"vaux"}},{"term":{"content":"estudar","name":"vint"}}],"name":"SV_1"}}],"name":"O_3"}}],"name":"OS_1"}}],"name":"SS_8"}}],"name":"SP_3"}}],"name":"SAdv_6"}}],"name":"SV_4"}},{"term":{"content":".","name":"punct"}}],"name":"OA_4"}}],"name":"PS_1"}}],"name":"F_3"}}
+
+
+#! ThreadId 8150 Output Latex: [\nt{F_3}[\nt{PS_1}[\nt{OA_4}[\nt{SS_9}[\nt{PrA_1}[\nt{artd}[\nt{``O"}]]][\nt{n}[\nt{``pai"}]]][\nt{SV_4}[\nt{vint}[\nt{``trabalha"}]][\nt{SAdv_6}[\nt{SP_3}[\nt{prep}[\nt{``para"}]][\nt{SS_8}[\nt{OS_1}[\nt{conjsub}[\nt{``que"}]][\nt{O_3}[\nt{SS_9}[\nt{PrA_1}[\nt{artd}[\nt{``os"}]]][\nt{n}[\nt{``filhos"}]]][\nt{SV_1}[\nt{vaux}[\nt{``possam"}]][\nt{vint}[\nt{``estudar"}]]]]]]]]][\nt{punct}[\nt{``."}]]]]]
+
+
+#! ThreadId 29539 Output Plain: [([([([([("O"(ppoa)SP_2)]SAdv_6)][([("pai"(n)SS_6)][("trabalha"(vint)[([("para"(prep)[([("que"(conjsub)[([([("os"(artd)PrA_1)]"filhos"(n)SS_9)][("possam"(vaux)"estudar"(vint)SV_1)]O_3)]OS_1)]SS_8)]SP_3)]SAdv_6)]SV_4)]Nuc_1)]"."(punct)OP_1)]PCS_1)]F_2)]
+
+
+#! ThreadId 29539 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"O","name":"ppoa"}}],"name":"SP_2"}}],"name":"SAdv_6"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"pai","name":"n"}}],"name":"SS_6"}},{"nterm":{"children":[{"term":{"content":"trabalha","name":"vint"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"para","name":"prep"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"que","name":"conjsub"}},{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"os","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"filhos","name":"n"}}],"name":"SS_9"}},{"nterm":{"children":[{"term":{"content":"possam","name":"vaux"}},{"term":{"content":"estudar","name":"vint"}}],"name":"SV_1"}}],"name":"O_3"}}],"name":"OS_1"}}],"name":"SS_8"}}],"name":"SP_3"}}],"name":"SAdv_6"}}],"name":"SV_4"}}],"name":"Nuc_1"}},{"term":{"content":".","name":"punct"}}],"name":"OP_1"}}],"name":"PCS_1"}}],"name":"F_2"}}
+
+
+#! ThreadId 29539 Output Latex: [\nt{F_2}[\nt{PCS_1}[\nt{OP_1}[\nt{SAdv_6}[\nt{SP_2}[\nt{ppoa}[\nt{``O"}]]]][\nt{Nuc_1}[\nt{SS_6}[\nt{n}[\nt{``pai"}]]][\nt{SV_4}[\nt{vint}[\nt{``trabalha"}]][\nt{SAdv_6}[\nt{SP_3}[\nt{prep}[\nt{``para"}]][\nt{SS_8}[\nt{OS_1}[\nt{conjsub}[\nt{``que"}]][\nt{O_3}[\nt{SS_9}[\nt{PrA_1}[\nt{artd}[\nt{``os"}]]][\nt{n}[\nt{``filhos"}]]][\nt{SV_1}[\nt{vaux}[\nt{``possam"}]][\nt{vint}[\nt{``estudar"}]]]]]]]]]][\nt{punct}[\nt{``."}]]]]]
+
+
+#! ThreadId 27451 Output Plain: [([([([([([("O"(artd)PrA_1)]"pai"(n)SS_9)][("trabalha"(vint)SV_3)]Nuc_1)][([("para"(prep)[([("que"(conjsub)[([([("os"(artd)PrA_1)]"filhos"(n)SS_9)][("possam"(vaux)"estudar"(vint)SV_1)]O_3)]OS_1)]SS_8)]SP_3)]SAdv_6)]"."(punct)OA_1)]PS_1)]F_3)]
+
+
+#! ThreadId 27451 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"O","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"pai","name":"n"}}],"name":"SS_9"}},{"nterm":{"children":[{"term":{"content":"trabalha","name":"vint"}}],"name":"SV_3"}}],"name":"Nuc_1"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"para","name":"prep"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"que","name":"conjsub"}},{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"os","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"filhos","name":"n"}}],"name":"SS_9"}},{"nterm":{"children":[{"term":{"content":"possam","name":"vaux"}},{"term":{"content":"estudar","name":"vint"}}],"name":"SV_1"}}],"name":"O_3"}}],"name":"OS_1"}}],"name":"SS_8"}}],"name":"SP_3"}}],"name":"SAdv_6"}},{"term":{"content":".","name":"punct"}}],"name":"OA_1"}}],"name":"PS_1"}}],"name":"F_3"}}
+
+
+#! ThreadId 27451 Output Latex: [\nt{F_3}[\nt{PS_1}[\nt{OA_1}[\nt{Nuc_1}[\nt{SS_9}[\nt{PrA_1}[\nt{artd}[\nt{``O"}]]][\nt{n}[\nt{``pai"}]]][\nt{SV_3}[\nt{vint}[\nt{``trabalha"}]]]][\nt{SAdv_6}[\nt{SP_3}[\nt{prep}[\nt{``para"}]][\nt{SS_8}[\nt{OS_1}[\nt{conjsub}[\nt{``que"}]][\nt{O_3}[\nt{SS_9}[\nt{PrA_1}[\nt{artd}[\nt{``os"}]]][\nt{n}[\nt{``filhos"}]]][\nt{SV_1}[\nt{vaux}[\nt{``possam"}]][\nt{vint}[\nt{``estudar"}]]]]]]]][\nt{punct}[\nt{``."}]]]]]
+

@@ -1,0 +1,46 @@
+##################################
+#                                #
+#           mw2spa NLP           #
+#                                #
+##################################
+
+Processamento de entrada NLP: arquivo luft01-10.txt
+Gramática NLP: arquivo wirth_mod_nlp_luft_all.txt
+Dicionário NLP: arquivo /home/nkmiura/Documentos/TeseExperimentos/dict/LuftDict.yml
+Done.
+
+#! ThreadId 1005 Output Plain: [([([([([("O"(artd)PrA_1)]"dono"(n)SS_9)][("está"(vlig)[("em"(prep)[("casa"(n)SS_6)]SP_3)]SN_5)]"."(punct)OP_3)]PCS_1)]F_2)]
+
+
+#! ThreadId 745 Output Plain: [([([([([("O"(artd)PrA_1)]"dono"(n)SS_9)][("está"(vlig)[("em"(prep)[("casa"(n)SS_6)]SP_3)]SN_5)]"."(punct)OA_3)]PS_1)]F_3)]
+
+
+#! ThreadId 1005 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"O","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"dono","name":"n"}}],"name":"SS_9"}},{"nterm":{"children":[{"term":{"content":"está","name":"vlig"}},{"nterm":{"children":[{"term":{"content":"em","name":"prep"}},{"nterm":{"children":[{"term":{"content":"casa","name":"n"}}],"name":"SS_6"}}],"name":"SP_3"}}],"name":"SN_5"}},{"term":{"content":".","name":"punct"}}],"name":"OP_3"}}],"name":"PCS_1"}}],"name":"F_2"}}
+
+
+#! ThreadId 745 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"O","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"dono","name":"n"}}],"name":"SS_9"}},{"nterm":{"children":[{"term":{"content":"está","name":"vlig"}},{"nterm":{"children":[{"term":{"content":"em","name":"prep"}},{"nterm":{"children":[{"term":{"content":"casa","name":"n"}}],"name":"SS_6"}}],"name":"SP_3"}}],"name":"SN_5"}},{"term":{"content":".","name":"punct"}}],"name":"OA_3"}}],"name":"PS_1"}}],"name":"F_3"}}
+
+
+#! ThreadId 1005 Output Latex: [\nt{F_2}[\nt{PCS_1}[\nt{OP_3}[\nt{SS_9}[\nt{PrA_1}[\nt{artd}[\nt{``O"}]]][\nt{n}[\nt{``dono"}]]][\nt{SN_5}[\nt{vlig}[\nt{``está"}]][\nt{SP_3}[\nt{prep}[\nt{``em"}]][\nt{SS_6}[\nt{n}[\nt{``casa"}]]]]][\nt{punct}[\nt{``."}]]]]]
+
+
+#! ThreadId 745 Output Latex: [\nt{F_3}[\nt{PS_1}[\nt{OA_3}[\nt{SS_9}[\nt{PrA_1}[\nt{artd}[\nt{``O"}]]][\nt{n}[\nt{``dono"}]]][\nt{SN_5}[\nt{vlig}[\nt{``está"}]][\nt{SP_3}[\nt{prep}[\nt{``em"}]][\nt{SS_6}[\nt{n}[\nt{``casa"}]]]]][\nt{punct}[\nt{``."}]]]]]
+
+
+#! ThreadId 1067 Output Plain: [([([([([("O"(artd)PrA_1)]"dono"(n)SS_9)][("está"(vlig)[([("em"(prep)[("casa"(n)SS_6)]SP_3)]SAdv_6)]SN_4)]"."(punct)OA_3)]PS_1)]F_3)]
+
+
+#! ThreadId 1067 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"O","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"dono","name":"n"}}],"name":"SS_9"}},{"nterm":{"children":[{"term":{"content":"está","name":"vlig"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"em","name":"prep"}},{"nterm":{"children":[{"term":{"content":"casa","name":"n"}}],"name":"SS_6"}}],"name":"SP_3"}}],"name":"SAdv_6"}}],"name":"SN_4"}},{"term":{"content":".","name":"punct"}}],"name":"OA_3"}}],"name":"PS_1"}}],"name":"F_3"}}
+
+
+#! ThreadId 1067 Output Latex: [\nt{F_3}[\nt{PS_1}[\nt{OA_3}[\nt{SS_9}[\nt{PrA_1}[\nt{artd}[\nt{``O"}]]][\nt{n}[\nt{``dono"}]]][\nt{SN_4}[\nt{vlig}[\nt{``está"}]][\nt{SAdv_6}[\nt{SP_3}[\nt{prep}[\nt{``em"}]][\nt{SS_6}[\nt{n}[\nt{``casa"}]]]]]][\nt{punct}[\nt{``."}]]]]]
+
+
+#! ThreadId 1214 Output Plain: [([([([([("O"(artd)PrA_1)]"dono"(n)SS_9)][("está"(vlig)[([("em"(prep)[("casa"(n)SS_6)]SP_3)]SAdv_6)]SN_4)]"."(punct)OP_3)]PCS_1)]F_2)]
+
+
+#! ThreadId 1214 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"O","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"dono","name":"n"}}],"name":"SS_9"}},{"nterm":{"children":[{"term":{"content":"está","name":"vlig"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"em","name":"prep"}},{"nterm":{"children":[{"term":{"content":"casa","name":"n"}}],"name":"SS_6"}}],"name":"SP_3"}}],"name":"SAdv_6"}}],"name":"SN_4"}},{"term":{"content":".","name":"punct"}}],"name":"OP_3"}}],"name":"PCS_1"}}],"name":"F_2"}}
+
+
+#! ThreadId 1214 Output Latex: [\nt{F_2}[\nt{PCS_1}[\nt{OP_3}[\nt{SS_9}[\nt{PrA_1}[\nt{artd}[\nt{``O"}]]][\nt{n}[\nt{``dono"}]]][\nt{SN_4}[\nt{vlig}[\nt{``está"}]][\nt{SAdv_6}[\nt{SP_3}[\nt{prep}[\nt{``em"}]][\nt{SS_6}[\nt{n}[\nt{``casa"}]]]]]][\nt{punct}[\nt{``."}]]]]]
+

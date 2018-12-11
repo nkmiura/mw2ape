@@ -1,0 +1,7 @@
+F = PS .
+PS = OA .
+OA = SS SV "punct".
+SS = PrA "n" .
+SV = "vtd" SS .
+PrA = "pind" .
+PrA = "artd" .

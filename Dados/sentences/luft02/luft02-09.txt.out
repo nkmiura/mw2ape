@@ -1,0 +1,46 @@
+##################################
+#                                #
+#           mw2spa NLP           #
+#                                #
+##################################
+
+Processamento de entrada NLP: arquivo luft02-09.txt
+Gramática NLP: arquivo wirth_mod_nlp_luft_all.txt
+Dicionário NLP: arquivo /home/nkmiura/Documentos/TeseExperimentos/dict/LuftDict.yml
+Done.
+
+#! ThreadId 12431 Output Plain: [([([([([("Todos"(pind)"os"(artd)PrA_4)]"filhos"(n)SS_9)][("precisam"(vti)[([("de"(prep)[([("que"(conjsub)[([([("os"(artd)PrA_1)]"pais"(n)SS_9)][([("os"(ppoa)SS_4)]"ajudem"(vtd)SV_13)]O_3)]OS_1)]SS_8)]SP_3)]SAdv_6)]SV_9)]"."(punct)OP_4)]PCS_1)]F_2)]
+
+
+#! ThreadId 12431 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"Todos","name":"pind"}},{"term":{"content":"os","name":"artd"}}],"name":"PrA_4"}},{"term":{"content":"filhos","name":"n"}}],"name":"SS_9"}},{"nterm":{"children":[{"term":{"content":"precisam","name":"vti"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"de","name":"prep"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"que","name":"conjsub"}},{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"os","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"pais","name":"n"}}],"name":"SS_9"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"os","name":"ppoa"}}],"name":"SS_4"}},{"term":{"content":"ajudem","name":"vtd"}}],"name":"SV_13"}}],"name":"O_3"}}],"name":"OS_1"}}],"name":"SS_8"}}],"name":"SP_3"}}],"name":"SAdv_6"}}],"name":"SV_9"}},{"term":{"content":".","name":"punct"}}],"name":"OP_4"}}],"name":"PCS_1"}}],"name":"F_2"}}
+
+
+#! ThreadId 12431 Output Latex: [\nt{F_2}[\nt{PCS_1}[\nt{OP_4}[\nt{SS_9}[\nt{PrA_4}[\nt{pind}[\nt{``Todos"}]][\nt{artd}[\nt{``os"}]]][\nt{n}[\nt{``filhos"}]]][\nt{SV_9}[\nt{vti}[\nt{``precisam"}]][\nt{SAdv_6}[\nt{SP_3}[\nt{prep}[\nt{``de"}]][\nt{SS_8}[\nt{OS_1}[\nt{conjsub}[\nt{``que"}]][\nt{O_3}[\nt{SS_9}[\nt{PrA_1}[\nt{artd}[\nt{``os"}]]][\nt{n}[\nt{``pais"}]]][\nt{SV_13}[\nt{SS_4}[\nt{ppoa}[\nt{``os"}]]][\nt{vtd}[\nt{``ajudem"}]]]]]]]]][\nt{punct}[\nt{``."}]]]]]
+
+
+#! ThreadId 18075 Output Plain: [([([([([("Todos"(pind)"os"(artd)PrA_4)]"filhos"(n)SS_9)][("precisam"(vti)[("de"(prep)[([("que"(conjsub)[([([("os"(artd)PrA_1)]"pais"(n)SS_9)][([("os"(ppoa)SS_4)]"ajudem"(vtd)SV_13)]O_3)]OS_1)]SS_8)]SP_3)]SV_10)]"."(punct)OP_4)]PCS_1)]F_2)]
+
+
+#! ThreadId 18075 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"Todos","name":"pind"}},{"term":{"content":"os","name":"artd"}}],"name":"PrA_4"}},{"term":{"content":"filhos","name":"n"}}],"name":"SS_9"}},{"nterm":{"children":[{"term":{"content":"precisam","name":"vti"}},{"nterm":{"children":[{"term":{"content":"de","name":"prep"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"que","name":"conjsub"}},{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"os","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"pais","name":"n"}}],"name":"SS_9"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"os","name":"ppoa"}}],"name":"SS_4"}},{"term":{"content":"ajudem","name":"vtd"}}],"name":"SV_13"}}],"name":"O_3"}}],"name":"OS_1"}}],"name":"SS_8"}}],"name":"SP_3"}}],"name":"SV_10"}},{"term":{"content":".","name":"punct"}}],"name":"OP_4"}}],"name":"PCS_1"}}],"name":"F_2"}}
+
+
+#! ThreadId 18075 Output Latex: [\nt{F_2}[\nt{PCS_1}[\nt{OP_4}[\nt{SS_9}[\nt{PrA_4}[\nt{pind}[\nt{``Todos"}]][\nt{artd}[\nt{``os"}]]][\nt{n}[\nt{``filhos"}]]][\nt{SV_10}[\nt{vti}[\nt{``precisam"}]][\nt{SP_3}[\nt{prep}[\nt{``de"}]][\nt{SS_8}[\nt{OS_1}[\nt{conjsub}[\nt{``que"}]][\nt{O_3}[\nt{SS_9}[\nt{PrA_1}[\nt{artd}[\nt{``os"}]]][\nt{n}[\nt{``pais"}]]][\nt{SV_13}[\nt{SS_4}[\nt{ppoa}[\nt{``os"}]]][\nt{vtd}[\nt{``ajudem"}]]]]]]]][\nt{punct}[\nt{``."}]]]]]
+
+
+#! ThreadId 18208 Output Plain: [([([([([("Todos"(pind)"os"(artd)PrA_4)]"filhos"(n)SS_9)][("precisam"(vti)[("de"(prep)[([("que"(conjsub)[([([("os"(artd)PrA_1)]"pais"(n)SS_9)][([("os"(ppoa)SS_4)]"ajudem"(vtd)SV_13)]O_3)]OS_1)]SS_8)]SP_3)]SV_10)]"."(punct)OA_4)]PS_1)]F_3)]
+
+
+#! ThreadId 19879 Output Plain: [([([([([("Todos"(pind)"os"(artd)PrA_4)]"filhos"(n)SS_9)][("precisam"(vti)[([("de"(prep)[([("que"(conjsub)[([([("os"(artd)PrA_1)]"pais"(n)SS_9)][([("os"(ppoa)SS_4)]"ajudem"(vtd)SV_13)]O_3)]OS_1)]SS_8)]SP_3)]SAdv_6)]SV_9)]"."(punct)OA_4)]PS_1)]F_3)]
+
+
+#! ThreadId 18208 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"Todos","name":"pind"}},{"term":{"content":"os","name":"artd"}}],"name":"PrA_4"}},{"term":{"content":"filhos","name":"n"}}],"name":"SS_9"}},{"nterm":{"children":[{"term":{"content":"precisam","name":"vti"}},{"nterm":{"children":[{"term":{"content":"de","name":"prep"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"que","name":"conjsub"}},{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"os","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"pais","name":"n"}}],"name":"SS_9"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"os","name":"ppoa"}}],"name":"SS_4"}},{"term":{"content":"ajudem","name":"vtd"}}],"name":"SV_13"}}],"name":"O_3"}}],"name":"OS_1"}}],"name":"SS_8"}}],"name":"SP_3"}}],"name":"SV_10"}},{"term":{"content":".","name":"punct"}}],"name":"OA_4"}}],"name":"PS_1"}}],"name":"F_3"}}
+
+
+#! ThreadId 19879 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"Todos","name":"pind"}},{"term":{"content":"os","name":"artd"}}],"name":"PrA_4"}},{"term":{"content":"filhos","name":"n"}}],"name":"SS_9"}},{"nterm":{"children":[{"term":{"content":"precisam","name":"vti"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"de","name":"prep"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"que","name":"conjsub"}},{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"os","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"pais","name":"n"}}],"name":"SS_9"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"os","name":"ppoa"}}],"name":"SS_4"}},{"term":{"content":"ajudem","name":"vtd"}}],"name":"SV_13"}}],"name":"O_3"}}],"name":"OS_1"}}],"name":"SS_8"}}],"name":"SP_3"}}],"name":"SAdv_6"}}],"name":"SV_9"}},{"term":{"content":".","name":"punct"}}],"name":"OA_4"}}],"name":"PS_1"}}],"name":"F_3"}}
+
+
+#! ThreadId 18208 Output Latex: [\nt{F_3}[\nt{PS_1}[\nt{OA_4}[\nt{SS_9}[\nt{PrA_4}[\nt{pind}[\nt{``Todos"}]][\nt{artd}[\nt{``os"}]]][\nt{n}[\nt{``filhos"}]]][\nt{SV_10}[\nt{vti}[\nt{``precisam"}]][\nt{SP_3}[\nt{prep}[\nt{``de"}]][\nt{SS_8}[\nt{OS_1}[\nt{conjsub}[\nt{``que"}]][\nt{O_3}[\nt{SS_9}[\nt{PrA_1}[\nt{artd}[\nt{``os"}]]][\nt{n}[\nt{``pais"}]]][\nt{SV_13}[\nt{SS_4}[\nt{ppoa}[\nt{``os"}]]][\nt{vtd}[\nt{``ajudem"}]]]]]]]][\nt{punct}[\nt{``."}]]]]]
+
+
+#! ThreadId 19879 Output Latex: [\nt{F_3}[\nt{PS_1}[\nt{OA_4}[\nt{SS_9}[\nt{PrA_4}[\nt{pind}[\nt{``Todos"}]][\nt{artd}[\nt{``os"}]]][\nt{n}[\nt{``filhos"}]]][\nt{SV_9}[\nt{vti}[\nt{``precisam"}]][\nt{SAdv_6}[\nt{SP_3}[\nt{prep}[\nt{``de"}]][\nt{SS_8}[\nt{OS_1}[\nt{conjsub}[\nt{``que"}]][\nt{O_3}[\nt{SS_9}[\nt{PrA_1}[\nt{artd}[\nt{``os"}]]][\nt{n}[\nt{``pais"}]]][\nt{SV_13}[\nt{SS_4}[\nt{ppoa}[\nt{``os"}]]][\nt{vtd}[\nt{``ajudem"}]]]]]]]]][\nt{punct}[\nt{``."}]]]]]
+

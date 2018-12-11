@@ -1,0 +1,19 @@
+##################################
+#                                #
+#           mw2spa NLP           #
+#                                #
+##################################
+
+Processamento de entrada NLP: arquivo luft01-35.txt
+Gramática NLP: arquivo wirth_mod_nlp_luft_all.txt
+Dicionário NLP: arquivo /home/nkmiura/Documentos/TeseExperimentos/dict/LuftDict.yml
+Done.
+
+#! ThreadId 1006 Output Plain: [([([([([("O"(artd)PrA_1)]"pai"(n)SS_9)][("encontrou"(vtpred)[([("o"(artd)PrA_1)]"filho"(n)SS_9)][("gripado"(adj)SAdj_1)]SVN_4)]"."(punct)OA_6)]PS_1)]F_3)]
+
+
+#! ThreadId 1006 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"O","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"pai","name":"n"}}],"name":"SS_9"}},{"nterm":{"children":[{"term":{"content":"encontrou","name":"vtpred"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"o","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"filho","name":"n"}}],"name":"SS_9"}},{"nterm":{"children":[{"term":{"content":"gripado","name":"adj"}}],"name":"SAdj_1"}}],"name":"SVN_4"}},{"term":{"content":".","name":"punct"}}],"name":"OA_6"}}],"name":"PS_1"}}],"name":"F_3"}}
+
+
+#! ThreadId 1006 Output Latex: [\nt{F_3}[\nt{PS_1}[\nt{OA_6}[\nt{SS_9}[\nt{PrA_1}[\nt{artd}[\nt{``O"}]]][\nt{n}[\nt{``pai"}]]][\nt{SVN_4}[\nt{vtpred}[\nt{``encontrou"}]][\nt{SS_9}[\nt{PrA_1}[\nt{artd}[\nt{``o"}]]][\nt{n}[\nt{``filho"}]]][\nt{SAdj_1}[\nt{adj}[\nt{``gripado"}]]]][\nt{punct}[\nt{``."}]]]]]
+

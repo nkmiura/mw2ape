@@ -1,0 +1,64 @@
+##################################
+#                                #
+#           mw2spa NLP           #
+#                                #
+##################################
+
+Processamento de entrada NLP: arquivo luft02-08.txt
+Gramática NLP: arquivo wirth_mod_nlp_luft_all.txt
+Dicionário NLP: arquivo /home/nkmiura/Documentos/TeseExperimentos/dict/LuftDict.yml
+Done.
+
+#! ThreadId 6102 Output Plain: [([([([([([([("Eu"(ppr)SP_1)]SAdv_6)][("sei"(vtd)[([("que"(conjsub)[([([("a"(artd)PrA_1)]"Terra"(np)SS_11)][((ε)SN_7)]O_2)]OS_1)]SS_8)]GV_1)]OS_2)]SS_8)][("é"(vlig)[("redonda"(adj)SAdj_1)]SN_3)]"."(punct)OA_3)]PS_1)]F_3)]
+
+
+#! ThreadId 6102 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"Eu","name":"ppr"}}],"name":"SP_1"}}],"name":"SAdv_6"}},{"nterm":{"children":[{"term":{"content":"sei","name":"vtd"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"que","name":"conjsub"}},{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"a","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"Terra","name":"np"}}],"name":"SS_11"}},{"nterm":{"children":[{"empty":""}],"name":"SN_7"}}],"name":"O_2"}}],"name":"OS_1"}}],"name":"SS_8"}}],"name":"GV_1"}}],"name":"OS_2"}}],"name":"SS_8"}},{"nterm":{"children":[{"term":{"content":"é","name":"vlig"}},{"nterm":{"children":[{"term":{"content":"redonda","name":"adj"}}],"name":"SAdj_1"}}],"name":"SN_3"}},{"term":{"content":".","name":"punct"}}],"name":"OA_3"}}],"name":"PS_1"}}],"name":"F_3"}}
+
+
+#! ThreadId 6102 Output Latex: [\nt{F_3}[\nt{PS_1}[\nt{OA_3}[\nt{SS_8}[\nt{OS_2}[\nt{SAdv_6}[\nt{SP_1}[\nt{ppr}[\nt{``Eu"}]]]][\nt{GV_1}[\nt{vtd}[\nt{``sei"}]][\nt{SS_8}[\nt{OS_1}[\nt{conjsub}[\nt{``que"}]][\nt{O_2}[\nt{SS_11}[\nt{PrA_1}[\nt{artd}[\nt{``a"}]]][\nt{np}[\nt{``Terra"}]]][\nt{SN_7}[\nt{\epsilon}]]]]]]]][\nt{SN_3}[\nt{vlig}[\nt{``é"}]][\nt{SAdj_1}[\nt{adj}[\nt{``redonda"}]]]][\nt{punct}[\nt{``."}]]]]]
+
+
+#! ThreadId 18772 Output Plain: [([([([([([([("Eu"(ppr)SP_1)]SAdv_6)][("sei"(vtd)[([("que"(conjsub)[([([("a"(artd)PrA_1)]"Terra"(np)SS_11)][("é"(vlig)[("redonda"(adj)SAdj_1)]SN_3)]O_2)]OS_1)]SS_8)]GV_1)]OS_2)]SS_8)][((ε)SN_7)]"."(punct)OA_3)]PS_1)]F_3)]
+
+
+#! ThreadId 18772 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"Eu","name":"ppr"}}],"name":"SP_1"}}],"name":"SAdv_6"}},{"nterm":{"children":[{"term":{"content":"sei","name":"vtd"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"que","name":"conjsub"}},{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"a","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"Terra","name":"np"}}],"name":"SS_11"}},{"nterm":{"children":[{"term":{"content":"é","name":"vlig"}},{"nterm":{"children":[{"term":{"content":"redonda","name":"adj"}}],"name":"SAdj_1"}}],"name":"SN_3"}}],"name":"O_2"}}],"name":"OS_1"}}],"name":"SS_8"}}],"name":"GV_1"}}],"name":"OS_2"}}],"name":"SS_8"}},{"nterm":{"children":[{"empty":""}],"name":"SN_7"}},{"term":{"content":".","name":"punct"}}],"name":"OA_3"}}],"name":"PS_1"}}],"name":"F_3"}}
+
+
+#! ThreadId 18772 Output Latex: [\nt{F_3}[\nt{PS_1}[\nt{OA_3}[\nt{SS_8}[\nt{OS_2}[\nt{SAdv_6}[\nt{SP_1}[\nt{ppr}[\nt{``Eu"}]]]][\nt{GV_1}[\nt{vtd}[\nt{``sei"}]][\nt{SS_8}[\nt{OS_1}[\nt{conjsub}[\nt{``que"}]][\nt{O_2}[\nt{SS_11}[\nt{PrA_1}[\nt{artd}[\nt{``a"}]]][\nt{np}[\nt{``Terra"}]]][\nt{SN_3}[\nt{vlig}[\nt{``é"}]][\nt{SAdj_1}[\nt{adj}[\nt{``redonda"}]]]]]]]]]][\nt{SN_7}[\nt{\epsilon}]][\nt{punct}[\nt{``."}]]]]]
+
+
+#! ThreadId 17008 Output Plain: [([([([("Eu"(ppr)SS_3)][("sei"(vtd)[([("que"(conjsub)[([([("a"(artd)PrA_1)]"Terra"(np)SS_11)][("é"(vlig)[("redonda"(adj)SAdj_1)]SN_3)]O_2)]OS_1)]SS_8)]SV_5)]"."(punct)OA_4)]PS_1)]F_3)]
+
+
+#! ThreadId 17008 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"Eu","name":"ppr"}}],"name":"SS_3"}},{"nterm":{"children":[{"term":{"content":"sei","name":"vtd"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"que","name":"conjsub"}},{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"a","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"Terra","name":"np"}}],"name":"SS_11"}},{"nterm":{"children":[{"term":{"content":"é","name":"vlig"}},{"nterm":{"children":[{"term":{"content":"redonda","name":"adj"}}],"name":"SAdj_1"}}],"name":"SN_3"}}],"name":"O_2"}}],"name":"OS_1"}}],"name":"SS_8"}}],"name":"SV_5"}},{"term":{"content":".","name":"punct"}}],"name":"OA_4"}}],"name":"PS_1"}}],"name":"F_3"}}
+
+
+#! ThreadId 17008 Output Latex: [\nt{F_3}[\nt{PS_1}[\nt{OA_4}[\nt{SS_3}[\nt{ppr}[\nt{``Eu"}]]][\nt{SV_5}[\nt{vtd}[\nt{``sei"}]][\nt{SS_8}[\nt{OS_1}[\nt{conjsub}[\nt{``que"}]][\nt{O_2}[\nt{SS_11}[\nt{PrA_1}[\nt{artd}[\nt{``a"}]]][\nt{np}[\nt{``Terra"}]]][\nt{SN_3}[\nt{vlig}[\nt{``é"}]][\nt{SAdj_1}[\nt{adj}[\nt{``redonda"}]]]]]]]][\nt{punct}[\nt{``."}]]]]]
+
+
+#! ThreadId 23258 Output Plain: [([([([([([([("Eu"(ppr)SP_1)]SAdv_6)][("sei"(vtd)[([("que"(conjsub)[([([("a"(artd)PrA_1)]"Terra"(np)SS_11)][((ε)SN_7)]O_2)]OS_1)]SS_8)]GV_1)]OS_2)]SS_8)][("é"(vlig)[("redonda"(adj)SAdj_1)]SN_3)]"."(punct)OP_3)]PCS_1)]F_2)]
+
+
+#! ThreadId 23258 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"Eu","name":"ppr"}}],"name":"SP_1"}}],"name":"SAdv_6"}},{"nterm":{"children":[{"term":{"content":"sei","name":"vtd"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"que","name":"conjsub"}},{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"a","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"Terra","name":"np"}}],"name":"SS_11"}},{"nterm":{"children":[{"empty":""}],"name":"SN_7"}}],"name":"O_2"}}],"name":"OS_1"}}],"name":"SS_8"}}],"name":"GV_1"}}],"name":"OS_2"}}],"name":"SS_8"}},{"nterm":{"children":[{"term":{"content":"é","name":"vlig"}},{"nterm":{"children":[{"term":{"content":"redonda","name":"adj"}}],"name":"SAdj_1"}}],"name":"SN_3"}},{"term":{"content":".","name":"punct"}}],"name":"OP_3"}}],"name":"PCS_1"}}],"name":"F_2"}}
+
+
+#! ThreadId 23258 Output Latex: [\nt{F_2}[\nt{PCS_1}[\nt{OP_3}[\nt{SS_8}[\nt{OS_2}[\nt{SAdv_6}[\nt{SP_1}[\nt{ppr}[\nt{``Eu"}]]]][\nt{GV_1}[\nt{vtd}[\nt{``sei"}]][\nt{SS_8}[\nt{OS_1}[\nt{conjsub}[\nt{``que"}]][\nt{O_2}[\nt{SS_11}[\nt{PrA_1}[\nt{artd}[\nt{``a"}]]][\nt{np}[\nt{``Terra"}]]][\nt{SN_7}[\nt{\epsilon}]]]]]]]][\nt{SN_3}[\nt{vlig}[\nt{``é"}]][\nt{SAdj_1}[\nt{adj}[\nt{``redonda"}]]]][\nt{punct}[\nt{``."}]]]]]
+
+
+#! ThreadId 38578 Output Plain: [([([([([([([("Eu"(ppr)SP_1)]SAdv_6)][("sei"(vtd)[([("que"(conjsub)[([([("a"(artd)PrA_1)]"Terra"(np)SS_11)][("é"(vlig)[("redonda"(adj)SAdj_1)]SN_3)]O_2)]OS_1)]SS_8)]GV_1)]OS_2)]SS_8)][((ε)SN_7)]"."(punct)OP_3)]PCS_1)]F_2)]
+
+
+#! ThreadId 38578 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"Eu","name":"ppr"}}],"name":"SP_1"}}],"name":"SAdv_6"}},{"nterm":{"children":[{"term":{"content":"sei","name":"vtd"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"que","name":"conjsub"}},{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"a","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"Terra","name":"np"}}],"name":"SS_11"}},{"nterm":{"children":[{"term":{"content":"é","name":"vlig"}},{"nterm":{"children":[{"term":{"content":"redonda","name":"adj"}}],"name":"SAdj_1"}}],"name":"SN_3"}}],"name":"O_2"}}],"name":"OS_1"}}],"name":"SS_8"}}],"name":"GV_1"}}],"name":"OS_2"}}],"name":"SS_8"}},{"nterm":{"children":[{"empty":""}],"name":"SN_7"}},{"term":{"content":".","name":"punct"}}],"name":"OP_3"}}],"name":"PCS_1"}}],"name":"F_2"}}
+
+
+#! ThreadId 9045 Output Plain: [([([([("Eu"(ppr)SS_3)][("sei"(vtd)[([("que"(conjsub)[([([("a"(artd)PrA_1)]"Terra"(np)SS_11)][("é"(vlig)[("redonda"(adj)SAdj_1)]SN_3)]O_2)]OS_1)]SS_8)]SV_5)]"."(punct)OP_4)]PCS_1)]F_2)]
+
+
+#! ThreadId 38578 Output Latex: [\nt{F_2}[\nt{PCS_1}[\nt{OP_3}[\nt{SS_8}[\nt{OS_2}[\nt{SAdv_6}[\nt{SP_1}[\nt{ppr}[\nt{``Eu"}]]]][\nt{GV_1}[\nt{vtd}[\nt{``sei"}]][\nt{SS_8}[\nt{OS_1}[\nt{conjsub}[\nt{``que"}]][\nt{O_2}[\nt{SS_11}[\nt{PrA_1}[\nt{artd}[\nt{``a"}]]][\nt{np}[\nt{``Terra"}]]][\nt{SN_3}[\nt{vlig}[\nt{``é"}]][\nt{SAdj_1}[\nt{adj}[\nt{``redonda"}]]]]]]]]]][\nt{SN_7}[\nt{\epsilon}]][\nt{punct}[\nt{``."}]]]]]
+
+
+#! ThreadId 9045 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"Eu","name":"ppr"}}],"name":"SS_3"}},{"nterm":{"children":[{"term":{"content":"sei","name":"vtd"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"que","name":"conjsub"}},{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"a","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"Terra","name":"np"}}],"name":"SS_11"}},{"nterm":{"children":[{"term":{"content":"é","name":"vlig"}},{"nterm":{"children":[{"term":{"content":"redonda","name":"adj"}}],"name":"SAdj_1"}}],"name":"SN_3"}}],"name":"O_2"}}],"name":"OS_1"}}],"name":"SS_8"}}],"name":"SV_5"}},{"term":{"content":".","name":"punct"}}],"name":"OP_4"}}],"name":"PCS_1"}}],"name":"F_2"}}
+
+
+#! ThreadId 9045 Output Latex: [\nt{F_2}[\nt{PCS_1}[\nt{OP_4}[\nt{SS_3}[\nt{ppr}[\nt{``Eu"}]]][\nt{SV_5}[\nt{vtd}[\nt{``sei"}]][\nt{SS_8}[\nt{OS_1}[\nt{conjsub}[\nt{``que"}]][\nt{O_2}[\nt{SS_11}[\nt{PrA_1}[\nt{artd}[\nt{``a"}]]][\nt{np}[\nt{``Terra"}]]][\nt{SN_3}[\nt{vlig}[\nt{``é"}]][\nt{SAdj_1}[\nt{adj}[\nt{``redonda"}]]]]]]]][\nt{punct}[\nt{``."}]]]]]
+

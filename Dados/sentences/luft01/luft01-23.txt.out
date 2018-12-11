@@ -1,0 +1,46 @@
+##################################
+#                                #
+#           mw2spa NLP           #
+#                                #
+##################################
+
+Processamento de entrada NLP: arquivo luft01-23.txt
+Gramática NLP: arquivo wirth_mod_nlp_luft_all.txt
+Dicionário NLP: arquivo /home/nkmiura/Documentos/TeseExperimentos/dict/LuftDict.yml
+Done.
+
+#! ThreadId 959 Output Plain: [([([([("Eu"(ppr)SS_3)][("entreguei"(vtdi)[([("o"(artd)PrA_1)]"livro"(n)SS_9)][("a"(prep)[("Luís"(np)SS_7)]SP_3)]SV_7)]"."(punct)OP_4)]PCS_1)]F_2)]
+
+
+#! ThreadId 959 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"Eu","name":"ppr"}}],"name":"SS_3"}},{"nterm":{"children":[{"term":{"content":"entreguei","name":"vtdi"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"o","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"livro","name":"n"}}],"name":"SS_9"}},{"nterm":{"children":[{"term":{"content":"a","name":"prep"}},{"nterm":{"children":[{"term":{"content":"Luís","name":"np"}}],"name":"SS_7"}}],"name":"SP_3"}}],"name":"SV_7"}},{"term":{"content":".","name":"punct"}}],"name":"OP_4"}}],"name":"PCS_1"}}],"name":"F_2"}}
+
+
+#! ThreadId 959 Output Latex: [\nt{F_2}[\nt{PCS_1}[\nt{OP_4}[\nt{SS_3}[\nt{ppr}[\nt{``Eu"}]]][\nt{SV_7}[\nt{vtdi}[\nt{``entreguei"}]][\nt{SS_9}[\nt{PrA_1}[\nt{artd}[\nt{``o"}]]][\nt{n}[\nt{``livro"}]]][\nt{SP_3}[\nt{prep}[\nt{``a"}]][\nt{SS_7}[\nt{np}[\nt{``Luís"}]]]]][\nt{punct}[\nt{``."}]]]]]
+
+
+#! ThreadId 1217 Output Plain: [([([([("Eu"(ppr)SS_3)][("entreguei"(vtdi)[([("o"(artd)PrA_1)]"livro"(n)SS_9)][([("a"(prep)[("Luís"(np)SS_7)]SP_3)]SAdv_6)]SV_6)]"."(punct)OP_4)]PCS_1)]F_2)]
+
+
+#! ThreadId 1217 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"Eu","name":"ppr"}}],"name":"SS_3"}},{"nterm":{"children":[{"term":{"content":"entreguei","name":"vtdi"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"o","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"livro","name":"n"}}],"name":"SS_9"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"a","name":"prep"}},{"nterm":{"children":[{"term":{"content":"Luís","name":"np"}}],"name":"SS_7"}}],"name":"SP_3"}}],"name":"SAdv_6"}}],"name":"SV_6"}},{"term":{"content":".","name":"punct"}}],"name":"OP_4"}}],"name":"PCS_1"}}],"name":"F_2"}}
+
+
+#! ThreadId 1217 Output Latex: [\nt{F_2}[\nt{PCS_1}[\nt{OP_4}[\nt{SS_3}[\nt{ppr}[\nt{``Eu"}]]][\nt{SV_6}[\nt{vtdi}[\nt{``entreguei"}]][\nt{SS_9}[\nt{PrA_1}[\nt{artd}[\nt{``o"}]]][\nt{n}[\nt{``livro"}]]][\nt{SAdv_6}[\nt{SP_3}[\nt{prep}[\nt{``a"}]][\nt{SS_7}[\nt{np}[\nt{``Luís"}]]]]]][\nt{punct}[\nt{``."}]]]]]
+
+
+#! ThreadId 1464 Output Plain: [([([([("Eu"(ppr)SS_3)][("entreguei"(vtdi)[([("o"(artd)PrA_1)]"livro"(n)SS_9)][([("a"(prep)[("Luís"(np)SS_7)]SP_3)]SAdv_6)]SV_6)]"."(punct)OA_4)]PS_1)]F_3)]
+
+
+#! ThreadId 1464 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"Eu","name":"ppr"}}],"name":"SS_3"}},{"nterm":{"children":[{"term":{"content":"entreguei","name":"vtdi"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"o","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"livro","name":"n"}}],"name":"SS_9"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"a","name":"prep"}},{"nterm":{"children":[{"term":{"content":"Luís","name":"np"}}],"name":"SS_7"}}],"name":"SP_3"}}],"name":"SAdv_6"}}],"name":"SV_6"}},{"term":{"content":".","name":"punct"}}],"name":"OA_4"}}],"name":"PS_1"}}],"name":"F_3"}}
+
+
+#! ThreadId 1464 Output Latex: [\nt{F_3}[\nt{PS_1}[\nt{OA_4}[\nt{SS_3}[\nt{ppr}[\nt{``Eu"}]]][\nt{SV_6}[\nt{vtdi}[\nt{``entreguei"}]][\nt{SS_9}[\nt{PrA_1}[\nt{artd}[\nt{``o"}]]][\nt{n}[\nt{``livro"}]]][\nt{SAdv_6}[\nt{SP_3}[\nt{prep}[\nt{``a"}]][\nt{SS_7}[\nt{np}[\nt{``Luís"}]]]]]][\nt{punct}[\nt{``."}]]]]]
+
+
+#! ThreadId 1378 Output Plain: [([([([("Eu"(ppr)SS_3)][("entreguei"(vtdi)[([("o"(artd)PrA_1)]"livro"(n)SS_9)][("a"(prep)[("Luís"(np)SS_7)]SP_3)]SV_7)]"."(punct)OA_4)]PS_1)]F_3)]
+
+
+#! ThreadId 1378 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"Eu","name":"ppr"}}],"name":"SS_3"}},{"nterm":{"children":[{"term":{"content":"entreguei","name":"vtdi"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"o","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"livro","name":"n"}}],"name":"SS_9"}},{"nterm":{"children":[{"term":{"content":"a","name":"prep"}},{"nterm":{"children":[{"term":{"content":"Luís","name":"np"}}],"name":"SS_7"}}],"name":"SP_3"}}],"name":"SV_7"}},{"term":{"content":".","name":"punct"}}],"name":"OA_4"}}],"name":"PS_1"}}],"name":"F_3"}}
+
+
+#! ThreadId 1378 Output Latex: [\nt{F_3}[\nt{PS_1}[\nt{OA_4}[\nt{SS_3}[\nt{ppr}[\nt{``Eu"}]]][\nt{SV_7}[\nt{vtdi}[\nt{``entreguei"}]][\nt{SS_9}[\nt{PrA_1}[\nt{artd}[\nt{``o"}]]][\nt{n}[\nt{``livro"}]]][\nt{SP_3}[\nt{prep}[\nt{``a"}]][\nt{SS_7}[\nt{np}[\nt{``Luís"}]]]]][\nt{punct}[\nt{``."}]]]]]
+

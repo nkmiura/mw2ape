@@ -1,0 +1,28 @@
+##################################
+#                                #
+#           mw2spa NLP           #
+#                                #
+##################################
+
+Processamento de entrada NLP: arquivo luft01-46.txt
+Gramática NLP: arquivo wirth_mod_nlp_luft_all.txt
+Dicionário NLP: arquivo /home/nkmiura/Documentos/TeseExperimentos/dict/LuftDict.yml
+Done.
+
+#! ThreadId 137 Output Plain: [([([([("Está"(vlig)[("calor"(n)SS_6)]SN_6)]"."(punct)OA_2)]PS_1)]F_3)]
+
+
+#! ThreadId 136 Output Plain: [([([([("Está"(vlig)[("calor"(n)SS_6)]SN_6)]"."(punct)OP_2)]PCS_1)]F_2)]
+
+
+#! ThreadId 137 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"Está","name":"vlig"}},{"nterm":{"children":[{"term":{"content":"calor","name":"n"}}],"name":"SS_6"}}],"name":"SN_6"}},{"term":{"content":".","name":"punct"}}],"name":"OA_2"}}],"name":"PS_1"}}],"name":"F_3"}}
+
+
+#! ThreadId 136 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"Está","name":"vlig"}},{"nterm":{"children":[{"term":{"content":"calor","name":"n"}}],"name":"SS_6"}}],"name":"SN_6"}},{"term":{"content":".","name":"punct"}}],"name":"OP_2"}}],"name":"PCS_1"}}],"name":"F_2"}}
+
+
+#! ThreadId 136 Output Latex: [\nt{F_2}[\nt{PCS_1}[\nt{OP_2}[\nt{SN_6}[\nt{vlig}[\nt{``Está"}]][\nt{SS_6}[\nt{n}[\nt{``calor"}]]]][\nt{punct}[\nt{``."}]]]]]
+
+
+#! ThreadId 137 Output Latex: [\nt{F_3}[\nt{PS_1}[\nt{OA_2}[\nt{SN_6}[\nt{vlig}[\nt{``Está"}]][\nt{SS_6}[\nt{n}[\nt{``calor"}]]]][\nt{punct}[\nt{``."}]]]]]
+

@@ -1,0 +1,28 @@
+##################################
+#                                #
+#           mw2spa NLP           #
+#                                #
+##################################
+
+Processamento de entrada NLP: arquivo luft01-07.txt
+Gramática NLP: arquivo wirth_mod_nlp_luft_all.txt
+Dicionário NLP: arquivo /home/nkmiura/Documentos/TeseExperimentos/dict/LuftDict.yml
+Done.
+
+#! ThreadId 370 Output Plain: [([([([([("A"(artd)PrA_1)]"criança"(n)SS_9)][("está"(vlig)[("gripada"(adj)SAdj_1)]SN_3)]"."(punct)OP_3)]PCS_1)]F_2)]
+
+
+#! ThreadId 370 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"A","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"criança","name":"n"}}],"name":"SS_9"}},{"nterm":{"children":[{"term":{"content":"está","name":"vlig"}},{"nterm":{"children":[{"term":{"content":"gripada","name":"adj"}}],"name":"SAdj_1"}}],"name":"SN_3"}},{"term":{"content":".","name":"punct"}}],"name":"OP_3"}}],"name":"PCS_1"}}],"name":"F_2"}}
+
+
+#! ThreadId 370 Output Latex: [\nt{F_2}[\nt{PCS_1}[\nt{OP_3}[\nt{SS_9}[\nt{PrA_1}[\nt{artd}[\nt{``A"}]]][\nt{n}[\nt{``criança"}]]][\nt{SN_3}[\nt{vlig}[\nt{``está"}]][\nt{SAdj_1}[\nt{adj}[\nt{``gripada"}]]]][\nt{punct}[\nt{``."}]]]]]
+
+
+#! ThreadId 366 Output Plain: [([([([([("A"(artd)PrA_1)]"criança"(n)SS_9)][("está"(vlig)[("gripada"(adj)SAdj_1)]SN_3)]"."(punct)OA_3)]PS_1)]F_3)]
+
+
+#! ThreadId 366 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"A","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"criança","name":"n"}}],"name":"SS_9"}},{"nterm":{"children":[{"term":{"content":"está","name":"vlig"}},{"nterm":{"children":[{"term":{"content":"gripada","name":"adj"}}],"name":"SAdj_1"}}],"name":"SN_3"}},{"term":{"content":".","name":"punct"}}],"name":"OA_3"}}],"name":"PS_1"}}],"name":"F_3"}}
+
+
+#! ThreadId 366 Output Latex: [\nt{F_3}[\nt{PS_1}[\nt{OA_3}[\nt{SS_9}[\nt{PrA_1}[\nt{artd}[\nt{``A"}]]][\nt{n}[\nt{``criança"}]]][\nt{SN_3}[\nt{vlig}[\nt{``está"}]][\nt{SAdj_1}[\nt{adj}[\nt{``gripada"}]]]][\nt{punct}[\nt{``."}]]]]]
+

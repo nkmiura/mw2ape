@@ -1,0 +1,46 @@
+##################################
+#                                #
+#           mw2spa NLP           #
+#                                #
+##################################
+
+Processamento de entrada NLP: arquivo luft02-02.txt
+Gramática NLP: arquivo wirth_mod_nlp_luft_all.txt
+Dicionário NLP: arquivo /home/nkmiura/Documentos/TeseExperimentos/dict/LuftDict.yml
+Done.
+
+#! ThreadId 775 Output Plain: [([([([([("Este"(pd)PrA_3)]"livro"(n)SS_9)][("é"(vlig)[("de"(prep)[([("muito"(pind)PrA_5)]"valor"(n)SS_9)]SP_3)]SN_5)]"."(punct)OP_3)]PCS_1)]F_2)]
+
+
+#! ThreadId 775 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"Este","name":"pd"}}],"name":"PrA_3"}},{"term":{"content":"livro","name":"n"}}],"name":"SS_9"}},{"nterm":{"children":[{"term":{"content":"é","name":"vlig"}},{"nterm":{"children":[{"term":{"content":"de","name":"prep"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"muito","name":"pind"}}],"name":"PrA_5"}},{"term":{"content":"valor","name":"n"}}],"name":"SS_9"}}],"name":"SP_3"}}],"name":"SN_5"}},{"term":{"content":".","name":"punct"}}],"name":"OP_3"}}],"name":"PCS_1"}}],"name":"F_2"}}
+
+
+#! ThreadId 775 Output Latex: [\nt{F_2}[\nt{PCS_1}[\nt{OP_3}[\nt{SS_9}[\nt{PrA_3}[\nt{pd}[\nt{``Este"}]]][\nt{n}[\nt{``livro"}]]][\nt{SN_5}[\nt{vlig}[\nt{``é"}]][\nt{SP_3}[\nt{prep}[\nt{``de"}]][\nt{SS_9}[\nt{PrA_5}[\nt{pind}[\nt{``muito"}]]][\nt{n}[\nt{``valor"}]]]]][\nt{punct}[\nt{``."}]]]]]
+
+
+#! ThreadId 1159 Output Plain: [([([([([("Este"(pd)PrA_3)]"livro"(n)SS_9)][("é"(vlig)[([("de"(prep)[([("muito"(pind)PrA_5)]"valor"(n)SS_9)]SP_3)]SAdv_6)]SN_4)]"."(punct)OA_3)]PS_1)]F_3)]
+
+
+#! ThreadId 1159 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"Este","name":"pd"}}],"name":"PrA_3"}},{"term":{"content":"livro","name":"n"}}],"name":"SS_9"}},{"nterm":{"children":[{"term":{"content":"é","name":"vlig"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"de","name":"prep"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"muito","name":"pind"}}],"name":"PrA_5"}},{"term":{"content":"valor","name":"n"}}],"name":"SS_9"}}],"name":"SP_3"}}],"name":"SAdv_6"}}],"name":"SN_4"}},{"term":{"content":".","name":"punct"}}],"name":"OA_3"}}],"name":"PS_1"}}],"name":"F_3"}}
+
+
+#! ThreadId 1159 Output Latex: [\nt{F_3}[\nt{PS_1}[\nt{OA_3}[\nt{SS_9}[\nt{PrA_3}[\nt{pd}[\nt{``Este"}]]][\nt{n}[\nt{``livro"}]]][\nt{SN_4}[\nt{vlig}[\nt{``é"}]][\nt{SAdv_6}[\nt{SP_3}[\nt{prep}[\nt{``de"}]][\nt{SS_9}[\nt{PrA_5}[\nt{pind}[\nt{``muito"}]]][\nt{n}[\nt{``valor"}]]]]]][\nt{punct}[\nt{``."}]]]]]
+
+
+#! ThreadId 896 Output Plain: [([([([([("Este"(pd)PrA_3)]"livro"(n)SS_9)][("é"(vlig)[([("de"(prep)[([("muito"(pind)PrA_5)]"valor"(n)SS_9)]SP_3)]SAdv_6)]SN_4)]"."(punct)OP_3)]PCS_1)]F_2)]
+
+
+#! ThreadId 896 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"Este","name":"pd"}}],"name":"PrA_3"}},{"term":{"content":"livro","name":"n"}}],"name":"SS_9"}},{"nterm":{"children":[{"term":{"content":"é","name":"vlig"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"de","name":"prep"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"muito","name":"pind"}}],"name":"PrA_5"}},{"term":{"content":"valor","name":"n"}}],"name":"SS_9"}}],"name":"SP_3"}}],"name":"SAdv_6"}}],"name":"SN_4"}},{"term":{"content":".","name":"punct"}}],"name":"OP_3"}}],"name":"PCS_1"}}],"name":"F_2"}}
+
+
+#! ThreadId 896 Output Latex: [\nt{F_2}[\nt{PCS_1}[\nt{OP_3}[\nt{SS_9}[\nt{PrA_3}[\nt{pd}[\nt{``Este"}]]][\nt{n}[\nt{``livro"}]]][\nt{SN_4}[\nt{vlig}[\nt{``é"}]][\nt{SAdv_6}[\nt{SP_3}[\nt{prep}[\nt{``de"}]][\nt{SS_9}[\nt{PrA_5}[\nt{pind}[\nt{``muito"}]]][\nt{n}[\nt{``valor"}]]]]]][\nt{punct}[\nt{``."}]]]]]
+
+
+#! ThreadId 716 Output Plain: [([([([([("Este"(pd)PrA_3)]"livro"(n)SS_9)][("é"(vlig)[("de"(prep)[([("muito"(pind)PrA_5)]"valor"(n)SS_9)]SP_3)]SN_5)]"."(punct)OA_3)]PS_1)]F_3)]
+
+
+#! ThreadId 716 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"Este","name":"pd"}}],"name":"PrA_3"}},{"term":{"content":"livro","name":"n"}}],"name":"SS_9"}},{"nterm":{"children":[{"term":{"content":"é","name":"vlig"}},{"nterm":{"children":[{"term":{"content":"de","name":"prep"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"muito","name":"pind"}}],"name":"PrA_5"}},{"term":{"content":"valor","name":"n"}}],"name":"SS_9"}}],"name":"SP_3"}}],"name":"SN_5"}},{"term":{"content":".","name":"punct"}}],"name":"OA_3"}}],"name":"PS_1"}}],"name":"F_3"}}
+
+
+#! ThreadId 716 Output Latex: [\nt{F_3}[\nt{PS_1}[\nt{OA_3}[\nt{SS_9}[\nt{PrA_3}[\nt{pd}[\nt{``Este"}]]][\nt{n}[\nt{``livro"}]]][\nt{SN_5}[\nt{vlig}[\nt{``é"}]][\nt{SP_3}[\nt{prep}[\nt{``de"}]][\nt{SS_9}[\nt{PrA_5}[\nt{pind}[\nt{``muito"}]]][\nt{n}[\nt{``valor"}]]]]][\nt{punct}[\nt{``."}]]]]]
+

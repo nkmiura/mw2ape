@@ -1,0 +1,12 @@
+F = PCS .
+PCS = OP .
+OP = SS SN "punct".
+OS = SS SV .
+PrA = "pd" .
+SN = "vaux" "vpart" SP .
+SP = "prep" SS .
+SS = PrA "n" .
+SS = OS .
+SS = "pr" .
+SS = "ppoa" .
+SV = SS "vtd" .

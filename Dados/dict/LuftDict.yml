@@ -1,0 +1,474 @@
+.:
+- [punct, .]
+a:
+- [artd, o, F_S, '', artd, '']
+- [prep, a, '', '', '', '']
+a_:
+- [prep, a, '', '', '', '']
+A:
+- [artd, o, F_S, '', artd, '']
+- [prep, a, '', '']
+acha:
+- [vtpred, achar, PR_3S_IND, '', '', '']
+acordou:
+- [vtpred, acordar, PS_3S_IND, '', nosubj, '']
+admirado:
+- [vpart, admirar, M_S, '', '', '']
+adoeceu:
+- [vint, adoecer, PS_3S_IND, '', '', '']
+ajudem:
+- [vtd, ajudar, PR_3P_SUBJ, '', fs-rel, '']
+algo:
+- [pind, algo, M_S, '', quant, '']
+"Algu\xE9m":
+- [pind, "algu\xE9m", M_S, '', '', '']
+Algum:
+- [pind, algum, M_S, '', quant, '']
+alguns:
+- [pind, algum, M_P, '', quant, '']
+aluno:
+- [n, aluno, M_S, '', anr_np-count, anr_np-def, '']
+Amo:
+- [vtd, amar, PR_1S_IND, '', fs-subst, '']
+aquele:
+- [pd, aquele, M_S, '', dem, '']
+Aquele:
+- [pd, aquele, M_S, '', dem, '']
+aqui:
+- [adv, aqui, '', '']
+atirou:
+- [vtdi, atirar, PS_3S_IND, '', '', '']
+atrasado:
+- [adj, atrasado, M_S, '']
+aula:
+- [n, aula, F_S, '', np-idf, '']
+biblioteca:
+- [n, biblioteca, F_S, '', np-def, '']
+bonita:
+- [adj, bonita, F_S, '']
+"Bras\xEDlia":
+- [np, "Bras\xEDlia", F_S, '']
+caderno:
+- [n, caderno, M_S, '', np-idf, '']
+calor:
+- [n, calor, M_S, '', np-def, '']
+"Cam\xF5es":
+- [np, "Cam\xF5es", M_S, '']
+campo:
+- [n, campo, M_S, '', np-idf, '']
+Carlos:
+- [np, Carlos, M_S, '', '', '']
+carro:
+- [n, carro, M_S, '', np-def, '']
+casa:
+- [n, casa, F_S, '', np-idf, '']
+cedo:
+- [adv, cedo, '', '', '', '']
+centro:
+- [n, centro, M_S, '', np-def, '']
+Chove:
+- [vint, chover, PR_3S_IND, '', '', '']
+chovendo:
+- [vint, chover, GER, '', '', '']
+cinquenta:
+- [nc, cinquenta, F_P, '', card, '']
+cinto:
+- [n, cinto, M_S, '', np-def, '']
+citou:
+- [vtd, citar, PS_3S_IND, '', nosubj, '']
+colega:
+- [n, colega, MF_S, '', anr_np-idf, '']
+colegas:
+- [n, colega, MF_P, '', np-def, '']
+"col\xE9gio":
+- [n, "col\xE9gio", M_S, '', np-def, '']
+colocou:
+- [vtdi, colocar, PS_3S_IND, '', '', '']
+com:
+- [prep, com, '', '', '', '']
+como:
+- [pr, como, '', '', rel, '']
+concorda:
+- [vti, concordar, PR_3S_IND, '', '', '']
+conhece:
+- [vtd, conhecer, PR_3S_IND, '', fs-subst, nosubj, '']
+conhecem:
+- [vtd, conhecer, PR_3P_IND, '', fs-subst, nosubj, '']
+considera:
+- [vtpred, considerar, PR_3S_IND, '', fs-rel, nosubj, '']
+contra:
+- [prep, contra, '', '', '', '']
+coragem:
+- [n, coragem, F_S, '', np-idf, '']
+"crian\xE7a":
+- [n, "crian\xE7a", F_S, '', np-idf, '']
+cuja:
+- [pr, cujo, F_S, '', rel, '']
+custa:
+- [vtd, custar, PR_3S_IND, '', nosubj, '']
+de:
+- [prep, de, '', '', '', '']
+de+:
+- [prep, de, '', '', '', '']
+depende:
+- [vti, depender, PR_3S_IND, '', '', '']
+desenho:
+- [n, desenho, M_S, '', np-idf, '']
+Deu:
+- [vtd, dar, PS_3S_IND, '']
+deve:
+- [vaux, dever, PR_3S_IND, '', '', '']
+dia:
+- [n, dia, M_S, '', anr_np-def, '']
+doente:
+- [adj, doente, MF_S, '', '', '']
+dono:
+- [n, dono, M_S, '', np-def, '']
+do_que:
+- [conjsub, do_que, '', '', '', '']
+dorme:
+- [vint, dormir, PR_3S_IND, '', fs-rel, '']
+- [vtpred, dormir, PR_3S_IND, '', fs-rel, '']
+doutor:
+- [n, doutor, M_S, '', np-idf, '']
+durou:
+- [vtd, durar, PS_3S_IND, '']
+e:
+- [conjcoord, e, '', '', co-prparg, '']
+"\xE9":
+- [vlig, ser, PR_3S_IND, '', '', '']
+- [vaux, ser, PR_3S_IND, '', '', '']
+"\xC9":
+- [vlig, ser, PR_3S_IND, '', '', '']
+- [vaux, ser, PR_3S_IND, '', '', '']
+Ela:
+- [ppr, ela, F_3S_NOM, '']
+Ele:
+- [ppr, ele, M_3S_NOM, '']
+ele:
+- [ppr, ele, M_3S_NOM, '']
+elegemos:
+- [vtpred, eleger, PR_1P_IND, '', fs-rel, nosubj, '']
+em:
+- [prep, em, '', '', '', '']
+em+:
+- [prep, em, '', '', '', '']
+Embora:
+- [conjsub, embora, '', '', '', '']
+emprestou:
+- [vtdi, emprestar, PS_3S_IND, '', '', '']
+encontrou:
+- [vtpred, encontrar, PS_3S_IND, '', '', '']
+engenheiro:
+- [n, engenheiro, M_S, '', np-def, '']
+entreguei:
+- [vtdi, entregar, PS_1S_IND, '', nosubj, '']
+entrou:
+- [vti, entrar, PS_3S_IND, '', '', '']
+Era:
+- [vlig, ser, IMPF_3S_IND, '']
+escutam:
+- [vint, escutar, PR_3P_IND, '', nosubj, '']
+"esfor\xE7o":
+- [n, "esfor\xE7o", M_S, '', anr_np-def, '']
+Esse:
+- [pd, esse, M_S, '', dem, '']
+"est\xE1":
+- [vlig, estar, PR_3S_IND, '', '', '']
+"Est\xE1":
+- [vlig, estar, PR_3S_IND, '', '', '']
+Este:
+- [pd, este, M_S, '', dem, '']
+esteve:
+- [vlig, estar, PS_3S_IND, '', '', '']
+estivesse:
+- [vlig, estar, IMPF_3S_SUBJ, '', fs-subst, '']
+estudar:
+- [vint, estudar, INF, '', '', '']
+estudou:
+- [vint, estudar, PS_3S_IND, '', '', '']
+eu:
+- [ppr, eu, MF_1S_NOM, '', '', '']
+Eu:
+- [ppr, eu, MF_1S_NOM, '', '', '']
+fala:
+- [vint, falar, PR_3S_IND, '', '', '']
+falei:
+- [vti, falar, PS_1S_IND, '', nosubj, '']
+falou:
+- [vint, falar, PS_3S_IND, '', '', '']
+faltou:
+- [vti, faltar, PS_3S_IND, '', fs-subst, '']
+Faz:
+- [vtd, fazer, PR_3S_IND, '', fs-rel, '']
+febre:
+- [n, febre, F_S, '', np-idf, '']
+filho:
+- [n, filho, M_S, '', '', '']
+filhos:
+- [n, filho, M_P, '', anr_np-count, anr_np-def, '']
+foi:
+- [vlig, ser, PS_3S_IND, '', '', '']
+- [vti, ir, PS_3S_IND, '', '', '']
+fortuna:
+- [n, fortuna, F_S, '', np-idf, '']
+"franc\xEAs":
+- [adj, "franc\xEAs", M_S, '', '', '']
+frio:
+- [n, frio, M_S, '', anr_np-idf, '']
+fulano:
+- [n, fulano, M_S, '', np-idf, '']
+"g\xEAnio":
+- [n, "g\xEAnio", M_S, '', np-idf, '']
+grandes:
+- [adj, grande, M_P, '', '', '']
+gripada:
+- [adj, gripada, F_S, '', '', '']
+gripado:
+- [adj, gripada, M_S, '', '', '']
+gripe:
+- [n, gripe, F_S, '', np-idf, '']
+hoje:
+- [advt, hoje, '', '', '', '']
+homem:
+- [n, homem, M_S, '', np-idf, '']
+horas:
+- [n, hora, F_P, '', anr_np-count, anr_np-def, '']
+"horr\xEDvel":
+- [adj, "horr\xEDvel", MF_S, '', '', '']
+Houve:
+- [vtd, haver, PS_3S_IND, '', fs-cause, nofsubj, '']
+"inoc\xEAncia":
+- [n, "inoc\xEAncia", F_S, '']
+inquieta:
+- [adj, inquieta, F_S, '', '', '']
+inteligente:
+- [adj, inteligente, M_S, '', '', '']
+"irm\xE3o":
+- [n, "irm\xE3o", M_S, '', np-def, '']
+"Jo\xE3o":
+- [np, "Jo\xE3o", M_S, '', '', '']
+"Jos\xE9":
+- [np, "Jos\xE9", M_S, '', '', '']
+julgava:
+- [vtpred, julgar, IMPF_3S_IND, '', '', '']
+"l\xE1":
+- [adv, "l\xE1", '', '', '', '']
+lembrei:
+- [vtdi, lembrar, PS_1S_IND, '', nosubj, '']
+Leo:
+- [np, Leo, M_S, '', '', '']
+livro:
+- [n, livro, M_S, '', np-idf, '']
+livros:
+- [n, livro, M_P, '', anr_np-count, anr_np-def, '']
+lugar:
+- [n, lugar, M_S, '', np-def, '']
+"Lu\xEDs":
+- [np, "Lu\xEDs", M_S, '', '', '']
+mais:
+- [advint, mais, _, '', KOMP, quant, '']
+mala:
+- [n, mala, F_S, '', np-idf, '']
+Maria:
+- [np, Maria, F_S, '', '', '']
+meia-noite:
+- [n, meia-noite, F_S, '', np-idf, '']
+menino:
+- [n, menino, M_S, '', np-idf, '']
+Meu:
+- [pps, meu, M_S, '', '', '']
+Meus:
+- [pps, meu, M_P, '', np-def, '']
+minha:
+- [pps, meu, F_S, '', '', '']
+minutos:
+- [n, minuto, M_P, '', anr_np-count, anr_np-def, '']
+mora:
+- [vti, morar, PR_3S_IND, '', '', '']
+muito:
+- [pind, muito, M_S, '', quant, '']
+- [advint, muito, '', '', quant, '']
+"n\xE3o":
+- [neg, "n\xE3o", '', '']
+nasci:
+- [vint, nascer, PS_1S_IND, '', fs-rel, nosubj, '']
+Nenhum:
+- [pind, nenhum, M_S, '', quant, '']
+noite:
+- [n, noite, F_S, '', np-def, '']
+"N\xF3s":
+- [pps, "n\xF3s", MF_1P_NOM/PIV, '', '', '']
+nove:
+- [nc, nove, M_P, '', card, '']
+o:
+- [artd, o, M_S, '', artd, '']
+- [ppoa, ele, M_3S_ACC, '', '', '']
+O:
+- [artd, o, M_S, '', artd, '']
+- [ppoa, ele, M_3S_ACC, '', '', '']
+obedece:
+- [vti, obedecer, PR_3S_IND, '', '', '']
+objeto:
+- [n, objeto, M_S, '', np-idf, '']
+obra:
+- [n, obra, F_S, '', np-def, '']
+onde:
+- [pr, onde, '', '', rel, '']
+ontem:
+- [advt, ontem, '', '', '', '']
+os:
+- [artd, o, M_P, '', artd, '']
+- [ppoa, eles, M_3P_ACC, '', '', '']
+Os:
+- [artd, o, M_P, '', artd, '']
+- [ppoa, eles, M_3P_ACC, '', '', '']
+outro:
+- [pind, outro, M_S, '', KOMP, diff, '']
+pai:
+- [n, pai, M_S, '', anr_np-def, '']
+pais:
+- [n, pai, M_P, '', np-idf, '']
+para:
+- [prep, para, '', '', '', '']
+parede:
+- [n, parede, F_S, '', '', '']
+Passa:
+- [vti, passar, PR_3S_IND, '', fs-subst, '']
+"p\xE1ssaros":
+- [n, "p\xE1ssaro", M_P, '', np-def, '']
+Paulo:
+- [np, Paulo, M_S, '', '', '']
+Pedro:
+- [np, Pedro, M_S, '', '', '']
+pesa:
+- [vtd, pesar, PR_3S_IND, '', nosubj, '']
+planeta:
+- [n, planeta, M_S, '', anr_np-idf, '']
+poeta:
+- [n, poeta, M_S, '', anr_np-def, '']
+por:
+- [prep, por, '', '', '', '']
+por_:
+- [prep, por, '', '', '', '']
+porque:
+- [conjsub, porque, '', '', '', '']
+- [adv, porque, '', '', interr, '']
+possam:
+- [vaux, poder, PR_3P_SUBJ, '', '', '']
+precisam:
+- [vti, precisar, PR_3P_IND, '', fs-rel, '']
+presente:
+- [n, presente, M_S, '', '', '']
+presidente:
+- [n, presidente, M_S, '', np-def, '']
+primavera:
+- [n, primavera, F_S, '', '', '']
+problema:
+- [n, problema, M_S, '', np-def, '']
+professor:
+- [n, professor, M_S, '', np-idf, '']
+progresso:
+- [n, progresso, M_S, '', np-def, '']
+promessa:
+- [n, promessa, F_S, '', np-def, '']
+provar:
+- [vtd, provar, INF, '', '', '']
+quantos:
+- [pr, quanto, M_P, '', rel, '']
+quarto:
+- [n, quarto, M_S, '', np-def, '']
+quartos:
+- [n, quarto, M_P, '', anr_np-count, anr_np-def, '']
+que:
+- [pr, que, MF_S, '', rel, '']
+- [conjsub, que, '', '', '', '']
+quem:
+- [pr, quem, MF_S, '', rel, '']
+quente:
+- [adj, quente, M_S, '', '', '']
+quilos:
+- [n, quilo, M_P, '', np-idf, '']
+rapaz:
+- [n, rapaz, M_S, '', np-def, '']
+recebeu:
+- [vtdi, receber, PS_3S_IND, '', fs-subst, nosubj, '']
+redonda:
+- [adj, redonda, F_S, '', '', '']
+"R\xE9gis":
+- [np, "R\xE9gis", M_S, '', '', '']
+respeita:
+- [vtd, respeitar, PR_3S_IND, '', '', '']
+"reuni\xE3o":
+- [n, "reuni\xE3o", F_S, '', np-def, '']
+Roberto:
+- [np, Roberto, M_S, '', '', '']
+Rui:
+- [np, Rui, M_S, '', '', '']
+saiu:
+- [vtpred, sair, PS_3S_IND, '', '', '']
+se:
+- [conjsub, se, '', '', '', '']
+sede:
+- [n, sede, F_S, '', np-idf, '']
+sei:
+- [vtd, saber, PR_1S_IND, '', nosubj, '']
+sem:
+- [prep, sem, '', '', '', '']
+ser:
+- [vlig, ser, INF, '', '', '']
+seu:
+- [pps, seu, M_S, '', '', '']
+supunha:
+- [vtpred, supor, PR_3S_IND, '', '', '']
+tanto:
+- [advint, tanto, '', '', parkc-1, '']
+te:
+- [ppoa, tu, M_2S_DAT, '', '', '']
+tem:
+- [vtd, ter, PR_3S_IND, '', '', '']
+tempo:
+- [n, tempo, M_S, '', np-idf, '']
+Tenho:
+- [vtd, ter, PR_1S_IND, '', '', '']
+Teresa:
+- [np, Teresa, F_S, '', '', '']
+terra:
+- [n, terra, F_S, '', np-def, prop, '']
+Terra:
+- [np, terra, F_S, '', np-def, prop, '']
+tiverem:
+- [vtd, ter, FUT_3P_SUBJ, '', nosubj, '']
+Todos:
+- [pind, todo, M_P, '', quant, '']
+trabalha:
+- [vint, trabalhar, PR_3S_IND, '', fs-rel, '']
+transporta:
+- [vtdi, transportar, PR_3S_IND, '', nosubj, '']
+trem:
+- [n, trem, M_S, '', np-def, '']
+"tr\xEAs":
+- [nc, "tr\xEAs", M_P, '', card, '']
+um:
+- [arti, um, M_S, '', arti, '']
+uma:
+- [arti, um, F_S, '', arti, '']
+Uruguaiana:
+- [np, Uruguaiana, M_S, '']
+vai:
+- [vti, ir, PR_3S_IND, '']
+valioso:
+- [adj, valioso, M_S, '', '', '']
+valor:
+- [n, valor, M_S, '', np-idf, '']
+vi:
+- [vtd, ver, PS_1S_IND, '', fs-subst, '']
+vinte:
+- [nc, vinte, F_P, '', card, '']
+"vir\xE3o":
+- [vint, vir, FUT_3P_IND, '', '', '']
+voam:
+- [vint, voar, PR_3P_IND, '', '', '']
+voltou:
+- [vti, voltar, PS_3S_IND, '', '', '']
+- [vtpred, voltar, PS_3S_IND, '', '', '']

@@ -1,0 +1,46 @@
+##################################
+#                                #
+#           mw2spa NLP           #
+#                                #
+##################################
+
+Processamento de entrada NLP: arquivo luft01-06.txt
+Gramática NLP: arquivo wirth_mod_nlp_luft_all.txt
+Dicionário NLP: arquivo /home/nkmiura/Documentos/TeseExperimentos/dict/LuftDict.yml
+Done.
+
+#! ThreadId 814 Output Plain: [([([([([("A"(artd)PrA_1)]"criança"(n)SS_9)][("está"(vlig)[("com"(prep)[("gripe"(n)SS_6)]SP_3)]SN_5)]"."(punct)OA_3)]PS_1)]F_3)]
+
+
+#! ThreadId 814 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"A","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"criança","name":"n"}}],"name":"SS_9"}},{"nterm":{"children":[{"term":{"content":"está","name":"vlig"}},{"nterm":{"children":[{"term":{"content":"com","name":"prep"}},{"nterm":{"children":[{"term":{"content":"gripe","name":"n"}}],"name":"SS_6"}}],"name":"SP_3"}}],"name":"SN_5"}},{"term":{"content":".","name":"punct"}}],"name":"OA_3"}}],"name":"PS_1"}}],"name":"F_3"}}
+
+
+#! ThreadId 814 Output Latex: [\nt{F_3}[\nt{PS_1}[\nt{OA_3}[\nt{SS_9}[\nt{PrA_1}[\nt{artd}[\nt{``A"}]]][\nt{n}[\nt{``criança"}]]][\nt{SN_5}[\nt{vlig}[\nt{``está"}]][\nt{SP_3}[\nt{prep}[\nt{``com"}]][\nt{SS_6}[\nt{n}[\nt{``gripe"}]]]]][\nt{punct}[\nt{``."}]]]]]
+
+
+#! ThreadId 888 Output Plain: [([([([([("A"(artd)PrA_1)]"criança"(n)SS_9)][("está"(vlig)[([("com"(prep)[("gripe"(n)SS_6)]SP_3)]SAdv_6)]SN_4)]"."(punct)OA_3)]PS_1)]F_3)]
+
+
+#! ThreadId 888 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"A","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"criança","name":"n"}}],"name":"SS_9"}},{"nterm":{"children":[{"term":{"content":"está","name":"vlig"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"com","name":"prep"}},{"nterm":{"children":[{"term":{"content":"gripe","name":"n"}}],"name":"SS_6"}}],"name":"SP_3"}}],"name":"SAdv_6"}}],"name":"SN_4"}},{"term":{"content":".","name":"punct"}}],"name":"OA_3"}}],"name":"PS_1"}}],"name":"F_3"}}
+
+
+#! ThreadId 888 Output Latex: [\nt{F_3}[\nt{PS_1}[\nt{OA_3}[\nt{SS_9}[\nt{PrA_1}[\nt{artd}[\nt{``A"}]]][\nt{n}[\nt{``criança"}]]][\nt{SN_4}[\nt{vlig}[\nt{``está"}]][\nt{SAdv_6}[\nt{SP_3}[\nt{prep}[\nt{``com"}]][\nt{SS_6}[\nt{n}[\nt{``gripe"}]]]]]][\nt{punct}[\nt{``."}]]]]]
+
+
+#! ThreadId 1866 Output Plain: [([([([([("A"(artd)PrA_1)]"criança"(n)SS_9)][("está"(vlig)[([("com"(prep)[("gripe"(n)SS_6)]SP_3)]SAdv_6)]SN_4)]"."(punct)OP_3)]PCS_1)]F_2)]
+
+
+#! ThreadId 1866 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"A","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"criança","name":"n"}}],"name":"SS_9"}},{"nterm":{"children":[{"term":{"content":"está","name":"vlig"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"com","name":"prep"}},{"nterm":{"children":[{"term":{"content":"gripe","name":"n"}}],"name":"SS_6"}}],"name":"SP_3"}}],"name":"SAdv_6"}}],"name":"SN_4"}},{"term":{"content":".","name":"punct"}}],"name":"OP_3"}}],"name":"PCS_1"}}],"name":"F_2"}}
+
+
+#! ThreadId 1744 Output Plain: [([([([([("A"(artd)PrA_1)]"criança"(n)SS_9)][("está"(vlig)[("com"(prep)[("gripe"(n)SS_6)]SP_3)]SN_5)]"."(punct)OP_3)]PCS_1)]F_2)]
+
+
+#! ThreadId 1866 Output Latex: [\nt{F_2}[\nt{PCS_1}[\nt{OP_3}[\nt{SS_9}[\nt{PrA_1}[\nt{artd}[\nt{``A"}]]][\nt{n}[\nt{``criança"}]]][\nt{SN_4}[\nt{vlig}[\nt{``está"}]][\nt{SAdv_6}[\nt{SP_3}[\nt{prep}[\nt{``com"}]][\nt{SS_6}[\nt{n}[\nt{``gripe"}]]]]]][\nt{punct}[\nt{``."}]]]]]
+
+
+#! ThreadId 1744 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"A","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"criança","name":"n"}}],"name":"SS_9"}},{"nterm":{"children":[{"term":{"content":"está","name":"vlig"}},{"nterm":{"children":[{"term":{"content":"com","name":"prep"}},{"nterm":{"children":[{"term":{"content":"gripe","name":"n"}}],"name":"SS_6"}}],"name":"SP_3"}}],"name":"SN_5"}},{"term":{"content":".","name":"punct"}}],"name":"OP_3"}}],"name":"PCS_1"}}],"name":"F_2"}}
+
+
+#! ThreadId 1744 Output Latex: [\nt{F_2}[\nt{PCS_1}[\nt{OP_3}[\nt{SS_9}[\nt{PrA_1}[\nt{artd}[\nt{``A"}]]][\nt{n}[\nt{``criança"}]]][\nt{SN_5}[\nt{vlig}[\nt{``está"}]][\nt{SP_3}[\nt{prep}[\nt{``com"}]][\nt{SS_6}[\nt{n}[\nt{``gripe"}]]]]][\nt{punct}[\nt{``."}]]]]]
+

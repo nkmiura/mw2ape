@@ -1,0 +1,82 @@
+##################################
+#                                #
+#           mw2spa NLP           #
+#                                #
+##################################
+
+Processamento de entrada NLP: arquivo luft01-28.txt
+Gramática NLP: arquivo wirth_mod_nlp_luft_all.txt
+Dicionário NLP: arquivo /home/nkmiura/Documentos/TeseExperimentos/dict/LuftDict.yml
+Done.
+
+#! ThreadId 394 Output Plain: [([([([([("Rui"(np)SS_7)][("voltou"(vti)[("de"(prep)[("Brasília"(np)SS_7)]SP_3)]SV_10)]Nuc_1)][([("para"(prep)[("Uruguaiana"(np)SS_7)]SP_3)]SAdv_6)]"."(punct)OA_1)]PS_1)]F_3)]
+
+
+#! ThreadId 394 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"Rui","name":"np"}}],"name":"SS_7"}},{"nterm":{"children":[{"term":{"content":"voltou","name":"vti"}},{"nterm":{"children":[{"term":{"content":"de","name":"prep"}},{"nterm":{"children":[{"term":{"content":"Brasília","name":"np"}}],"name":"SS_7"}}],"name":"SP_3"}}],"name":"SV_10"}}],"name":"Nuc_1"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"para","name":"prep"}},{"nterm":{"children":[{"term":{"content":"Uruguaiana","name":"np"}}],"name":"SS_7"}}],"name":"SP_3"}}],"name":"SAdv_6"}},{"term":{"content":".","name":"punct"}}],"name":"OA_1"}}],"name":"PS_1"}}],"name":"F_3"}}
+
+
+#! ThreadId 484 Output Plain: [([([([([("Rui"(np)SS_7)][("voltou"(vti)[([("de"(prep)[("Brasília"(np)SS_7)]SP_3)]SAdv_6)]SV_9)]Nuc_1)][([("para"(prep)[("Uruguaiana"(np)SS_7)]SP_3)]SAdv_6)]"."(punct)OA_1)]PS_1)]F_3)]
+
+
+#! ThreadId 484 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"Rui","name":"np"}}],"name":"SS_7"}},{"nterm":{"children":[{"term":{"content":"voltou","name":"vti"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"de","name":"prep"}},{"nterm":{"children":[{"term":{"content":"Brasília","name":"np"}}],"name":"SS_7"}}],"name":"SP_3"}}],"name":"SAdv_6"}}],"name":"SV_9"}}],"name":"Nuc_1"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"para","name":"prep"}},{"nterm":{"children":[{"term":{"content":"Uruguaiana","name":"np"}}],"name":"SS_7"}}],"name":"SP_3"}}],"name":"SAdv_6"}},{"term":{"content":".","name":"punct"}}],"name":"OA_1"}}],"name":"PS_1"}}],"name":"F_3"}}
+
+
+#! ThreadId 394 Output Latex: [\nt{F_3}[\nt{PS_1}[\nt{OA_1}[\nt{Nuc_1}[\nt{SS_7}[\nt{np}[\nt{``Rui"}]]][\nt{SV_10}[\nt{vti}[\nt{``voltou"}]][\nt{SP_3}[\nt{prep}[\nt{``de"}]][\nt{SS_7}[\nt{np}[\nt{``Brasília"}]]]]]][\nt{SAdv_6}[\nt{SP_3}[\nt{prep}[\nt{``para"}]][\nt{SS_7}[\nt{np}[\nt{``Uruguaiana"}]]]]][\nt{punct}[\nt{``."}]]]]]
+
+
+#! ThreadId 484 Output Latex: [\nt{F_3}[\nt{PS_1}[\nt{OA_1}[\nt{Nuc_1}[\nt{SS_7}[\nt{np}[\nt{``Rui"}]]][\nt{SV_9}[\nt{vti}[\nt{``voltou"}]][\nt{SAdv_6}[\nt{SP_3}[\nt{prep}[\nt{``de"}]][\nt{SS_7}[\nt{np}[\nt{``Brasília"}]]]]]]][\nt{SAdv_6}[\nt{SP_3}[\nt{prep}[\nt{``para"}]][\nt{SS_7}[\nt{np}[\nt{``Uruguaiana"}]]]]][\nt{punct}[\nt{``."}]]]]]
+
+
+#! ThreadId 971 Output Plain: [([([([("Rui"(np)SS_7)][([("voltou"(vti)[("de"(prep)[("Brasília"(np)SS_7)]SP_3)]GV_2)][([("para"(prep)[("Uruguaiana"(np)SS_7)]SP_3)]SAdv_6)]SV_12)]"."(punct)OA_4)]PS_1)]F_3)]
+
+
+#! ThreadId 971 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"Rui","name":"np"}}],"name":"SS_7"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"voltou","name":"vti"}},{"nterm":{"children":[{"term":{"content":"de","name":"prep"}},{"nterm":{"children":[{"term":{"content":"Brasília","name":"np"}}],"name":"SS_7"}}],"name":"SP_3"}}],"name":"GV_2"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"para","name":"prep"}},{"nterm":{"children":[{"term":{"content":"Uruguaiana","name":"np"}}],"name":"SS_7"}}],"name":"SP_3"}}],"name":"SAdv_6"}}],"name":"SV_12"}},{"term":{"content":".","name":"punct"}}],"name":"OA_4"}}],"name":"PS_1"}}],"name":"F_3"}}
+
+
+#! ThreadId 971 Output Latex: [\nt{F_3}[\nt{PS_1}[\nt{OA_4}[\nt{SS_7}[\nt{np}[\nt{``Rui"}]]][\nt{SV_12}[\nt{GV_2}[\nt{vti}[\nt{``voltou"}]][\nt{SP_3}[\nt{prep}[\nt{``de"}]][\nt{SS_7}[\nt{np}[\nt{``Brasília"}]]]]][\nt{SAdv_6}[\nt{SP_3}[\nt{prep}[\nt{``para"}]][\nt{SS_7}[\nt{np}[\nt{``Uruguaiana"}]]]]]][\nt{punct}[\nt{``."}]]]]]
+
+
+#! ThreadId 1548 Output Plain: [([([([("Rui"(np)SS_7)][([("voltou"(vti)[("de"(prep)[("Brasília"(np)SS_7)]SP_3)]GV_2)][([("para"(prep)[("Uruguaiana"(np)SS_7)]SP_3)]SAdv_6)]SV_12)]"."(punct)OP_4)]PCS_1)]F_2)]
+
+
+#! ThreadId 1548 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"Rui","name":"np"}}],"name":"SS_7"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"voltou","name":"vti"}},{"nterm":{"children":[{"term":{"content":"de","name":"prep"}},{"nterm":{"children":[{"term":{"content":"Brasília","name":"np"}}],"name":"SS_7"}}],"name":"SP_3"}}],"name":"GV_2"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"para","name":"prep"}},{"nterm":{"children":[{"term":{"content":"Uruguaiana","name":"np"}}],"name":"SS_7"}}],"name":"SP_3"}}],"name":"SAdv_6"}}],"name":"SV_12"}},{"term":{"content":".","name":"punct"}}],"name":"OP_4"}}],"name":"PCS_1"}}],"name":"F_2"}}
+
+
+#! ThreadId 1466 Output Plain: [([([([("Rui"(np)SS_7)][("voltou"(vti)[([("de"(prep)[("Brasília"(np)SS_7)]SP_3)]SAdv_6)]SV_9)][([("para"(prep)[("Uruguaiana"(np)SS_7)]SP_3)]SAdv_6)]"."(punct)OA_5)]PS_1)]F_3)]
+
+
+#! ThreadId 1548 Output Latex: [\nt{F_2}[\nt{PCS_1}[\nt{OP_4}[\nt{SS_7}[\nt{np}[\nt{``Rui"}]]][\nt{SV_12}[\nt{GV_2}[\nt{vti}[\nt{``voltou"}]][\nt{SP_3}[\nt{prep}[\nt{``de"}]][\nt{SS_7}[\nt{np}[\nt{``Brasília"}]]]]][\nt{SAdv_6}[\nt{SP_3}[\nt{prep}[\nt{``para"}]][\nt{SS_7}[\nt{np}[\nt{``Uruguaiana"}]]]]]][\nt{punct}[\nt{``."}]]]]]
+
+
+#! ThreadId 1466 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"Rui","name":"np"}}],"name":"SS_7"}},{"nterm":{"children":[{"term":{"content":"voltou","name":"vti"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"de","name":"prep"}},{"nterm":{"children":[{"term":{"content":"Brasília","name":"np"}}],"name":"SS_7"}}],"name":"SP_3"}}],"name":"SAdv_6"}}],"name":"SV_9"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"para","name":"prep"}},{"nterm":{"children":[{"term":{"content":"Uruguaiana","name":"np"}}],"name":"SS_7"}}],"name":"SP_3"}}],"name":"SAdv_6"}},{"term":{"content":".","name":"punct"}}],"name":"OA_5"}}],"name":"PS_1"}}],"name":"F_3"}}
+
+
+#! ThreadId 717 Output Plain: [([([([("Rui"(np)SS_7)][("voltou"(vti)[("de"(prep)[("Brasília"(np)SS_7)]SP_3)]SV_10)][([("para"(prep)[("Uruguaiana"(np)SS_7)]SP_3)]SAdv_6)]"."(punct)OA_5)]PS_1)]F_3)]
+
+
+#! ThreadId 1466 Output Latex: [\nt{F_3}[\nt{PS_1}[\nt{OA_5}[\nt{SS_7}[\nt{np}[\nt{``Rui"}]]][\nt{SV_9}[\nt{vti}[\nt{``voltou"}]][\nt{SAdv_6}[\nt{SP_3}[\nt{prep}[\nt{``de"}]][\nt{SS_7}[\nt{np}[\nt{``Brasília"}]]]]]][\nt{SAdv_6}[\nt{SP_3}[\nt{prep}[\nt{``para"}]][\nt{SS_7}[\nt{np}[\nt{``Uruguaiana"}]]]]][\nt{punct}[\nt{``."}]]]]]
+
+
+#! ThreadId 717 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"Rui","name":"np"}}],"name":"SS_7"}},{"nterm":{"children":[{"term":{"content":"voltou","name":"vti"}},{"nterm":{"children":[{"term":{"content":"de","name":"prep"}},{"nterm":{"children":[{"term":{"content":"Brasília","name":"np"}}],"name":"SS_7"}}],"name":"SP_3"}}],"name":"SV_10"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"para","name":"prep"}},{"nterm":{"children":[{"term":{"content":"Uruguaiana","name":"np"}}],"name":"SS_7"}}],"name":"SP_3"}}],"name":"SAdv_6"}},{"term":{"content":".","name":"punct"}}],"name":"OA_5"}}],"name":"PS_1"}}],"name":"F_3"}}
+
+
+#! ThreadId 1404 Output Plain: [([([([("Rui"(np)SS_7)][("voltou"(vti)[("de"(prep)[("Brasília"(np)SS_7)]SP_3)][("para"(prep)[("Uruguaiana"(np)SS_7)]SP_3)]SV_11)]"."(punct)OA_4)]PS_1)]F_3)]
+
+
+#! ThreadId 717 Output Latex: [\nt{F_3}[\nt{PS_1}[\nt{OA_5}[\nt{SS_7}[\nt{np}[\nt{``Rui"}]]][\nt{SV_10}[\nt{vti}[\nt{``voltou"}]][\nt{SP_3}[\nt{prep}[\nt{``de"}]][\nt{SS_7}[\nt{np}[\nt{``Brasília"}]]]]][\nt{SAdv_6}[\nt{SP_3}[\nt{prep}[\nt{``para"}]][\nt{SS_7}[\nt{np}[\nt{``Uruguaiana"}]]]]][\nt{punct}[\nt{``."}]]]]]
+
+
+#! ThreadId 1404 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"Rui","name":"np"}}],"name":"SS_7"}},{"nterm":{"children":[{"term":{"content":"voltou","name":"vti"}},{"nterm":{"children":[{"term":{"content":"de","name":"prep"}},{"nterm":{"children":[{"term":{"content":"Brasília","name":"np"}}],"name":"SS_7"}}],"name":"SP_3"}},{"nterm":{"children":[{"term":{"content":"para","name":"prep"}},{"nterm":{"children":[{"term":{"content":"Uruguaiana","name":"np"}}],"name":"SS_7"}}],"name":"SP_3"}}],"name":"SV_11"}},{"term":{"content":".","name":"punct"}}],"name":"OA_4"}}],"name":"PS_1"}}],"name":"F_3"}}
+
+
+#! ThreadId 1404 Output Latex: [\nt{F_3}[\nt{PS_1}[\nt{OA_4}[\nt{SS_7}[\nt{np}[\nt{``Rui"}]]][\nt{SV_11}[\nt{vti}[\nt{``voltou"}]][\nt{SP_3}[\nt{prep}[\nt{``de"}]][\nt{SS_7}[\nt{np}[\nt{``Brasília"}]]]][\nt{SP_3}[\nt{prep}[\nt{``para"}]][\nt{SS_7}[\nt{np}[\nt{``Uruguaiana"}]]]]][\nt{punct}[\nt{``."}]]]]]
+
+
+#! ThreadId 2630 Output Plain: [([([([("Rui"(np)SS_7)][("voltou"(vti)[("de"(prep)[("Brasília"(np)SS_7)]SP_3)][("para"(prep)[("Uruguaiana"(np)SS_7)]SP_3)]SV_11)]"."(punct)OP_4)]PCS_1)]F_2)]
+
+
+#! ThreadId 2630 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"Rui","name":"np"}}],"name":"SS_7"}},{"nterm":{"children":[{"term":{"content":"voltou","name":"vti"}},{"nterm":{"children":[{"term":{"content":"de","name":"prep"}},{"nterm":{"children":[{"term":{"content":"Brasília","name":"np"}}],"name":"SS_7"}}],"name":"SP_3"}},{"nterm":{"children":[{"term":{"content":"para","name":"prep"}},{"nterm":{"children":[{"term":{"content":"Uruguaiana","name":"np"}}],"name":"SS_7"}}],"name":"SP_3"}}],"name":"SV_11"}},{"term":{"content":".","name":"punct"}}],"name":"OP_4"}}],"name":"PCS_1"}}],"name":"F_2"}}
+
+
+#! ThreadId 2630 Output Latex: [\nt{F_2}[\nt{PCS_1}[\nt{OP_4}[\nt{SS_7}[\nt{np}[\nt{``Rui"}]]][\nt{SV_11}[\nt{vti}[\nt{``voltou"}]][\nt{SP_3}[\nt{prep}[\nt{``de"}]][\nt{SS_7}[\nt{np}[\nt{``Brasília"}]]]][\nt{SP_3}[\nt{prep}[\nt{``para"}]][\nt{SS_7}[\nt{np}[\nt{``Uruguaiana"}]]]]][\nt{punct}[\nt{``."}]]]]]
+

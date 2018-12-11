@@ -1,0 +1,64 @@
+##################################
+#                                #
+#           mw2spa NLP           #
+#                                #
+##################################
+
+Processamento de entrada NLP: arquivo luft02-17.txt
+Gramática NLP: arquivo wirth_mod_nlp_luft_all.txt
+Dicionário NLP: arquivo /home/nkmiura/Documentos/TeseExperimentos/dict/LuftDict.yml
+Done.
+
+#! ThreadId 2700 Output Plain: [([([([([("Maria"(np)SS_7)][("faltou"(vti)[("a"(prep)[([("a"(artd)PrA_1)]"aula"(n)SS_9)]SP_3)]SV_10)]Nuc_1)][([("porque"(conjsub)[([("esteve"(vlig)[("doente"(adj)SAdj_1)]SN_3)]O_1)]OS_1)]SAdv_5)]"."(punct)OA_1)]PS_1)]F_3)]
+
+
+#! ThreadId 2700 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"Maria","name":"np"}}],"name":"SS_7"}},{"nterm":{"children":[{"term":{"content":"faltou","name":"vti"}},{"nterm":{"children":[{"term":{"content":"a","name":"prep"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"a","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"aula","name":"n"}}],"name":"SS_9"}}],"name":"SP_3"}}],"name":"SV_10"}}],"name":"Nuc_1"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"porque","name":"conjsub"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"esteve","name":"vlig"}},{"nterm":{"children":[{"term":{"content":"doente","name":"adj"}}],"name":"SAdj_1"}}],"name":"SN_3"}}],"name":"O_1"}}],"name":"OS_1"}}],"name":"SAdv_5"}},{"term":{"content":".","name":"punct"}}],"name":"OA_1"}}],"name":"PS_1"}}],"name":"F_3"}}
+
+
+#! ThreadId 2700 Output Latex: [\nt{F_3}[\nt{PS_1}[\nt{OA_1}[\nt{Nuc_1}[\nt{SS_7}[\nt{np}[\nt{``Maria"}]]][\nt{SV_10}[\nt{vti}[\nt{``faltou"}]][\nt{SP_3}[\nt{prep}[\nt{``a"}]][\nt{SS_9}[\nt{PrA_1}[\nt{artd}[\nt{``a"}]]][\nt{n}[\nt{``aula"}]]]]]][\nt{SAdv_5}[\nt{OS_1}[\nt{conjsub}[\nt{``porque"}]][\nt{O_1}[\nt{SN_3}[\nt{vlig}[\nt{``esteve"}]][\nt{SAdj_1}[\nt{adj}[\nt{``doente"}]]]]]]][\nt{punct}[\nt{``."}]]]]]
+
+
+#! ThreadId 5848 Output Plain: [([([([("Maria"(np)SS_7)][([("faltou"(vti)[("a"(prep)[([("a"(artd)PrA_1)]"aula"(n)SS_9)]SP_3)]GV_2)][([("porque"(conjsub)[([("esteve"(vlig)[("doente"(adj)SAdj_1)]SN_3)]O_1)]OS_1)]SAdv_5)]SV_12)]"."(punct)OP_4)]PCS_1)]F_2)]
+
+
+#! ThreadId 5848 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"Maria","name":"np"}}],"name":"SS_7"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"faltou","name":"vti"}},{"nterm":{"children":[{"term":{"content":"a","name":"prep"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"a","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"aula","name":"n"}}],"name":"SS_9"}}],"name":"SP_3"}}],"name":"GV_2"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"porque","name":"conjsub"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"esteve","name":"vlig"}},{"nterm":{"children":[{"term":{"content":"doente","name":"adj"}}],"name":"SAdj_1"}}],"name":"SN_3"}}],"name":"O_1"}}],"name":"OS_1"}}],"name":"SAdv_5"}}],"name":"SV_12"}},{"term":{"content":".","name":"punct"}}],"name":"OP_4"}}],"name":"PCS_1"}}],"name":"F_2"}}
+
+
+#! ThreadId 5848 Output Latex: [\nt{F_2}[\nt{PCS_1}[\nt{OP_4}[\nt{SS_7}[\nt{np}[\nt{``Maria"}]]][\nt{SV_12}[\nt{GV_2}[\nt{vti}[\nt{``faltou"}]][\nt{SP_3}[\nt{prep}[\nt{``a"}]][\nt{SS_9}[\nt{PrA_1}[\nt{artd}[\nt{``a"}]]][\nt{n}[\nt{``aula"}]]]]][\nt{SAdv_5}[\nt{OS_1}[\nt{conjsub}[\nt{``porque"}]][\nt{O_1}[\nt{SN_3}[\nt{vlig}[\nt{``esteve"}]][\nt{SAdj_1}[\nt{adj}[\nt{``doente"}]]]]]]]][\nt{punct}[\nt{``."}]]]]]
+
+
+#! ThreadId 12451 Output Plain: [([([([("Maria"(np)SS_7)][([("faltou"(vti)[("a"(prep)[([("a"(artd)PrA_1)]"aula"(n)SS_9)]SP_3)]GV_2)][([("porque"(conjsub)[([("esteve"(vlig)[("doente"(adj)SAdj_1)]SN_3)]O_1)]OS_1)]SAdv_5)]SV_12)]"."(punct)OA_4)]PS_1)]F_3)]
+
+
+#! ThreadId 12451 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"Maria","name":"np"}}],"name":"SS_7"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"faltou","name":"vti"}},{"nterm":{"children":[{"term":{"content":"a","name":"prep"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"a","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"aula","name":"n"}}],"name":"SS_9"}}],"name":"SP_3"}}],"name":"GV_2"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"porque","name":"conjsub"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"esteve","name":"vlig"}},{"nterm":{"children":[{"term":{"content":"doente","name":"adj"}}],"name":"SAdj_1"}}],"name":"SN_3"}}],"name":"O_1"}}],"name":"OS_1"}}],"name":"SAdv_5"}}],"name":"SV_12"}},{"term":{"content":".","name":"punct"}}],"name":"OA_4"}}],"name":"PS_1"}}],"name":"F_3"}}
+
+
+#! ThreadId 12451 Output Latex: [\nt{F_3}[\nt{PS_1}[\nt{OA_4}[\nt{SS_7}[\nt{np}[\nt{``Maria"}]]][\nt{SV_12}[\nt{GV_2}[\nt{vti}[\nt{``faltou"}]][\nt{SP_3}[\nt{prep}[\nt{``a"}]][\nt{SS_9}[\nt{PrA_1}[\nt{artd}[\nt{``a"}]]][\nt{n}[\nt{``aula"}]]]]][\nt{SAdv_5}[\nt{OS_1}[\nt{conjsub}[\nt{``porque"}]][\nt{O_1}[\nt{SN_3}[\nt{vlig}[\nt{``esteve"}]][\nt{SAdj_1}[\nt{adj}[\nt{``doente"}]]]]]]]][\nt{punct}[\nt{``."}]]]]]
+
+
+#! ThreadId 7139 Output Plain: [([([([([("Maria"(np)SS_7)][("faltou"(vti)[([("a"(prep)[([("a"(artd)PrA_1)]"aula"(n)SS_9)]SP_3)]SAdv_6)]SV_9)]Nuc_1)][([("porque"(conjsub)[([("esteve"(vlig)[("doente"(adj)SAdj_1)]SN_3)]O_1)]OS_1)]SAdv_5)]"."(punct)OA_1)]PS_1)]F_3)]
+
+
+#! ThreadId 7139 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"Maria","name":"np"}}],"name":"SS_7"}},{"nterm":{"children":[{"term":{"content":"faltou","name":"vti"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"a","name":"prep"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"a","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"aula","name":"n"}}],"name":"SS_9"}}],"name":"SP_3"}}],"name":"SAdv_6"}}],"name":"SV_9"}}],"name":"Nuc_1"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"porque","name":"conjsub"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"esteve","name":"vlig"}},{"nterm":{"children":[{"term":{"content":"doente","name":"adj"}}],"name":"SAdj_1"}}],"name":"SN_3"}}],"name":"O_1"}}],"name":"OS_1"}}],"name":"SAdv_5"}},{"term":{"content":".","name":"punct"}}],"name":"OA_1"}}],"name":"PS_1"}}],"name":"F_3"}}
+
+
+#! ThreadId 7139 Output Latex: [\nt{F_3}[\nt{PS_1}[\nt{OA_1}[\nt{Nuc_1}[\nt{SS_7}[\nt{np}[\nt{``Maria"}]]][\nt{SV_9}[\nt{vti}[\nt{``faltou"}]][\nt{SAdv_6}[\nt{SP_3}[\nt{prep}[\nt{``a"}]][\nt{SS_9}[\nt{PrA_1}[\nt{artd}[\nt{``a"}]]][\nt{n}[\nt{``aula"}]]]]]]][\nt{SAdv_5}[\nt{OS_1}[\nt{conjsub}[\nt{``porque"}]][\nt{O_1}[\nt{SN_3}[\nt{vlig}[\nt{``esteve"}]][\nt{SAdj_1}[\nt{adj}[\nt{``doente"}]]]]]]][\nt{punct}[\nt{``."}]]]]]
+
+
+#! ThreadId 5951 Output Plain: [([([([("Maria"(np)SS_7)][("faltou"(vti)[("a"(prep)[([("a"(artd)PrA_1)]"aula"(n)SS_9)]SP_3)]SV_10)][([("porque"(conjsub)[([("esteve"(vlig)[("doente"(adj)SAdj_1)]SN_3)]O_1)]OS_1)]SAdv_5)]"."(punct)OA_5)]PS_1)]F_3)]
+
+
+#! ThreadId 5951 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"Maria","name":"np"}}],"name":"SS_7"}},{"nterm":{"children":[{"term":{"content":"faltou","name":"vti"}},{"nterm":{"children":[{"term":{"content":"a","name":"prep"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"a","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"aula","name":"n"}}],"name":"SS_9"}}],"name":"SP_3"}}],"name":"SV_10"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"porque","name":"conjsub"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"esteve","name":"vlig"}},{"nterm":{"children":[{"term":{"content":"doente","name":"adj"}}],"name":"SAdj_1"}}],"name":"SN_3"}}],"name":"O_1"}}],"name":"OS_1"}}],"name":"SAdv_5"}},{"term":{"content":".","name":"punct"}}],"name":"OA_5"}}],"name":"PS_1"}}],"name":"F_3"}}
+
+
+#! ThreadId 5951 Output Latex: [\nt{F_3}[\nt{PS_1}[\nt{OA_5}[\nt{SS_7}[\nt{np}[\nt{``Maria"}]]][\nt{SV_10}[\nt{vti}[\nt{``faltou"}]][\nt{SP_3}[\nt{prep}[\nt{``a"}]][\nt{SS_9}[\nt{PrA_1}[\nt{artd}[\nt{``a"}]]][\nt{n}[\nt{``aula"}]]]]][\nt{SAdv_5}[\nt{OS_1}[\nt{conjsub}[\nt{``porque"}]][\nt{O_1}[\nt{SN_3}[\nt{vlig}[\nt{``esteve"}]][\nt{SAdj_1}[\nt{adj}[\nt{``doente"}]]]]]]][\nt{punct}[\nt{``."}]]]]]
+
+
+#! ThreadId 6836 Output Plain: [([([([("Maria"(np)SS_7)][("faltou"(vti)[([("a"(prep)[([("a"(artd)PrA_1)]"aula"(n)SS_9)]SP_3)]SAdv_6)]SV_9)][([("porque"(conjsub)[([("esteve"(vlig)[("doente"(adj)SAdj_1)]SN_3)]O_1)]OS_1)]SAdv_5)]"."(punct)OA_5)]PS_1)]F_3)]
+
+
+#! ThreadId 6836 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"Maria","name":"np"}}],"name":"SS_7"}},{"nterm":{"children":[{"term":{"content":"faltou","name":"vti"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"a","name":"prep"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"a","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"aula","name":"n"}}],"name":"SS_9"}}],"name":"SP_3"}}],"name":"SAdv_6"}}],"name":"SV_9"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"porque","name":"conjsub"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"esteve","name":"vlig"}},{"nterm":{"children":[{"term":{"content":"doente","name":"adj"}}],"name":"SAdj_1"}}],"name":"SN_3"}}],"name":"O_1"}}],"name":"OS_1"}}],"name":"SAdv_5"}},{"term":{"content":".","name":"punct"}}],"name":"OA_5"}}],"name":"PS_1"}}],"name":"F_3"}}
+
+
+#! ThreadId 6836 Output Latex: [\nt{F_3}[\nt{PS_1}[\nt{OA_5}[\nt{SS_7}[\nt{np}[\nt{``Maria"}]]][\nt{SV_9}[\nt{vti}[\nt{``faltou"}]][\nt{SAdv_6}[\nt{SP_3}[\nt{prep}[\nt{``a"}]][\nt{SS_9}[\nt{PrA_1}[\nt{artd}[\nt{``a"}]]][\nt{n}[\nt{``aula"}]]]]]][\nt{SAdv_5}[\nt{OS_1}[\nt{conjsub}[\nt{``porque"}]][\nt{O_1}[\nt{SN_3}[\nt{vlig}[\nt{``esteve"}]][\nt{SAdj_1}[\nt{adj}[\nt{``doente"}]]]]]]][\nt{punct}[\nt{``."}]]]]]
+

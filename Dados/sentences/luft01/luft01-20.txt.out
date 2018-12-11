@@ -1,0 +1,46 @@
+##################################
+#                                #
+#           mw2spa NLP           #
+#                                #
+##################################
+
+Processamento de entrada NLP: arquivo luft01-20.txt
+Gramática NLP: arquivo wirth_mod_nlp_luft_all.txt
+Dicionário NLP: arquivo /home/nkmiura/Documentos/TeseExperimentos/dict/LuftDict.yml
+Done.
+
+#! ThreadId 346 Output Plain: [([([([([("Meu"(pps)PrA_6)]"irmão"(n)SS_9)][("vai"(vti)[("a"(prep)[("Brasília"(np)SS_7)]SP_3)]SV_10)]"."(punct)OP_4)]PCS_1)]F_2)]
+
+
+#! ThreadId 346 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"Meu","name":"pps"}}],"name":"PrA_6"}},{"term":{"content":"irmão","name":"n"}}],"name":"SS_9"}},{"nterm":{"children":[{"term":{"content":"vai","name":"vti"}},{"nterm":{"children":[{"term":{"content":"a","name":"prep"}},{"nterm":{"children":[{"term":{"content":"Brasília","name":"np"}}],"name":"SS_7"}}],"name":"SP_3"}}],"name":"SV_10"}},{"term":{"content":".","name":"punct"}}],"name":"OP_4"}}],"name":"PCS_1"}}],"name":"F_2"}}
+
+
+#! ThreadId 346 Output Latex: [\nt{F_2}[\nt{PCS_1}[\nt{OP_4}[\nt{SS_9}[\nt{PrA_6}[\nt{pps}[\nt{``Meu"}]]][\nt{n}[\nt{``irmão"}]]][\nt{SV_10}[\nt{vti}[\nt{``vai"}]][\nt{SP_3}[\nt{prep}[\nt{``a"}]][\nt{SS_7}[\nt{np}[\nt{``Brasília"}]]]]][\nt{punct}[\nt{``."}]]]]]
+
+
+#! ThreadId 408 Output Plain: [([([([([("Meu"(pps)PrA_6)]"irmão"(n)SS_9)][("vai"(vti)[([("a"(prep)[("Brasília"(np)SS_7)]SP_3)]SAdv_6)]SV_9)]"."(punct)OP_4)]PCS_1)]F_2)]
+
+
+#! ThreadId 408 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"Meu","name":"pps"}}],"name":"PrA_6"}},{"term":{"content":"irmão","name":"n"}}],"name":"SS_9"}},{"nterm":{"children":[{"term":{"content":"vai","name":"vti"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"a","name":"prep"}},{"nterm":{"children":[{"term":{"content":"Brasília","name":"np"}}],"name":"SS_7"}}],"name":"SP_3"}}],"name":"SAdv_6"}}],"name":"SV_9"}},{"term":{"content":".","name":"punct"}}],"name":"OP_4"}}],"name":"PCS_1"}}],"name":"F_2"}}
+
+
+#! ThreadId 408 Output Latex: [\nt{F_2}[\nt{PCS_1}[\nt{OP_4}[\nt{SS_9}[\nt{PrA_6}[\nt{pps}[\nt{``Meu"}]]][\nt{n}[\nt{``irmão"}]]][\nt{SV_9}[\nt{vti}[\nt{``vai"}]][\nt{SAdv_6}[\nt{SP_3}[\nt{prep}[\nt{``a"}]][\nt{SS_7}[\nt{np}[\nt{``Brasília"}]]]]]][\nt{punct}[\nt{``."}]]]]]
+
+
+#! ThreadId 559 Output Plain: [([([([([("Meu"(pps)PrA_6)]"irmão"(n)SS_9)][("vai"(vti)[("a"(prep)[("Brasília"(np)SS_7)]SP_3)]SV_10)]"."(punct)OA_4)]PS_1)]F_3)]
+
+
+#! ThreadId 559 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"Meu","name":"pps"}}],"name":"PrA_6"}},{"term":{"content":"irmão","name":"n"}}],"name":"SS_9"}},{"nterm":{"children":[{"term":{"content":"vai","name":"vti"}},{"nterm":{"children":[{"term":{"content":"a","name":"prep"}},{"nterm":{"children":[{"term":{"content":"Brasília","name":"np"}}],"name":"SS_7"}}],"name":"SP_3"}}],"name":"SV_10"}},{"term":{"content":".","name":"punct"}}],"name":"OA_4"}}],"name":"PS_1"}}],"name":"F_3"}}
+
+
+#! ThreadId 559 Output Latex: [\nt{F_3}[\nt{PS_1}[\nt{OA_4}[\nt{SS_9}[\nt{PrA_6}[\nt{pps}[\nt{``Meu"}]]][\nt{n}[\nt{``irmão"}]]][\nt{SV_10}[\nt{vti}[\nt{``vai"}]][\nt{SP_3}[\nt{prep}[\nt{``a"}]][\nt{SS_7}[\nt{np}[\nt{``Brasília"}]]]]][\nt{punct}[\nt{``."}]]]]]
+
+
+#! ThreadId 807 Output Plain: [([([([([("Meu"(pps)PrA_6)]"irmão"(n)SS_9)][("vai"(vti)[([("a"(prep)[("Brasília"(np)SS_7)]SP_3)]SAdv_6)]SV_9)]"."(punct)OA_4)]PS_1)]F_3)]
+
+
+#! ThreadId 807 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"Meu","name":"pps"}}],"name":"PrA_6"}},{"term":{"content":"irmão","name":"n"}}],"name":"SS_9"}},{"nterm":{"children":[{"term":{"content":"vai","name":"vti"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"a","name":"prep"}},{"nterm":{"children":[{"term":{"content":"Brasília","name":"np"}}],"name":"SS_7"}}],"name":"SP_3"}}],"name":"SAdv_6"}}],"name":"SV_9"}},{"term":{"content":".","name":"punct"}}],"name":"OA_4"}}],"name":"PS_1"}}],"name":"F_3"}}
+
+
+#! ThreadId 807 Output Latex: [\nt{F_3}[\nt{PS_1}[\nt{OA_4}[\nt{SS_9}[\nt{PrA_6}[\nt{pps}[\nt{``Meu"}]]][\nt{n}[\nt{``irmão"}]]][\nt{SV_9}[\nt{vti}[\nt{``vai"}]][\nt{SAdv_6}[\nt{SP_3}[\nt{prep}[\nt{``a"}]][\nt{SS_7}[\nt{np}[\nt{``Brasília"}]]]]]][\nt{punct}[\nt{``."}]]]]]
+

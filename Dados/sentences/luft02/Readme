@@ -1,0 +1,3 @@
+1) Split input file
+split -l 1 --numeric-suffixes  ../inputSentenceNLPall.txt luft02- --additional-suffix=.txt
+

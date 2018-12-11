@@ -1,0 +1,46 @@
+##################################
+#                                #
+#           mw2spa NLP           #
+#                                #
+##################################
+
+Processamento de entrada NLP: arquivo luft01-54.txt
+Gramática NLP: arquivo wirth_mod_nlp_luft_all.txt
+Dicionário NLP: arquivo /home/nkmiura/Documentos/TeseExperimentos/dict/LuftDict.yml
+Done.
+
+#! ThreadId 106 Output Plain: [([([([("Passa"(vti)[("de"(prep)[([("a"(artd)PrA_1)]"meia-noite"(n)SS_9)]SP_3)]SV_10)]"."(punct)OA_7)]PS_1)]F_3)]
+
+
+#! ThreadId 106 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"Passa","name":"vti"}},{"nterm":{"children":[{"term":{"content":"de","name":"prep"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"a","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"meia-noite","name":"n"}}],"name":"SS_9"}}],"name":"SP_3"}}],"name":"SV_10"}},{"term":{"content":".","name":"punct"}}],"name":"OA_7"}}],"name":"PS_1"}}],"name":"F_3"}}
+
+
+#! ThreadId 106 Output Latex: [\nt{F_3}[\nt{PS_1}[\nt{OA_7}[\nt{SV_10}[\nt{vti}[\nt{``Passa"}]][\nt{SP_3}[\nt{prep}[\nt{``de"}]][\nt{SS_9}[\nt{PrA_1}[\nt{artd}[\nt{``a"}]]][\nt{n}[\nt{``meia-noite"}]]]]][\nt{punct}[\nt{``."}]]]]]
+
+
+#! ThreadId 127 Output Plain: [([([([("Passa"(vti)[("de"(prep)[([("a"(artd)PrA_1)]"meia-noite"(n)SS_9)]SP_3)]SV_10)]"."(punct)OP_5)]PCS_1)]F_2)]
+
+
+#! ThreadId 127 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"Passa","name":"vti"}},{"nterm":{"children":[{"term":{"content":"de","name":"prep"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"a","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"meia-noite","name":"n"}}],"name":"SS_9"}}],"name":"SP_3"}}],"name":"SV_10"}},{"term":{"content":".","name":"punct"}}],"name":"OP_5"}}],"name":"PCS_1"}}],"name":"F_2"}}
+
+
+#! ThreadId 127 Output Latex: [\nt{F_2}[\nt{PCS_1}[\nt{OP_5}[\nt{SV_10}[\nt{vti}[\nt{``Passa"}]][\nt{SP_3}[\nt{prep}[\nt{``de"}]][\nt{SS_9}[\nt{PrA_1}[\nt{artd}[\nt{``a"}]]][\nt{n}[\nt{``meia-noite"}]]]]][\nt{punct}[\nt{``."}]]]]]
+
+
+#! ThreadId 425 Output Plain: [([([([("Passa"(vti)[([("de"(prep)[([("a"(artd)PrA_1)]"meia-noite"(n)SS_9)]SP_3)]SAdv_6)]SV_9)]"."(punct)OA_7)]PS_1)]F_3)]
+
+
+#! ThreadId 425 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"Passa","name":"vti"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"de","name":"prep"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"a","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"meia-noite","name":"n"}}],"name":"SS_9"}}],"name":"SP_3"}}],"name":"SAdv_6"}}],"name":"SV_9"}},{"term":{"content":".","name":"punct"}}],"name":"OA_7"}}],"name":"PS_1"}}],"name":"F_3"}}
+
+
+#! ThreadId 425 Output Latex: [\nt{F_3}[\nt{PS_1}[\nt{OA_7}[\nt{SV_9}[\nt{vti}[\nt{``Passa"}]][\nt{SAdv_6}[\nt{SP_3}[\nt{prep}[\nt{``de"}]][\nt{SS_9}[\nt{PrA_1}[\nt{artd}[\nt{``a"}]]][\nt{n}[\nt{``meia-noite"}]]]]]][\nt{punct}[\nt{``."}]]]]]
+
+
+#! ThreadId 554 Output Plain: [([([([("Passa"(vti)[([("de"(prep)[([("a"(artd)PrA_1)]"meia-noite"(n)SS_9)]SP_3)]SAdv_6)]SV_9)]"."(punct)OP_5)]PCS_1)]F_2)]
+
+
+#! ThreadId 554 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"Passa","name":"vti"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"de","name":"prep"}},{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"a","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"meia-noite","name":"n"}}],"name":"SS_9"}}],"name":"SP_3"}}],"name":"SAdv_6"}}],"name":"SV_9"}},{"term":{"content":".","name":"punct"}}],"name":"OP_5"}}],"name":"PCS_1"}}],"name":"F_2"}}
+
+
+#! ThreadId 554 Output Latex: [\nt{F_2}[\nt{PCS_1}[\nt{OP_5}[\nt{SV_9}[\nt{vti}[\nt{``Passa"}]][\nt{SAdv_6}[\nt{SP_3}[\nt{prep}[\nt{``de"}]][\nt{SS_9}[\nt{PrA_1}[\nt{artd}[\nt{``a"}]]][\nt{n}[\nt{``meia-noite"}]]]]]][\nt{punct}[\nt{``."}]]]]]
+

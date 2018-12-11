@@ -1,0 +1,41 @@
+2018.10.31
+
+0) luft02-00.txt
+
+[[(, [(, [(, [(, [(, [(, [(, [(, [(, [(, "Nenhum", (pind), PrA_5), ], "aluno", (n), SS_9), ], [(, "conhece", (vtd), [(, [(, "o", (artd), PrA_1), ], "livro", (n), SS_9), ], SV_5), ], Núc_1), ], ".", (punct), OA_2), ], PS_1), ], F_3), ]]
+
+[[(, [(, [(, [(, [(, "Nenhum", (pind), PrA_1), ], "aluno", (n), SS_1), ], [(, "conhece", (vtd), [(, [(, "o", (artd), PrA_2), ], "livro", (n), SS_1), ], SV_1), ], ".", (punct), OA_1), ], PS_1), ], F_1), ]]
+
+1) luft02-01.txt
+
+[[(, [(, [(, [(, [(, "A", (artd), PrA_1), ], "Terra", (np), SS_2), ], [(, "é", (vlig), [(, [(, "um", (arti), PrA_2), ], "planeta", (n), SS_1), ], SN_1), ], ".", (punct), OA_1), ], PS_1), ], F_1), ]]
+
+
+2) luft02-02.txt
+[[(, [(, [(, [(, [(, "Este", (pd), PrA_2), ], "livro", (n), SS_1), ], [(, "é", (vlig), [(, "de", (prep), [(, [(, "muito", (pind), PrA_3), ], "valor", (n), SS_1), ], SP_1), ], SN_1), ], ".", (punct), OA_1), ], PS_1), ], F_1), ]]
+
+3) luft02-03.txt
+[[(, [(, [(, [(, [(, "O", (artd), PrA_1), ], "filho", (n), SS_2), ], [(, "obedece", (vti), [(, "a", (prep), [(, [(, "o", (artd), PrA_1), ], "pai", (n), SS_2), ], SP_1), ], SV_1), ], ".", (punct), OA_1), ], PS_1), ], F_1), ]]
+
+
+4) luft02-04.txt
+[[(, [(, [(, [(, [(, [(, "Pedro", (np), SS_1), ], [(, "colocou", (vtdi), [(, [(, "o", (artd), PrA_1), ], "livro", (n), SS_2), ], [(, "em+", (prep), [(, [(, "a", (artd), PrA_1), ], "biblioteca", (n), SS_2), ], SP_1), ], SV_1), ], Núc_1), ], [(, "hoje", (advt), SAdv_1), ], ".", (punct), OA_1), ], PS_1), ], F_1), ]]
+
+6) luft02-06.txt
+[[(, [(, [(, [(, [(, "Algum", (pind), PrA_3), ], "professor", (n), SS_2), ], [(, "emprestou", (vtdi), [(, [(, "o", (artd), PrA_1), ], "livro", (n), SS_2), ], [(, "a_", (prep), [(, [(, "aquele", (pd), PrA_2), ], "aluno", (n), SS_2), ], SP_1), ], SV_1), ], ".", (punct), OA_1), ], PS_1), ], F_1), ]]
+
+
+---
+
+[[(, [(, [(, [(, [(, [(, [(, [(, [(, "Algum", (pind), PrA_5), ], "professor", (n), [(, "professor", (n), SS_9), ], [(, "emprestou", (vtdi), [(, [(, "o", (artd), PrA_1), ], "livro", (n), SS_9), ], [(, "a_", (prep), [(, [(, "aquele", (pd), PrA_3), ], "aluno", (n), SS_9), ], SP_3), ], SV_7), ], Núc_1), ], ".", (punct), OA_2), ], PS_1), ], F_3), ]]
+
+
+[[(, [(, [(, [(, [(, [(, [(, [(, [(, "Algum", (pind), PrA_5), ], "professor", (n), [(, "professor", (n), SS_9), ], [(, "emprestou", (vtdi), [(, [(, "o", (artd), PrA_1), ], "livro", (n), SS_9), ], [(, [(, "a_", (prep), [(, [(, [(, "aquele", (pd), PrA_3), ], "aluno", "aluno", (n), SS_9), ], SP_3), ], SAdv_6), ], SV_6), ], Núc_1), ], ".", (punct), OA_2), ], PS_1), ], F_3), ]]
+
+
+[[(, [(, [(, [(, [(, [(, [(, [(, [(, "Algum", (pind), PrA_5), ], "professor", (n), [(, "professor", (n), SS_9), ], [(, "emprestou", (vtdi), [(, [(, "o", (artd), PrA_1), ], "livro", (n), SS_9), ], [(, "a_", (prep), [(, [(, "aquele", (pd), PrA_3), ], "aluno", (n), SS_9), ], SP_3), ], SV_7), ], Núc_1), ], ".", ".", (punct), OA_7), ], PS_1), ], F_3), ]]
+---
+
+
+
+wirth_mod_nlp_luft_all.txt

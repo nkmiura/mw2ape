@@ -1,0 +1,19 @@
+##################################
+#                                #
+#           mw2spa NLP           #
+#                                #
+##################################
+
+Processamento de entrada NLP: arquivo luft02-05.txt
+Gramática NLP: arquivo wirth_mod_nlp_luft_all.txt
+Dicionário NLP: arquivo /home/nkmiura/Documentos/TeseExperimentos/dict/LuftDict.yml
+Done.
+
+#! ThreadId 600 Output Plain: [([([([([("O"(artd)PrA_1)]"pai"(n)SS_9)][("fala"(vint)SV_3)]OC_1)]"e"(conjcoord)[([([("os"(artd)PrA_1)]"filhos"(n)SS_9)][("escutam"(vint)SV_3)]OC_1)]"."(punct)PCC_1)]F_1)]
+
+
+#! ThreadId 600 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"O","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"pai","name":"n"}}],"name":"SS_9"}},{"nterm":{"children":[{"term":{"content":"fala","name":"vint"}}],"name":"SV_3"}}],"name":"OC_1"}},{"term":{"content":"e","name":"conjcoord"}},{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"os","name":"artd"}}],"name":"PrA_1"}},{"term":{"content":"filhos","name":"n"}}],"name":"SS_9"}},{"nterm":{"children":[{"term":{"content":"escutam","name":"vint"}}],"name":"SV_3"}}],"name":"OC_1"}},{"term":{"content":".","name":"punct"}}],"name":"PCC_1"}}],"name":"F_1"}}
+
+
+#! ThreadId 600 Output Latex: [\nt{F_1}[\nt{PCC_1}[\nt{OC_1}[\nt{SS_9}[\nt{PrA_1}[\nt{artd}[\nt{``O"}]]][\nt{n}[\nt{``pai"}]]][\nt{SV_3}[\nt{vint}[\nt{``fala"}]]]][\nt{conjcoord}[\nt{``e"}]][\nt{OC_1}[\nt{SS_9}[\nt{PrA_1}[\nt{artd}[\nt{``os"}]]][\nt{n}[\nt{``filhos"}]]][\nt{SV_3}[\nt{vint}[\nt{``escutam"}]]]][\nt{punct}[\nt{``."}]]]]
+

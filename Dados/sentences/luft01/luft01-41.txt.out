@@ -1,0 +1,19 @@
+##################################
+#                                #
+#           mw2spa NLP           #
+#                                #
+##################################
+
+Processamento de entrada NLP: arquivo luft01-41.txt
+Gramática NLP: arquivo wirth_mod_nlp_luft_all.txt
+Dicionário NLP: arquivo /home/nkmiura/Documentos/TeseExperimentos/dict/LuftDict.yml
+Done.
+
+#! ThreadId 223 Output Plain: [([([([("Ela"(ppr)SS_3)][("dorme"(vtpred)[("inquieta"(adj)SAdj_1)]SVN_1)]"."(punct)OA_6)]PS_1)]F_3)]
+
+
+#! ThreadId 223 Output JSON: {"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"nterm":{"children":[{"term":{"content":"Ela","name":"ppr"}}],"name":"SS_3"}},{"nterm":{"children":[{"term":{"content":"dorme","name":"vtpred"}},{"nterm":{"children":[{"term":{"content":"inquieta","name":"adj"}}],"name":"SAdj_1"}}],"name":"SVN_1"}},{"term":{"content":".","name":"punct"}}],"name":"OA_6"}}],"name":"PS_1"}}],"name":"F_3"}}
+
+
+#! ThreadId 223 Output Latex: [\nt{F_3}[\nt{PS_1}[\nt{OA_6}[\nt{SS_3}[\nt{ppr}[\nt{``Ela"}]]][\nt{SVN_1}[\nt{vtpred}[\nt{``dorme"}]][\nt{SAdj_1}[\nt{adj}[\nt{``inquieta"}]]]][\nt{punct}[\nt{``."}]]]]]
+
