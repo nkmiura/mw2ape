@@ -39,6 +39,7 @@ import br.usp.poli.lta.nlpdep.mwirth2ape.mwirth.MWirthLexer;
 import java.io.*;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -55,12 +56,14 @@ import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
 
 /**
- * 
- * @author Paulo Roberto Massa Cereda & Newton Kiyotaka Miura
- * @version 1.3
+ * @author Newton Kiyotaka Miura & Paulo Roberto Massa Cereda
+ * @version 1.4
  * @since 1.0
  */
 public class Main {
+
+    public static Properties appProperties = new Properties();  // Alterar para usar enum no futuro
+
     private static final Logger logger = LoggerFactory.
             getLogger(Main.class);
 
@@ -70,25 +73,14 @@ public class Main {
         CommandLineParser parser = new DefaultParser();
 
         try {
-
+            System.out.println("Command-line arguments:");
+            StringBuilder sbArgs = new StringBuilder();
+            for (String arg : args) {
+                sbArgs.append(arg + " ");
+            }
+            System.out.println(sbArgs);
             CommandLine line = parser.parse(Utils.getOptions(), args);
-            
-            if (line.hasOption("g")) {
-                System.out.println("Flag '-g' found, overriding other flags.");
-                System.out.println("Please, wait...");
-                try {
-                    UIManager.setLookAndFeel(UIManager.
-                            getSystemLookAndFeelClassName());
-                }
-                catch (Exception nothandled) {}
-                SwingUtilities.invokeLater(() -> {
-                    Editor e = new Editor();
-                    e.setVisible(true);
-                });
-            }
-            else {
-                enableCLI(line);
-            }
+            enableCLI(line, appProperties);
         } catch (ParseException nothandled) {
             Utils.printHelp();
         } catch (Exception exception) {
@@ -96,10 +88,11 @@ public class Main {
         }
     }
 
-    private static void enableCLI(CommandLine line)
+    private static void enableCLI(CommandLine line, Properties appProperties)
             throws IOException, Exception {
         //System.out.println("line.getArgs().length: " + line.getArgs().length);
         int type = 0;
+        int maxTypeValue = 4;
 
         if (!Utils.required(line, "o", "y") || line.getArgs().length != 1) {
             throw new Exception("Note that 'o' and 'y' flags are required"
@@ -131,6 +124,7 @@ public class Main {
                         " does not exist. Make sure the location is correct and " +
                         "try again.");
             }
+            appProperties.setProperty("inputFileName",inputFileName);
         }
 
 
@@ -143,14 +137,17 @@ public class Main {
                     + " not exist. Make sure the location is correct and"
                     + " try again.");
         }
+        appProperties.setProperty("inputGrammarFileName",line.getArgs()[0]);
+
 
         if (!line.getOptionValue("t").isEmpty()) {
             try
             {
                 type = Integer.parseInt(line.getOptionValue("t"));
-                if (type < 0 || type > 2) {
+                if (type < 0 || type > maxTypeValue) {
                     System.out.println("Invalid parsing type specification. type = 0 will be enforced.");
                 }
+                appProperties.setProperty("type", Integer.toString(type));
             }
             catch (Exception exception) {
                 System.out.println("An exception was thrown in parsing type specification.");
@@ -177,6 +174,7 @@ public class Main {
                     mwg.generateAutomaton();
                     break;
                 case 2:
+                case 3:
                     mwg = new Generator(mwl, 1);
                     mwg.generateAutomaton();  // parsing da gramática para obter labels
                     labelGrammar = mwg.getLabelGrammar(); // gramática com lebels
@@ -190,38 +188,47 @@ public class Main {
                     if (inputFile != null) {
                         String inputText = FileUtils.readFileToString(inputFile, "UTF-8").trim();
                         if (!line.hasOption("n")) { // Check if input is NLP
+                            appProperties.setProperty("nlpInput","false");
                             SimpleLexer simpleLexer = new SimpleLexer(inputText, labelGrammar.getTermsList());
                             SPAExecute spaExecute = new SPAExecute(simpleLexer, lmwg, labelGrammar.getTermsList());
                             spaExecute.parseInput();
                         }
                         else {
+                            appProperties.setProperty("nlpInput","true");
                             if (line.hasOption("d")) {
                                 if (!line.getOptionValue("d").isEmpty()) {
                                     inputNLPDictionaryFileName = line.getOptionValue("d");
-                                    System.out.println("Diretório de trabalho: " + System.getProperty("user.dir"));
-                                    System.out.println("Processamento de entrada NLP: arquivo " +  inputFile.getName());
-                                    System.out.println("Gramática NLP: arquivo " +  file.getName());
-                                    System.out.println("Dicionário NLP: arquivo " + inputNLPDictionaryFileName);
-                                    logger.info("#####################################################################################################");
-                                    logger.info("# Diretório de trabalho: " + System.getProperty("user.dir"));
-                                    logger.info("# Processamento de entrada NLP: arquivo " +  inputFile.getName());
-                                    logger.info("# Gramática NLP: arquivo " +  file.getName());
-                                    logger.info("# Processamento de entrada NLP: arquivo " +  inputFile.getName());
-                                    logger.info("#####################################################################################################\n");
+
+                                    StringBuilder sbMainParamLogMsg = new StringBuilder();
+                                    //sbMainParamLogMsg.append("Command line: " + line.getArgList().toString());
+                                    sbMainParamLogMsg.append("\nDiretório de trabalho: " + System.getProperty("user.dir"));
+                                    sbMainParamLogMsg.append("\nProcessamento de entrada NLP: arquivo " +  inputFile.getAbsolutePath());
+                                    sbMainParamLogMsg.append("\nGramática NLP: arquivo " +  file.getAbsolutePath());
+                                    sbMainParamLogMsg.append("\nDicionário NLP: arquivo " + inputNLPDictionaryFileName);
+                                    sbMainParamLogMsg.append("\nType: " +  appProperties.getProperty("type"));
+
+                                    appProperties.setProperty("workingDirectory",System.getProperty("user.dir"));
+                                    appProperties.setProperty("inputNLPDictionaryFileName",inputNLPDictionaryFileName);
                                     NLPLexer nlpLexer = new NLPLexer(inputText, inputNLPDictionaryFileName, labelGrammar.getTermsList());
                                     if (line.hasOption("p")) {
                                         if (!line.getOptionValue("p").isEmpty()) {
                                             inputNLPDependencyPatternsFileName = line.getOptionValue("p");
-                                            logger.info("# Padrões de dependências: arquivo " +  inputNLPDependencyPatternsFileName);
-                                            System.out.println("Padrões de dependências: arquivo " +  inputNLPDependencyPatternsFileName);
+                                            appProperties.setProperty("inputNLPDependencyPatternsFileName",inputNLPDependencyPatternsFileName);
+
+                                            sbMainParamLogMsg.append("\nPadrões de dependências: arquivo " +  inputNLPDependencyPatternsFileName);
                                             depPatternList = depPatternList.loadDepPatternsFromJson(inputNLPDependencyPatternsFileName);
                                             if (depPatternList.getDepPatterns() != null) {
                                                 depPatternList.insertDepPatternsToNterms(labelGrammar);
                                             }
                                         }
                                     }
+
+                                    System.out.println(sbMainParamLogMsg);
+                                    logger.info("#####################################################################################################");
+                                    logger.info(sbMainParamLogMsg.toString());
                                     logger.info("#####################################################################################################\n");
-                                    SPAExecuteNLP spaExecute = new SPAExecuteNLP(nlpLexer, lmwg, labelGrammar.getTermsList());
+
+                                    SPAExecuteNLP spaExecute = new SPAExecuteNLP(nlpLexer, lmwg, labelGrammar.getTermsList(), appProperties);
                                     spaExecute.parseInput();
                                 }
                                 else {
@@ -234,8 +241,6 @@ public class Main {
                             }
                         }
                     }
-                    break;
-                case 3:
                     break;
             }
 
@@ -317,8 +322,5 @@ public class Main {
         
         System.out.println("Done.");
     }
-
-
-
 
 }

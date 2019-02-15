@@ -36,7 +36,7 @@ import com.google.gson.JsonParser;
 import java.util.*;
 
 /**
- * @author Paulo Roberto Massa Cereda, Newton Kiyotaka Miura
+ * @author Newton Kiyotaka Miura
  * @version 1.3
  * @since 1.1
  */
@@ -56,14 +56,15 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
     private NLPOutputResult tempNLPOutputResult;
     //private NLPOutputResult NLPOutputResult;
     private Stack<String> tempNLPTransducerStack;
-    private int maxStackDepth = 50;
+    private int maxSubmachineRecursiveCalls = 4;
     // Stack com estado retorno e transicao associada
     //private Stack<NLPSPAStackElement> nlpStack; // declarado em StructuredPushdownAutomaton2
     private Stack<DepStackElement> depStack;
     private Stack<DepStackElement> tempDepStack;
     private DepStackList depStackList;
+    private Properties appProperties;
 
-    public StructuredPushdownAutomatonNLP (NLPLexer lexer, NLPOutputList nlpOutputList,
+    public StructuredPushdownAutomatonNLP (Properties appProperties, NLPLexer lexer, NLPOutputList nlpOutputList,
                                            NLPTransducerStackList nlpTransducerStackList,
                                            NLPAction nlpAction, DepStackList depStackList) {
         this.lexer = lexer;
@@ -72,6 +73,7 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
         this.depStackList = depStackList;
         this.depStack = new Stack<>();
         this.tempDepStack = new Stack<>();
+        this.appProperties = appProperties;
     }
 
     public StructuredPushdownAutomatonNLP (StructuredPushdownAutomatonNLP originalSPA, Transition transition)
@@ -94,12 +96,13 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
         this.query.add(transition);
         this.tempNLPOutputResult = new NLPOutputResult();
         this.tempNLPOutputResult.setOutputList(nlpOutputList.getOutputResult(Thread.currentThread().getId())); // 2018.11.11
-        //this.tempNLPTransducerStack = originalSPA.nlpTransducerStackList.getTransducerStackList(Thread.currentThread().getId()).clone();
+        //this.tempNLPTransducerStack = originalSPA.nlpTransducerStackList.getTransducerStackList(Thread.currentThread().getId()).clone();   //
         this.tempNLPTransducerStack = nlpTransducerStackList.getTransducerStackList(Thread.currentThread().getId()); // 2018.11.11
         // Dependencies 2018.11.28
         this.depStackList = originalSPA.depStackList;
         //this.depStack = originalSPA.depStack.clone();
-        this.tempDepStack = depStackList.getDepStackFromThreadID(Thread.currentThread().getId());
+        this.tempDepStack = depStackList.getDepStackFromThreadID(Thread.currentThread().getId()).clone(); // 2019.02.14
+        this.appProperties = originalSPA.appProperties;
     }
 
     public br.usp.poli.lta.nlpdep.execute.NLP.output.NLPOutputResult getTempNLPOutputResult() {
@@ -206,14 +209,28 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
                     for (Integer i = 1; i < query.size(); i++) {
                     //for (Transition tempTransition: query) {
                         //if (queryIndex > 0) {
-                        StructuredPushdownAutomatonNLP newSpa =
-                                new StructuredPushdownAutomatonNLP(this, query.get(i));
-                        NLPSpaThread NLPSpaThread = new NLPSpaThread(newSpa, this.nlpOutputList,
-                                this.nlpTransducerStackList, this.depStackList, Thread.currentThread().getId());
-                        //try {
+                        // Pergunta ao usuário se inicia thread
+                        Scanner userInput = new Scanner(System.in);
+                        String input = "y";   // teste forçado, decomentar abaixo e tirar para forçar interação
+                        /*
+                        while (!(input.equals("y") || input.equals("n"))) {
+                            System.out.println(Thread.currentThread().getName() + ": Inicia nova thread? (y ou n)");
+                            input = userInput.nextLine();
+                        }
+                        */
+
+                        if (input.equals("y")) {
+                            StructuredPushdownAutomatonNLP newSpa =
+                                    new StructuredPushdownAutomatonNLP(this, query.get(i));
+                            NLPSpaThread NLPSpaThread = new NLPSpaThread(newSpa, this.nlpOutputList,
+                                    this.nlpTransducerStackList, this.depStackList, Thread.currentThread().getId());
+                            //try {
                             Thread newThread = new Thread(NLPSpaThread);
                             newThread.start();
-                        //}
+                            //}
+                        } else {
+                            System.out.println("Thread ID " + Thread.currentThread().getId() + ": Nova thread não iniciada.");
+                        }
                         //catch (Exception e) {
                         //    logger.debug("Error in thread preorderParse. " + e.getMessage());
                         //    break;
@@ -239,7 +256,7 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
 
                 if (query.get(0).isSubmachineCall()) {
                     machines.push(query.get(0).getSubmachine());
-                    if (getRecursionCount(machines, query.get(0).getSubmachine()) < this.maxStackDepth) { // verifica tamanho da pilha. Se menor que o limiar continua.
+                    if (getRecursionCount(machines, query.get(0).getSubmachine()) < this.maxSubmachineRecursiveCalls) { // verifica tamanho da pilha. Se menor que o limiar continua.
                         stack.push(query.get(0).getTarget());
                         NLPSPAStackElement newNLPStackElement = new NLPSPAStackElement(query.get(0).getTarget(), query.get(0)); // 2018.09.17
                         nlpStack.push(newNLPStackElement);
@@ -258,7 +275,7 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
 
                     } else { // Pilha pasou do limiar. Aborta.
                         logger.info("ThreadId {} Limiar de chamada de submáquina {} atingido. Chamada à "
-                                        + "submáquina '{}'",Thread.currentThread().getId(),this.maxStackDepth,
+                                        + "submáquina '{}'",Thread.currentThread().getId(),this.maxSubmachineRecursiveCalls,
                                 query.get(0).getSubmachine());
                         return false;
                         //break;
@@ -358,22 +375,37 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
             logger.info("Resultado do reconhecimento: cadeia {}", (result ? "aceita" : "rejeitada"));
 
             if (result) {
-                printNLPOutput(this.nlpOutputList.getOutputResult(Thread.currentThread().getId()), Thread.currentThread().getId(), Thread.currentThread().getName());
+                printContextFreeNLPOutput(this.nlpOutputList.getOutputResult(Thread.currentThread().getId()), Thread.currentThread().getId(), Thread.currentThread().getName());
 
-                DepParseTree depParseTree = new DepParseTree(this);
-                StringBuilder conlluOutput = new StringBuilder();
-                boolean depResult = depParseTree.parsePreorderFromLeaf(conlluOutput);
-                logger.info("Resultado do parsing de dependências: {}", (depResult ? "OK" : "NOK"));
-                if (depResult) {
-                    logger.info("Conllu output:\n{}",conlluOutput.toString());
-                    System.out.println("Conllu output:\n" + conlluOutput.toString());
+                // Processamento de padrões de dependências
+                Integer type = Integer.valueOf(appProperties.getProperty("type"));
+                if (appProperties.getProperty("inputNLPDependencyPatternsFileName").isEmpty() || (type < 3)) {
+                    logger.info("Parsing de dependências não foi solicitado.");
+                    System.out.println(Thread.currentThread().getName() + " Parsing de dependências não foi solicitado.");
+                } else {
+                    switch (type) {
+                        case 0:
+                        case 1:
+                        case 2:
+                            break;
+                        case 3:
+                            break;
+                        case 4:
+                            DepParseTree depParseTree = new DepParseTree(this);
+                            StringBuilder conlluOutput = new StringBuilder();
+                            boolean depResult = depParseTree.parsePreorderFromLeaf(conlluOutput);
+                            logger.info("Resultado do parsing de dependências: {}", (depResult ? "OK" : "NOK"));
+                            if (depResult) {
+                                logger.info("Conllu output:\n{}", conlluOutput.toString());
+                                System.out.println(Thread.currentThread().getName() + " Conllu output:\n" + conlluOutput.toString());
+                            }
+                            break;
+                    }
                 }
-
             }
             return result;
         } else {
-            logger.info("A pilha não está vazia e o estado corrente não "
-                    + "é de aceitação. A cadeia não é válida.");
+            logger.info("A pilha não está vazia e o estado corrente não é de aceitação. A cadeia não é válida.");
             return false;
         }
     }
@@ -395,7 +427,7 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
         return recursionCount;
     }
 
-    synchronized void printNLPOutput (LinkedList<String> outputList, long threadID, String threadName)
+    synchronized void printContextFreeNLPOutput(LinkedList<String> outputList, long threadID, String threadName)
     {
         NLPTreeNode<String> root = new NLPTreeNode<>("root");
 
@@ -411,8 +443,8 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
         }
         // Inserir print de resultado positivo aqui.
         //logger.info("\n###################################################################");
-        logger.info("\n#! ThreadId {} ThreadName {} Output Plain: \n{}\n",threadID,threadName,sbPlain);
-        System.out.println("\n#! ThreadName "+threadName+" Output Plain: "+sbPlain+"\n");
+        logger.info("\n#! Output Plain: \n{}\n",sbPlain);
+        System.out.println("\n#! " + threadName+ " Output Plain: "+sbPlain+"\n");
         //logger.info("###################################################################\n");
 
         for (String currentString: outputList) {
@@ -460,8 +492,8 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
 
 
         //logger.info("###################################################################");
-        logger.info("\n#! ThreadId {} ThreadName {} Output JSON : \n{}\n",threadID,threadName,sbJson);
-        System.out.println("\n#! threadName "+threadName+" Output JSON: "+sbJson+"\n");
+        logger.info("\n#! Output JSON : \n{}\n",sbJson);
+        System.out.println("\n#! "+threadName+" Output JSON: "+sbJson+"\n");
         //logger.info("###################################################################");
 
 
@@ -470,8 +502,8 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
         sbLatex.append(jsonOuputToLatex(element));
 
         //logger.info("###################################################################");
-        logger.info("\n#! ThreadId {} ThreadName {} Output Latex: \n{}\n",threadID,threadName,sbLatex);
-        System.out.println("\n#! threadName "+threadName+" Output Latex: "+sbLatex+"\n");
+        logger.info("\n#! Output Latex: \n{}\n",sbLatex);
+        System.out.println("\n#! "+threadName+" Output Latex: "+sbLatex+"\n");
         //logger.info("###################################################################");
     }
 
@@ -514,6 +546,7 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
         }
         return sbLatex.toString();
     }
+
 
     String getNameFromJson(JsonObject jsonObject) {
         String name = "";

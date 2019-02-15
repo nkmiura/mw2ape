@@ -26,7 +26,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
- * @author Paulo Roberto Massa Cereda
+ * @author Paulo Roberto Massa Cereda, Newton Kiyotaka Miura
  * @version 1.0
  * @since 1.0
  */
@@ -88,7 +88,15 @@ public class Stack<T> {
             sb.append("vazia");
         }
         else {
-            sb.append(StringUtils.join(list, ", "));
+            try {
+                List<T> newList = new  ArrayList<>();
+                newList.addAll(list);
+                sb.append(StringUtils.join(newList, ", "));
+            }
+            catch (Exception exception) {
+                System.out.println("Thread ID " + Thread.currentThread().getId() + ": An exception was thrown in Stack toString operation - Exception: " + exception.toString());
+                Thread.interrupted();
+            }
         }
         sb.append("]");
         return sb.toString();

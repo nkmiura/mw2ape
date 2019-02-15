@@ -65,7 +65,7 @@ public class Utils {
         options.addOption("y", "yaml", true, "YAML output");
         options.addOption("c", "convert", false, "DFA conversion");
         options.addOption("m", "minimize", false, "state minimization");
-        options.addOption("g", "gui", false, "open graphical interface");
+        //options.addOption("g", "gui", false, "open graphical interface");
         options.addOption("i", "input_file", true, "input file to be parsed");
         options.addOption("n", "nlp", false, "nlp processing");
         options.addOption("d", "nlp_dictionary_file", true, "nlp dictionary file");

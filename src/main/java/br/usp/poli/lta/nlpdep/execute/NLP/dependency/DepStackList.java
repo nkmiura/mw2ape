@@ -28,7 +28,7 @@ public class DepStackList {
     }
 
 
-    public synchronized void cloneDepStackList(long newThreadID, Stack<DepStackElement> newDepStack) {
+    public synchronized void addStack(long newThreadID, Stack<DepStackElement> newDepStack) {
         if (!this.depStackList.containsKey(newThreadID)) {
             this.depStackList.put(newThreadID, newDepStack);
             logger.debug("Clonando dep stack para thread {}.", newThreadID);

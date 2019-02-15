@@ -124,6 +124,7 @@ public class Generator {
                         currentProduction = currentNterm.addProduction(token.getValue());
                         break;
                     case 2:
+                    case 3:
                         helperPairStack.clear();
                         current = 0;
                         counter = 1;

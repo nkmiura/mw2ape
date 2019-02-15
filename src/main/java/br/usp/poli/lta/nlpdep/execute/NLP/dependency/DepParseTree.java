@@ -32,12 +32,6 @@ public class DepParseTree {
     }
 
 
-    public boolean parseFromRootDep() {
-        boolean result = false;
-
-        return result;
-    }
-
     final boolean parsePreorder (Node<NLPOutputToken> node, StringBuilder conlluOutput) {
         boolean result = true;
 

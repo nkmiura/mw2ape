@@ -22,9 +22,10 @@ public class SPAExecuteNLP extends SPAExecute {
     private NLPTransducerStackList nlpTransducerStackList;
     private DepStackList depStackList;
     private NLPAction nlpAction;
+    private Properties appProperties;
 
 
-    public SPAExecuteNLP(NLPLexer nlpLexer, Generator lmwg, HashSet<String> dictionaryTerm) {
+    public SPAExecuteNLP(NLPLexer nlpLexer, Generator lmwg, HashSet<String> dictionaryTerm, Properties appProperties) {
         this.nlpLexer = nlpLexer;
         this.lmwg = lmwg;
         this.transducerStack = new Stack<>();
@@ -38,6 +39,7 @@ public class SPAExecuteNLP extends SPAExecute {
         this.nlpTransducerStackList = new NLPTransducerStackList();
         this.depStackList = new DepStackList();
         this.nlpAction = new NLPAction(this.nlpOutputList, dictionaryTerm, this.nlpTransducerStackList, this.depStackList);
+        this.appProperties = appProperties;
     }
 
     public void parseInput() throws Exception {
@@ -46,7 +48,7 @@ public class SPAExecuteNLP extends SPAExecute {
 
         //this.nlpOutputList.incrementOutputList(Thread.currentThread().getId());
         //this.nlpOutputList.setParseResult(Thread.currentThread().getId(),true);
-        StructuredPushdownAutomatonNLP spa = new StructuredPushdownAutomatonNLP(this.nlpLexer,
+        StructuredPushdownAutomatonNLP spa = new StructuredPushdownAutomatonNLP(this.appProperties, this.nlpLexer,
                 this.nlpOutputList, this.nlpTransducerStackList, this.nlpAction, this.depStackList);
         //Runnable spa = new StructuredPushdownAutomatonNLP(threadIdCounter, this.nlpLexer, this.outputResults);
 
