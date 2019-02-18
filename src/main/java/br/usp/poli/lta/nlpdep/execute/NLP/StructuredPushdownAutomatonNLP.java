@@ -20,6 +20,7 @@
 package br.usp.poli.lta.nlpdep.execute.NLP;
 
 import br.usp.poli.lta.nlpdep.execute.NLP.dependency.DepParseTree;
+import br.usp.poli.lta.nlpdep.execute.NLP.dependency.DepPatternsTree;
 import br.usp.poli.lta.nlpdep.execute.NLP.dependency.DepStackElement;
 import br.usp.poli.lta.nlpdep.execute.NLP.dependency.DepStackList;
 import br.usp.poli.lta.nlpdep.execute.NLP.output.NLPOutputList;
@@ -27,12 +28,14 @@ import br.usp.poli.lta.nlpdep.execute.NLP.output.NLPOutputResult;
 import br.usp.poli.lta.nlpdep.mwirth2ape.ape.*;
 import br.usp.poli.lta.nlpdep.mwirth2ape.model.Token;
 import br.usp.poli.lta.nlpdep.mwirth2ape.structure.Stack;
+import br.usp.poli.lta.nlpdep.wsn2spa.Utils;
+import com.google.gson.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.io.Writer;
 import java.util.*;
 
 /**
@@ -117,6 +120,10 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
 
     public DepStackList getDepStackList() {
         return depStackList;
+    }
+
+    public Properties getAppProperties() {
+        return appProperties;
     }
 
     public boolean parse(boolean isClone) {
@@ -389,6 +396,25 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
                         case 2:
                             break;
                         case 3:
+                            DepPatternsTree depPatternsTree = new DepPatternsTree(this);
+                            //StringBuilder patternsOutput = new StringBuilder();
+                            JsonObject depPatternsJsnObj = depPatternsTree.parsePreorderFromLeaf();
+                            boolean getPatterns = true;
+                            if (depPatternsJsnObj.isJsonNull()) {
+                                getPatterns = false;
+                            }
+                            logger.info("Resultado de levantamento de padrões sintáticos: {}", (getPatterns ? "OK" : "NOK"));
+                            if (getPatterns) {
+                                logger.info("patternsOutput output:\n{}", depPatternsJsnObj.toString());
+                                System.out.println(Thread.currentThread().getName() + " patternsOutput output:\n" + depPatternsJsnObj.toString());
+                                // write json file
+                                try {
+                                    PrintWriter jsonOut = new PrintWriter(depPatternsJsnObj.get("File").toString());
+                                    jsonOut.println(depPatternsJsnObj.toString());
+                                }catch (Exception exception) {
+                                    Utils.printException(exception);
+                                }
+                            }
                             break;
                         case 4:
                             DepParseTree depParseTree = new DepParseTree(this);
