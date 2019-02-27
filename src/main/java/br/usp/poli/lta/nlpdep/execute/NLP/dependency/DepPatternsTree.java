@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.Scanner;
 
 public class DepPatternsTree {
     private static final Logger logger = LoggerFactory.getLogger(DepParseTree.class);
@@ -47,14 +48,30 @@ public class DepPatternsTree {
         depJsnObj.addProperty("ThreadName", Thread.currentThread().getName());
         depJsnObj.addProperty("Date", LocalDateTime.now().format(DateTimeFormatter.ofPattern(("yyyy-MM-dd HH:mm:ss"))));
 
-        Node<NLPOutputToken> rootNode =
-                ((DepStackElementNterm)(this.spaNLP.getDepStackList().getDepStackFromThreadID(threadId).top())).getNode();
+        /*
+        // verifica se o nó é nulo 2019.02.24
+        if (((DepStackElementNterm)(this.spaNLP.getDepStackList().getDepStackFromThreadID(threadId).top())).getNode() == null) {
+            // Pergunta ao usuário se continua
+            Scanner userInput = new Scanner(System.in);
 
-        result = parsePreorder(rootNode);
+            String input = "y";   // teste forçado, decomentar abaixo e tirar para forçar interação
+            while (!(input.equals("y") || input.equals("n"))) {
+                System.out.println(Thread.currentThread().getName() + ": Termina thread? (y ou n)");
+                input = userInput.nextLine();
+            }
+            if (input.equals("y")) {
+                return null;
+            }
+        } else {   */
+            Node<NLPOutputToken> rootNode =
+                    ((DepStackElementNterm) (this.spaNLP.getDepStackList().getDepStackFromThreadID(threadId).top())).getNode();
 
-        depJsnObj.add("DepPatterns", depPtrnsJsnArray);
-        //patternsOutput.append(depJsnObj);
+            result = parsePreorder(rootNode);
 
+            depJsnObj.add("DepPatterns", depPtrnsJsnArray);
+            //patternsOutput.append(depJsnObj);
+        /*
+        } */
         if (result) {
             return depJsnObj;
         } else {
@@ -102,7 +119,7 @@ public class DepPatternsTree {
             depSglPtrnJsnObj.add("depConstituents",depPtrnCnstntsJsnArray);
 
         } else {
-            logger.debug("DepGetPattern erro!");
+            logger.debug("DepGetPattern não é nterm! É {}", node.getData().getType());
         }
 
         depPtrnsJsnArray.add(depSglPtrnJsnObj);

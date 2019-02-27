@@ -37,10 +37,7 @@ import br.usp.poli.lta.nlpdep.mwirth2ape.mwirth.Generator;
 import br.usp.poli.lta.nlpdep.mwirth2ape.mwirth.MWirthLexer;
 
 import java.io.*;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
@@ -63,12 +60,13 @@ import org.yaml.snakeyaml.Yaml;
 public class Main {
 
     public static Properties appProperties = new Properties();  // Alterar para usar enum no futuro
+    public String version = "1.0";
 
     private static final Logger logger = LoggerFactory.
             getLogger(Main.class);
 
     public static void main(String[] args) {        
-        
+
         Utils.printBanner();
         CommandLineParser parser = new DefaultParser();
 
@@ -201,6 +199,7 @@ public class Main {
 
                                     StringBuilder sbMainParamLogMsg = new StringBuilder();
                                     //sbMainParamLogMsg.append("Command line: " + line.getArgList().toString());
+
                                     sbMainParamLogMsg.append("\nDiretório de trabalho: " + System.getProperty("user.dir"));
                                     sbMainParamLogMsg.append("\nProcessamento de entrada NLP: arquivo " +  inputFile.getAbsolutePath());
                                     sbMainParamLogMsg.append("\nGramática NLP: arquivo " +  file.getAbsolutePath());

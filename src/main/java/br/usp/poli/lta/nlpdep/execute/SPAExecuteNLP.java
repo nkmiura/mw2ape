@@ -38,8 +38,8 @@ public class SPAExecuteNLP extends SPAExecute {
         this.nlpOutputList = new NLPOutputList();
         this.nlpTransducerStackList = new NLPTransducerStackList();
         this.depStackList = new DepStackList();
-        this.nlpAction = new NLPAction(this.nlpOutputList, dictionaryTerm, this.nlpTransducerStackList, this.depStackList);
         this.appProperties = appProperties;
+        this.nlpAction = new NLPAction(this.nlpOutputList, dictionaryTerm, this.nlpTransducerStackList, this.depStackList, this.appProperties);
     }
 
     public void parseInput() throws Exception {

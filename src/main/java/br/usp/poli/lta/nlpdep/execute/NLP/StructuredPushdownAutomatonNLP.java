@@ -59,7 +59,7 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
     private NLPOutputResult tempNLPOutputResult;
     //private NLPOutputResult NLPOutputResult;
     private Stack<String> tempNLPTransducerStack;
-    private int maxSubmachineRecursiveCalls = 4;
+    private int maxSubmachineRecursiveCalls = 3;
     // Stack com estado retorno e transicao associada
     //private Stack<NLPSPAStackElement> nlpStack; // declarado em StructuredPushdownAutomaton2
     private Stack<DepStackElement> depStack;
@@ -380,13 +380,14 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
                 tree.push(top);
             }
             logger.info("Resultado do reconhecimento: cadeia {}", (result ? "aceita" : "rejeitada"));
+            nlpOutputList.setParseResult(Thread.currentThread().getId(),result);
 
             if (result) {
-                printContextFreeNLPOutput(this.nlpOutputList.getOutputResult(Thread.currentThread().getId()), Thread.currentThread().getId(), Thread.currentThread().getName());
+                printContextFreeNLPOutput(this.nlpOutputList.getOutputResult(Thread.currentThread().getId()), Thread.currentThread().getName());
 
                 // Processamento de padrões de dependências
                 Integer type = Integer.valueOf(appProperties.getProperty("type"));
-                if (appProperties.getProperty("inputNLPDependencyPatternsFileName").isEmpty() || (type < 3)) {
+                if (type < 3) {
                     logger.info("Parsing de dependências não foi solicitado.");
                     System.out.println(Thread.currentThread().getName() + " Parsing de dependências não foi solicitado.");
                 } else {
@@ -397,7 +398,8 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
                             break;
                         case 3:
                             DepPatternsTree depPatternsTree = new DepPatternsTree(this);
-                            //StringBuilder patternsOutput = new StringBuilder();
+                            logger.info(Thread.currentThread().getName() + "Iniciando levantamento de padrões sintáticos.");
+                            System.out.println("Iniciando levantamento de padrões sintáticos.");
                             JsonObject depPatternsJsnObj = depPatternsTree.parsePreorderFromLeaf();
                             boolean getPatterns = true;
                             if (depPatternsJsnObj.isJsonNull()) {
@@ -406,24 +408,31 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
                             logger.info("Resultado de levantamento de padrões sintáticos: {}", (getPatterns ? "OK" : "NOK"));
                             if (getPatterns) {
                                 logger.info("patternsOutput output:\n{}", depPatternsJsnObj.toString());
-                                System.out.println(Thread.currentThread().getName() + " patternsOutput output:\n" + depPatternsJsnObj.toString());
+                                String fileName = depPatternsJsnObj.get("File").toString();
+                                System.out.println(Thread.currentThread().getName() + " patternsOutput output:\n" + fileName.substring(1, fileName.length()-1));
                                 // write json file
                                 try {
-                                    PrintWriter jsonOut = new PrintWriter(depPatternsJsnObj.get("File").toString());
-                                    jsonOut.println(depPatternsJsnObj.toString());
+                                    FileWriter jsonOutFw = new FileWriter(fileName.substring(1, fileName.length()-1));
+                                    jsonOutFw.write(Utils.toPrettyFormat(depPatternsJsnObj.toString()));
+                                    jsonOutFw.close();
                                 }catch (Exception exception) {
                                     Utils.printException(exception);
                                 }
                             }
                             break;
                         case 4:
-                            DepParseTree depParseTree = new DepParseTree(this);
-                            StringBuilder conlluOutput = new StringBuilder();
-                            boolean depResult = depParseTree.parsePreorderFromLeaf(conlluOutput);
-                            logger.info("Resultado do parsing de dependências: {}", (depResult ? "OK" : "NOK"));
-                            if (depResult) {
-                                logger.info("Conllu output:\n{}", conlluOutput.toString());
-                                System.out.println(Thread.currentThread().getName() + " Conllu output:\n" + conlluOutput.toString());
+                            if (appProperties.getProperty("inputNLPDependencyPatternsFileName").isEmpty()) {
+                                logger.info("Arquivo de padrões de dependências não especificado.");
+                                System.out.println(Thread.currentThread().getName() + " Arquivo de padrões de dependências não especificado.");
+                            } else {
+                                DepParseTree depParseTree = new DepParseTree(this);
+                                StringBuilder conlluOutput = new StringBuilder();
+                                boolean depResult = depParseTree.parsePreorderFromLeaf(conlluOutput);
+                                logger.info("Resultado do parsing de dependências: {}", (depResult ? "OK" : "NOK"));
+                                if (depResult) {
+                                    logger.info("Conllu output:\n{}", conlluOutput.toString());
+                                    System.out.println(Thread.currentThread().getName() + " Conllu output:\n" + conlluOutput.toString());
+                                }
                             }
                             break;
                     }
@@ -453,7 +462,7 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
         return recursionCount;
     }
 
-    synchronized void printContextFreeNLPOutput(LinkedList<String> outputList, long threadID, String threadName)
+    synchronized void printContextFreeNLPOutput(LinkedList<String> outputList, String threadName)
     {
         NLPTreeNode<String> root = new NLPTreeNode<>("root");
 
@@ -542,7 +551,7 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
         Set<Map.Entry<String, JsonElement>> entries = obj.entrySet();//will return members of your object
         for (Map.Entry<String, JsonElement> entry: entries) {
             //System.out.println(entry.getKey());
-            logger.debug(" JSON: key{}",entry.getKey());
+            //logger.debug(" JSON: key{}",entry.getKey());
             if (entry.getKey().equals("nterm")) {
                 String name = getNameFromJson(entry.getValue().getAsJsonObject());
                 if (!name.equals("")) {

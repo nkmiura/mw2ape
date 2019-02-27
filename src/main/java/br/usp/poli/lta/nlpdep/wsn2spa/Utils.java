@@ -28,6 +28,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import javax.swing.JCheckBox;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
@@ -52,9 +57,9 @@ public class Utils {
         sb.append("                      |_|         ").append('\n');  */
 
         sb.append("##################################").append('\n');
-        sb.append("#                                #").append('\n');
+        //sb.append("#                                #").append('\n');
         sb.append("#           mw2spa NLP           #").append('\n');
-        sb.append("#                                #").append('\n');
+        sb.append("#             V. 1.0             #" ).append('\n');
         sb.append("##################################").append('\n');
         System.out.println(sb.toString());
     }
@@ -143,6 +148,17 @@ public class Utils {
                 70, "\n", true));
         System.out.println(StringUtils.repeat("-", 70));
         System.exit(0);
+    }
+
+    public static String toPrettyFormat(String jsonString)
+    {
+        JsonParser parser = new JsonParser();
+        JsonObject json = parser.parse(jsonString).getAsJsonObject();
+
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String prettyJson = gson.toJson(json);
+
+        return prettyJson;
     }
 
 }

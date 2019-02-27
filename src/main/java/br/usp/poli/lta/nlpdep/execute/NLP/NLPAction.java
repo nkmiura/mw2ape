@@ -12,10 +12,7 @@ import br.usp.poli.lta.nlpdep.mwirth2ape.model.Token;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class NLPAction {
 
@@ -24,6 +21,7 @@ public class NLPAction {
 
     private NLPOutputList nlpOutputList;
     private HashSet<String> dictionaryTerm;
+    private Properties appProperties;
     //private br.usp.poli.lta.nlpdep.execute.NLP.NLPTransducerStackList NLPTransducerStackListList;
 
     public Action semanticActionTermTransition;
@@ -33,9 +31,10 @@ public class NLPAction {
     //public ActionState semanticActionState;
 
     public NLPAction(NLPOutputList nlpOutputList, HashSet<String> dictionaryTerm,
-                     NLPTransducerStackList nlpTransducerStackList, DepStackList depStackList) {
+                     NLPTransducerStackList nlpTransducerStackList, DepStackList depStackList, Properties appProperties) {
         this.nlpOutputList = nlpOutputList;
         this.dictionaryTerm = dictionaryTerm;
+        this.appProperties = appProperties;
 
         // Acao semantica associado a transicao com terminal
         this.semanticActionTermTransition = new Action("semanticActionTermTransition") {
@@ -247,13 +246,17 @@ public class NLPAction {
         }
         logger.debug(" ### DepStackElements Popped ({}) {}",poppedDepStackElements.size(), poppedDepStackElements);
 
-        // Carrega em depPatternArrayList os padrões de dependência que correspondem à sequência que estava na pilha
         ArrayList<DepPattern> depPatternArrayList = getDepPatterns(labelProduction, poppedDepStackElements, true);  // parâmetro strict para considerar a instancia da regra de produção de um não terminal
-        if (depPatternArrayList.size() == 0) {
-            logger.debug("##### Dep Parsing did not found any DepPatterns");
-            return false;
+
+        if (appProperties.getProperty("type").equals("4")) {
+            // Carrega em depPatternArrayList os padrões de dependência que correspondem à sequência que estava na pilha se type = 4
+            if (depPatternArrayList.size() == 0) {
+                logger.debug("##### Dep Parsing did not found any DepPatterns");
+                return false;
+            }
+            logger.debug("##### Dep Parsing found DepPatterns: {}", depPatternArrayList);
         }
-        logger.debug("##### Dep Parsing found DepPatterns: {}", depPatternArrayList);
+
 
         NLPOutputToken newNlpOutputTokenNterm = new NLPOutputToken(labelProduction.getIdentifier(), "nterm");  // nova estrutura de dados associados a nterm
         newNlpOutputTokenNterm.setDepPatternArrayList(depPatternArrayList); // associa a lista de padroes de dependencia encontrados

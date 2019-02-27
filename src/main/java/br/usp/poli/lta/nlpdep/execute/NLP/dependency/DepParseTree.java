@@ -26,6 +26,9 @@ public class DepParseTree {
         Node<NLPOutputToken> rootNode =
                 ((DepStackElementNterm)(this.spaNLP.getDepStackList().getDepStackFromThreadID(threadId).top())).getNode();
 
+        //Node<NLPOutputToken> rootNode =
+        //        this.spaNLP
+
         result = parsePreorder(rootNode, conlluOutput);
 
         return result;
