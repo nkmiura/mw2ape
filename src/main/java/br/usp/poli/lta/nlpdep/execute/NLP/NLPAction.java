@@ -248,8 +248,8 @@ public class NLPAction {
 
         ArrayList<DepPattern> depPatternArrayList = getDepPatterns(labelProduction, poppedDepStackElements, true);  // parâmetro strict para considerar a instancia da regra de produção de um não terminal
 
-        if (appProperties.getProperty("type").equals("4")) {
-            // Carrega em depPatternArrayList os padrões de dependência que correspondem à sequência que estava na pilha se type = 4
+        if (appProperties.getProperty("type").equals("5")) {
+            // Carrega em depPatternArrayList os padrões de dependência que correspondem à sequência que estava na pilha se type = 5
             if (depPatternArrayList.size() == 0) {
                 logger.debug("##### Dep Parsing did not found any DepPatterns");
                 return false;

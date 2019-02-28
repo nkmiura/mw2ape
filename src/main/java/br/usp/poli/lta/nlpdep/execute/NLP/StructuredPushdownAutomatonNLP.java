@@ -59,7 +59,7 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
     private NLPOutputResult tempNLPOutputResult;
     //private NLPOutputResult NLPOutputResult;
     private Stack<String> tempNLPTransducerStack;
-    private int maxSubmachineRecursiveCalls = 3;
+    private int maxSubmachineRecursiveCalls = 4;
     // Stack com estado retorno e transicao associada
     //private Stack<NLPSPAStackElement> nlpStack; // declarado em StructuredPushdownAutomaton2
     private Stack<DepStackElement> depStack;
@@ -182,7 +182,7 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
                         if (branch.size() == 1) {
                             branch.add("ε");
                         }
-                        logger.debug("Árvore da submáquina corrente: {}", branch);
+                        //logger.debug("Árvore da submáquina corrente: {}", branch);   // 2019.02.27 evitar exception no logger
                         if (operations.containsKey(current)) {
                             logger.debug("Executando ação semântica no retorno da submáquina.");
                             branch = operations.get(current).execute(reference, branch);
@@ -396,7 +396,7 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
                         case 1:
                         case 2:
                             break;
-                        case 3:
+                        case 3: // gera rascunho de padroes de dep sem as relações
                             DepPatternsTree depPatternsTree = new DepPatternsTree(this);
                             logger.info(Thread.currentThread().getName() + "Iniciando levantamento de padrões sintáticos.");
                             System.out.println("Iniciando levantamento de padrões sintáticos.");
@@ -420,7 +420,7 @@ public class StructuredPushdownAutomatonNLP extends StructuredPushdownAutomaton2
                                 }
                             }
                             break;
-                        case 4:
+                        case 5:
                             if (appProperties.getProperty("inputNLPDependencyPatternsFileName").isEmpty()) {
                                 logger.info("Arquivo de padrões de dependências não especificado.");
                                 System.out.println(Thread.currentThread().getName() + " Arquivo de padrões de dependências não especificado.");

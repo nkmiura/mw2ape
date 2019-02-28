@@ -171,8 +171,9 @@ public class Main {
                     mwg = new Generator(mwl, 1);
                     mwg.generateAutomaton();
                     break;
-                case 2:
-                case 3:
+                case 2: // faz parsing livre de contexto
+                case 3: // gera rascunho de padrões de dep (sem as relações) em json
+                case 4: // gera padrões de dep em json a partir de input no formato CONLLU
                     mwg = new Generator(mwl, 1);
                     mwg.generateAutomaton();  // parsing da gramática para obter labels
                     labelGrammar = mwg.getLabelGrammar(); // gramática com lebels
