@@ -32,7 +32,6 @@ import br.usp.poli.lta.nlpdep.wsn2spa.Utils;
 import com.google.gson.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.io.Writer;

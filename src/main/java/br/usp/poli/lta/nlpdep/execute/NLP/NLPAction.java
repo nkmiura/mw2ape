@@ -132,14 +132,14 @@ public class NLPAction {
                                     newDepStackElementTerm.setNode(node);
                                     logger.debug("### DepStack Push: {}", newDepStackElementTerm);
                                     depStack.push(newDepStackElementTerm);
-                                } else if (labelSymbol.equals("[")) {
+                                } else if (labelSymbol.equals("[")) {  // [
                                     String stackElement = "]";
                                     transducerStack.push(stackElement);
                                     nlpOutputList.insertOutputResult(threadId, "[(");
                                     DepStackElement newDepStackElement = new DepStackElement("]","]");
                                     logger.debug("### DepStack Push: {}",  newDepStackElement);
                                     depStack.push(newDepStackElement);
-                                } else if (labelSymbol.equals("]")) {
+                                } else if (labelSymbol.equals("]")) { // ]
                                     StringBuilder sb = new StringBuilder();
                                     LinkedList<String> poppedTransducerStackElements = new LinkedList<>();
 

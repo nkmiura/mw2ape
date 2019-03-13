@@ -287,6 +287,47 @@ public class Generator {
             }
         };
 
+        Action fechaProducao = new Action("fechaProducao") {
+            @Override
+            public void execute(Token token) {
+
+                switch(type) {
+                    case 0:
+                        Sketch transition = new Sketch(machine, current,
+                                helperPairStack.top().getSecond());
+                        transitions.add(transition);
+                        current = helperPairStack.top().getSecond();
+                        helperPairStack.pop();
+                        break;
+                    case 1:
+                        registerExpressionToken(token);
+                        registerLabelToken("]");
+                        currentProduction.labels.getLast().pushLabel(currentProduction.getIdentifier(),currentProduction);
+                        break;
+                    case 2:
+                        token.setType("ε");
+                        token.setValue("ε");
+                        if (token.getProductionToken() != null) {
+                            token.getProductionToken().setType("ε");
+                            token.getProductionToken().setValue("ε");
+                        }
+                        Sketch transition2 = new Sketch(machine, current,
+                                token, helperPairStack.top().getSecond());
+                        transitions.add(transition2);
+                        current = helperPairStack.top().getSecond();
+                        helperPairStack.pop();
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            @Override
+            public List execute(int state, List tree) {
+                return null;
+            }
+        };
+
         Action novoEscopo = new Action("novoEscopo") {
             @Override
             public void execute(Token token) {
@@ -349,48 +390,6 @@ public class Generator {
             }
         };
 
-        Action fechaProducao = new Action("fechaProducao") {
-            @Override
-            public void execute(Token token) {
-
-                switch(type) {
-                    case 0:
-                        Sketch transition = new Sketch(machine, current,
-                                helperPairStack.top().getSecond());
-                        transitions.add(transition);
-                        current = helperPairStack.top().getSecond();
-                        helperPairStack.pop();
-                        break;
-                    case 1:
-                        registerExpressionToken(token);
-                        registerLabelToken("]");
-                        currentProduction.labels.getLast().pushLabel(currentProduction.getIdentifier(),currentProduction);
-                        break;
-                    case 2:
-                        token.setType("ε");
-                        token.setValue("ε");
-                        if (token.getProductionToken() != null) {
-                            token.getProductionToken().setType("ε");
-                            token.getProductionToken().setValue("ε");
-                        }
-                        Sketch transition2 = new Sketch(machine, current,
-                                token, helperPairStack.top().getSecond());
-                        transitions.add(transition2);
-                        current = helperPairStack.top().getSecond();
-                        helperPairStack.pop();
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            @Override
-            public List execute(int state, List tree) {
-                return null;
-            }
-        };
-
-
         Action adicionaOpcao = new Action("adicionaOpcao") {
             @Override
             public void execute(Token token) {
@@ -441,7 +440,6 @@ public class Generator {
                         break;
                 }
             }
-
             @Override
             public List execute(int state, List tree) {
                 return null;
@@ -463,7 +461,7 @@ public class Generator {
                         Sketch transition1 = new Sketch(machine, current, token,
                                 helperPairStack.top().getSecond());
                         transitions.add(transition1);
-                        current = helperPairStack.top().getSecond();
+                        //current = helperPairStack.top().getSecond();    // retirado em 2019.03.06
                         helperPairStack.pop();
 
                         current = helperPairStack.top().getSecond();

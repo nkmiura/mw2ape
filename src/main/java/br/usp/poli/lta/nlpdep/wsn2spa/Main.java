@@ -90,7 +90,7 @@ public class Main {
             throws IOException, Exception {
         //System.out.println("line.getArgs().length: " + line.getArgs().length);
         int type = 0;
-        int maxTypeValue = 4;
+        int maxTypeValue = 5;
 
         if (!Utils.required(line, "o", "y") || line.getArgs().length != 1) {
             throw new Exception("Note that 'o' and 'y' flags are required"
@@ -174,6 +174,7 @@ public class Main {
                 case 2: // faz parsing livre de contexto
                 case 3: // gera rascunho de padrões de dep (sem as relações) em json
                 case 4: // gera padrões de dep em json a partir de input no formato CONLLU
+                case 5: // gera padrões de dep em json a partir de input no formato CONLLU
                     mwg = new Generator(mwl, 1);
                     mwg.generateAutomaton();  // parsing da gramática para obter labels
                     labelGrammar = mwg.getLabelGrammar(); // gramática com lebels
