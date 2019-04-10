@@ -1,6 +1,6 @@
 # mwsn2spa
 
-`mwsn2spa` is a command line tool written in Java that takes a grammar written in the Modified Wirth Syntax Notation (WSN) and generates a corresponding structured pushdown automaton (SPA), specified through a list of specs written in the YAML format. This tool is released under the GNU Public License version 3.0 and makes use of modified version of 2 helper tools, `wirth2ape` and `nfa2dfa` written by Paulo Cereda.
+`mwsn2spa` is a command line tool written in Java that takes a grammar written in the Modified Wirth Syntax Notation (MWSN) and generates a corresponding structured pushdown automaton (SPA). This tool is released under the GNU Public License version 3.0 and makes use of modified version of 2 helper tools, `wirth2ape` and `nfa2dfa` written by Paulo Cereda.
 
 Apache Maven and Java 8 are required to build `mwsn2spa` from sources. Run:
 
