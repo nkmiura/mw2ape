@@ -1,17 +1,14 @@
-# mwsn2spa
+# mwsn2ape
 
-`mwsn2ape` is a command line tool written in Java that implements a NLP pipeline.
+`mwsn2ape` é um aplicativo de linha de comando escrito em Java que implementa um 'pipeline' de NLP para um subconjunto do português brasileiro culto.
 
-Input: a grammar written in the Modified Wirth Syntax Notation (MWSN), lexicon, dependency patterns
-Output: phrase structure syntax tree, dependency tree
+- Entradas: uma gramática na notação Wirth modificada, um dicionário e padrões de dependência.
+- Saídas: árvore sintática ('phrase structure') e árvore de dependências.
+- Resultados intermediários: autômato de pilha estruturado correspondente à gramática de entrada, transdutor sintático.
 
-Intermediate results: structured pushdown automaton (SPA), phrase structure syntax parser
+Esta ferramenta é disponibilizada conforme 'GNU Public License version 3.0' e utiliza ferramentas auxiliares baseadas nos sistemas `wirth2ape` e `nfa2dfa` escrito por Paulo Cereda.
 
-This tool is released under the GNU Public License version 3.0 and makes use of modified version of 2 helper tools, `wirth2ape` and `nfa2dfa` written by Paulo Cereda.
-
-Apache Maven and Java 8 are required to build `mwsn2spa` from sources. Run:
-
-
+Apache Maven e Java 8 são necessários para compilar o `mwsn2ape` a partir do código fonte. Execute:
 
 ```bash
 $ mvn assembly:assembly
