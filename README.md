@@ -1,5 +1,7 @@
 # mwsn2ape
 
+Este descrição contém informações parciais sobre este repositório.
+
 `mwsn2ape` é um aplicativo de linha de comando escrito em Java que implementa um 'pipeline' de NLP para um subconjunto do português brasileiro culto.
 
 - Entradas: uma gramática na notação Wirth modificada, um dicionário e padrões de dependência.
